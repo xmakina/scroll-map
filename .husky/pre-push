@@ -1,0 +1,3 @@
+npm run prisma
+npm run build:full
+npm test

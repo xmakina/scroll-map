@@ -1,0 +1,77 @@
+services:
+  website:
+    build:
+      context: ./
+      target: dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      mysql:
+        condition: service_healthy
+    secrets:
+      - auth_github_id
+      - auth_secret
+      - db_url
+      - auth_github_secret
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "-G", "http://127.0.0.1:3000"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+  mysql:
+    image: mysql:8
+    command: --lower_case_table_names=1
+    tty: true
+    # TODO: Uncomment this when we want to start saving DB data
+    # volumes:
+    #   - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: application
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    secrets:
+      - db_password
+      - db_root_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h127.0.0.1", "-P3306"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      - PMA_USER=db_user
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - PMA_PASSWORD_FILE=/run/secrets/db_password
+      - PMA_HOST=mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8888:80"
+    secrets:
+      - db_password
+      - db_root_password
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  db_url:
+    file: ./secrets/db_url.txt
+  auth_secret:
+    file: ./secrets/auth_secret.txt
+  auth_github_secret:
+    file: ./secrets/auth_github_secret.txt
+  auth_github_id:
+    file: ./secrets/auth_github_id.txt
+
+volumes:
+  mysql-data:

@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "pulkitgangwar.nextjs-snippets",
+    "deque-systems.vscode-axe-linter",
+    "dbaeumer.vscode-eslint",
+    "davidanson.vscode-markdownlint",
+    "christian-kohler.path-intellisense",
+    "aaron-bond.better-comments",
+    "naumovs.color-highlight",
+    "orta.vscode-jest",
+    "vscode-icons-team.vscode-icons",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

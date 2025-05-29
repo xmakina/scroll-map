@@ -1,0 +1,4 @@
+model Agent {
+  id   String @id
+  User User   @relation(fields: [id], references: [id], onDelete: Cascade)
+}

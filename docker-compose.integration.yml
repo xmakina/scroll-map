@@ -1,0 +1,65 @@
+## This is probably not the file you want.
+## This compose is used to run the test suites
+services:
+  test-mysql:
+    container_name: "integrations"
+    image: mysql:8
+    command: --lower_case_table_names=1
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: integrations
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_password
+      MYSQL_ROOT_PASSWORD: test_root_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h127.0.0.1", "-P3306"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+  test-phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_USER: test_user
+      MYSQL_ROOT_PASSWORD_FILE: test_root_password
+      PMA_PASSWORD: test_password
+      PMA_HOST: test-mysql
+    depends_on:
+      test-mysql:
+        condition: service_healthy
+    ports:
+      - "7777:80"
+  storybook:
+    build:
+      context: .
+      target: storybook
+    command: npm run storybook -- --no-open
+    ports:
+      - 6006:6006
+    volumes:
+      - ./:/app:ro
+      - /app/node_modules
+      - /app/.next
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "-G", "http://127.0.0.1:6006"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+  build-mysql:
+    container_name: "build-database"
+    image: mysql:8
+    command: --lower_case_table_names=1
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: build
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_password
+      MYSQL_ROOT_PASSWORD: test_root_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h127.0.0.1", "-P3306"]
+      interval: 5s
+      timeout: 2s
+      retries: 20

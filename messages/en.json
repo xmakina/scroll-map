@@ -1,0 +1,6 @@
+{
+    "Greeting": {
+        "Unknown": "Hello, world!",
+        "Greetings, {name}": "Greetings, {name}"
+    }
+}

@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Build the Docker image
+        uses: actions/checkout@v4
+      - name: build image
+        run: docker build . --file Dockerfile --target prod --tag {account/project}:latest
+      - name: publish image
+        run: docker push {account/project}:latest
