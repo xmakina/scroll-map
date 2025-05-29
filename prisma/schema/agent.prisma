@@ -1,4 +1,7 @@
 model Agent {
-  id   String @id
-  User User   @relation(fields: [id], references: [id], onDelete: Cascade)
+  id        String @id @default(cuid())
+  userId    String
+  User      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  locationX Int
+  locationY Int
 }

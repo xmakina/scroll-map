@@ -1,6 +1,6 @@
 {
-  "name": "generic-typescript-project",
-  "version": "1.0.0",
+  "name": "traders-galaxy",
+  "version": "0.0.1",
   "scripts": {
     "dev": "prisma db push --force-reset && next dev",
     "build": "prisma generate && next build ; echo !!! Failing to collect page data is expected !!!",
@@ -31,7 +31,7 @@
   },
   "author": "Alex Addams <github@xmakina.co.uk>",
   "license": "ISC",
-  "description": "A generic typescript project",
+  "description": "A space trading adventure game for mobile",
   "prisma": {
     "seed": "tsx ./prisma/seed.ts",
     "schema": "./prisma/schema"

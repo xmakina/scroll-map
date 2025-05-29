@@ -4,6 +4,7 @@ import { prisma } from "./prisma";
 import GitHub from "next-auth/providers/github";
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
+import AgentService from "./services/AgentService";
 
 export const authConfig = {
   adapter: PrismaAdapter(prisma),
@@ -14,7 +15,8 @@ export const authConfig = {
         return;
       }
 
-      // TODO: Set up new user account
+      const agentService = await AgentService.get();
+      await agentService.createAgent(user.id);
     },
   },
 } satisfies NextAuthConfig;

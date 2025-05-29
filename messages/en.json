@@ -2,5 +2,8 @@
     "Greeting": {
         "Unknown": "Hello, world!",
         "Greetings, {name}": "Greetings, {name}"
+    },
+    "Surroundings": {
+        "Plain": "You are in a flat area"
     }
 }
