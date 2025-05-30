@@ -1,7 +1,7 @@
 "use server";
 
-import LocationGenerator from "@/LocationGenerator";
+import Waypoint from "@/models/waypoint/Waypoint";
 
 export async function getGeneratedDetails(x: number, y: number) {
-  return LocationGenerator(`x:${x} y:${y}`);
+  return new Waypoint(x, y);
 }
