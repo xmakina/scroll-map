@@ -28,4 +28,17 @@ export default class AgentService {
         return await this.repository.moveAgent(agentId, -1, 0);
     }
   }
+
+  // async interactWithPlant(agentId:string verb: PlantInteractions, symbol: PlantSymbol) {
+  //   const agent = await this.repository.getAgent(agentId)
+
+  //   switch (verb) {
+  //     case "harvest": {
+  //       // this.repository.addToInventory(symbol)
+  //       // this.repository.addInteractionTimer(verb, symbol, agent.positionX, agent.positionY)
+  //     }
+  //   }
+  // }
 }
+
+export type PlantInteractions = "harvest";

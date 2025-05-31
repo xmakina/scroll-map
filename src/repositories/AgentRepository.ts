@@ -36,4 +36,8 @@ export default class AgentRepository {
       },
     });
   }
+
+  async getAgent(id: string) {
+    return await prisma.agent.findFirstOrThrow({ where: { id } });
+  }
 }

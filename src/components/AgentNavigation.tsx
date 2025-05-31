@@ -13,7 +13,7 @@ function AgentNavigation({ onChangeLocation }: Props) {
   const goEast = onChangeLocation.bind(null, "E");
 
   return (
-    <div className="flex-col w-full">
+    <div className="flex-col">
       <div className="flex justify-center">
         <Button onClick={goNorth}>Go North</Button>
       </div>
