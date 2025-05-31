@@ -1,10 +1,11 @@
 import React from "react";
-import Map from "@/components/Map";
+import GameMap from "@/components/GameMap";
+import { getStars } from "./queries";
 
 function Page() {
   return (
-    <div className="bg-white-700 mx-auto my-5 w-[98%] h-[480px]">
-      <Map posix={[4.79029, -75.69003]} />
+    <div className="mx-auto my-5 w-[98%] h-[480px]">
+      <GameMap posix={[0, 0]} updateStars={getStars} />
     </div>
   );
 }
