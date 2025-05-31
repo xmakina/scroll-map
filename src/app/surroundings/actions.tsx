@@ -19,6 +19,6 @@ export async function changeLocation(
 
 export async function plantInteraction(agentId: string, p: PlantSymbol) {
   console.log(`${agentId} interacting with plant ${p}`);
-  await agentService.interaction("harvest", p);
+
   revalidatePath("/surroundings");
 }

@@ -17,4 +17,4 @@ jobs:
       - name: build image
         run: docker build . --file Dockerfile --target prod --tag {account/project}:latest
       - name: publish image
-        run: docker push {account/project}:latest
+        run: docker push xmakina/scroll-map:latest
