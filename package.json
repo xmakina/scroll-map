@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "prisma db push --force-reset && next dev",
-    "build": "prisma generate && next build ; echo !!! Failing to collect page data is expected !!!",
+    "build": "prisma generate && next build --experimental-build-mode compile",
     "build:full": "prisma generate && cross-env DATABASE_URL=mysql://test_user:test_password@localhost:3306/build npm run §Build",
     "§Build": "npm run §SetupBuild && npm run §RunBuild && npm run §TearDownBuild",
-    "§RunBuild": "prisma db push --force-reset && next build",
+    "§RunBuild": "prisma db push --force-reset && next build --experimental-build-mode compile",
     "§SetupBuild": "docker compose --file docker-compose.integration.yml up --build --detach --wait build-mysql",
     "§TearDownBuild": "docker compose --file docker-compose.integration.yml down build-mysql --volumes",
     "build-storybook": "storybook build",
