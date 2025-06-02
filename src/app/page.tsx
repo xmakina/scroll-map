@@ -6,7 +6,7 @@ export default async function Home() {
   const t = await getTranslations("Greeting");
   const session = await auth();
   if (session?.user) {
-    return redirect("/surroundings");
+    return redirect("/map");
   }
 
   return (

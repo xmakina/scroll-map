@@ -7,19 +7,43 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 
 import React, { useEffect, useState } from "react";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
-import { useDebouncedCallback } from "use-debounce";
 import Waypoint from "@/models/waypoint/Waypoint";
 import MapStar from "./MapStar";
+import { roundTo } from "@/utils/roundTo";
+import range from "@/utils/range";
+
+export const getStars = async ({
+  north,
+  south,
+  east,
+  west,
+}: {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+}): Promise<Waypoint[]> => {
+  const rNorth = roundTo(north, 1);
+  const rSouth = roundTo(south, 1);
+  const rEast = roundTo(east, 1);
+  const rWest = roundTo(west, 1);
+
+  const yList = Array.from(range(rSouth, rNorth));
+  const xList = Array.from(range(rWest, rEast));
+
+  return new Promise((resolve) => {
+    const result = yList
+      .flatMap((y) => xList.map((x) => new Waypoint(x, y)))
+      .filter((p) => p.exists)
+      .map((w) => w);
+
+    resolve(result);
+  });
+};
 
 interface MapProps {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
-  updateStars: (bounds: {
-    north: number;
-    south: number;
-    east: number;
-    west: number;
-  }) => Promise<Waypoint[]>;
 }
 
 const defaults = {
@@ -27,34 +51,40 @@ const defaults = {
 };
 
 const GameMap = (Map: MapProps) => {
-  const { zoom = defaults.zoom, posix, updateStars } = Map;
+  const { zoom = defaults.zoom, posix } = Map;
   const [map, setMap] = useState<Map | null>(null);
   const [stars, setStars] = useState<Waypoint[]>([]);
   const [details, setDetails] = useState<Waypoint | null>(null);
 
-  const updateRequest = useDebouncedCallback(async () => {
+  useEffect(() => {
+    if (map) {
+      updateRequest();
+    }
+  }, [map]);
+
+  const updateRequest = async () => {
     if (!map) {
       return;
     }
 
     const bounds = map.getBounds();
 
-    const newStars = await updateStars({
-      north: bounds.getNorth(),
-      south: bounds.getSouth(),
-      east: bounds.getEast(),
-      west: bounds.getWest(),
+    const newStars = await getStars({
+      north: bounds.getNorth() + 5,
+      south: bounds.getSouth() - 5,
+      east: bounds.getEast() + 5,
+      west: bounds.getWest() - 5,
     });
 
     setStars(newStars);
-  }, 100);
+  };
 
   useEffect(() => {
     if (!map) {
       return;
     }
 
-    map.on("move", updateRequest);
+    map.on("moveend", updateRequest);
   });
 
   return (
@@ -63,13 +93,12 @@ const GameMap = (Map: MapProps) => {
         center={posix}
         zoom={zoom}
         maxZoom={7}
-        minZoom={5}
+        minZoom={3}
         scrollWheelZoom={false}
         ref={setMap}
         style={{ background: "#000000" }}
         className="h-full w-full"
         crs={CRS.Simple}
-        whenReady={updateRequest}
       >
         {stars.map((w) => (
           <MapStar waypoint={w} key={w.seed} onClick={setDetails} />
