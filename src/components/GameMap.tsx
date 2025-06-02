@@ -55,11 +55,11 @@ const GameMap = (Map: MapProps) => {
   }, [map]);
 
   return (
-    <div>
+    <div className="flex flex-col w-full gap-2">
       <div>
         {map && <MapTravel onTravel={(posix) => map.flyTo(posix, 5)} />}
       </div>
-      <div className="mx-auto my-5 w-[98vw] h-[480px]">
+      <div className="mx-auto w-full h-[60vh]">
         <MapContainer
           center={posix}
           zoom={zoom}

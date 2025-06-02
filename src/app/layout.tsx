@@ -26,22 +26,24 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="bg-primary text-secondary">
       <body className="flex flex-col min-h-screen m-0 box-border sm:flex-row xl:flex-col sm:justify-between">
-        <NextIntlClientProvider messages={messages}>
-          <div id="content" className="mb-24 sm:mb-8 grow mt-4 mx-2">
-            <main className="flex flex-row justify-start items-start">
-              <div className="flex flex-col items-center justify-start grow xl:pb-16">
-                <SessionProvider>
-                  <WithAuth>{children}</WithAuth>
-                </SessionProvider>
-              </div>
-            </main>
-          </div>
-          <footer>
-            <div className="h-16 mt-auto touch-none flex border-t flex-row items-center justify-evenly fixed bottom-0 left-0 w-screen bg-primary">
-              {login}
+        <div className="flex h-screen w-screen flex-col divide-y overflow-hidden">
+          <NextIntlClientProvider messages={messages}>
+            <div id="content" className="mb-24 sm:mb-8 grow mt-4 mx-2">
+              <main className="flex flex-row justify-start items-start">
+                <div className="flex flex-col items-center justify-start grow xl:pb-16">
+                  <SessionProvider>
+                    <WithAuth>{children}</WithAuth>
+                  </SessionProvider>
+                </div>
+              </main>
             </div>
-          </footer>
-        </NextIntlClientProvider>
+            <footer>
+              <div className="h-16 mt-auto touch-none flex border-t flex-row items-center justify-evenly fixed bottom-0 left-0 w-screen bg-primary">
+                {login}
+              </div>
+            </footer>
+          </NextIntlClientProvider>
+        </div>
       </body>
     </html>
   );

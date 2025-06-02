@@ -22,24 +22,31 @@ const MapTravel = ({ onTravel }: Props) => {
   };
 
   return (
-    <div className="flex flex-row gap-4 justify-center items-center">
-      <div>
-        <input
-          type="number"
-          className="text-black"
-          onChange={(e) => setX(e.target.value)}
-          value={x}
-        />
+    <div className="flex flex-row gap-4 justify-center items-center flex-wrap">
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-row gap-2 justify-between">
+          <label>X:</label>
+          <input
+            id="x"
+            type="number"
+            className="text-black"
+            onChange={(e) => setX(e.target.value)}
+            value={x}
+          />
+        </div>
+        <div className="flex flex-row gap-2 justify-between">
+          <label>Y:</label>
+          <input
+            type="number"
+            className="text-black"
+            onChange={(e) => setY(e.target.value)}
+            value={y}
+          />
+        </div>
       </div>
       <div>
-        <input
-          type="number"
-          className="text-black"
-          onChange={(e) => setY(e.target.value)}
-          value={y}
-        />
+        <Button onClick={parseAndSubmitTravel}>GO</Button>
       </div>
-      <Button onClick={parseAndSubmitTravel}>GO</Button>
     </div>
   );
 };
