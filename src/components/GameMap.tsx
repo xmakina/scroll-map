@@ -47,7 +47,7 @@ interface MapProps {
 }
 
 const defaults = {
-  zoom: 7,
+  zoom: 3,
 };
 
 const GameMap = (Map: MapProps) => {
@@ -92,9 +92,8 @@ const GameMap = (Map: MapProps) => {
       <MapContainer
         center={posix}
         zoom={zoom}
-        maxZoom={7}
+        maxZoom={10}
         minZoom={3}
-        scrollWheelZoom={false}
         ref={setMap}
         style={{ background: "#000000" }}
         className="h-full w-full"

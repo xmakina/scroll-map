@@ -1,6 +1,6 @@
 "use client";
 
-import Waypoint from "@/models/waypoint/Waypoint";
+import Waypoint, { StarClass } from "@/models/waypoint/Waypoint";
 
 import React, { useEffect, useState } from "react";
 import { Circle as LeafletCircle, LeafletMouseEvent } from "leaflet";
@@ -25,10 +25,24 @@ function highlightFeature(e: LeafletMouseEvent) {
 const resetHighlight = (w: Waypoint) => (e: LeafletMouseEvent) => {
   const layer = e.target;
 
+  if (!w.class) {
+    return;
+  }
+
   layer.setStyle({
     weight: 0,
-    color: w.colour,
+    color: classColours[w.class],
   });
+};
+
+const classColours: { [key in StarClass]: string } = {
+  O: "#9bb0ff",
+  B: "#aabfff",
+  A: "#cad7ff",
+  F: "#f8f7ff",
+  G: "#fff4ea",
+  K: "#ffd2a1",
+  M: "#ffcc6f",
 };
 
 export default function MapStar({ waypoint, onClick }: Props) {
@@ -47,13 +61,17 @@ export default function MapStar({ waypoint, onClick }: Props) {
     });
   });
 
+  if (!waypoint.class || !waypoint.radius) {
+    return <></>;
+  }
+
   return (
     <Circle
       key={waypoint.seed}
       center={[waypoint.yPos, waypoint.xPos]}
-      radius={0.4}
-      color={waypoint.colour}
-      fillColor={waypoint.colour}
+      radius={waypoint.radius / 16}
+      color={classColours[waypoint.class]}
+      fillColor={classColours[waypoint.class]}
       opacity={1}
       fillOpacity={1}
       ref={setCircle}

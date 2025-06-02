@@ -11,12 +11,35 @@ export function getRandomWeightedKey<T extends string>(
   const weighedElements = [];
   let currentElement = 0;
   while (currentElement < elements.length) {
-    for (let i = 0; i < weights[currentElement]; i++) {
-      weighedElements[weighedElements.length] = elements[currentElement];
-    }
+    weighedElements[weighedElements.length] = {
+      key: elements[currentElement],
+      weight: weights[currentElement],
+    };
     currentElement++;
   }
 
-  const random = randomNumber(rand, 0, weighedElements.length);
-  return weighedElements[random] as T;
+  const total = weights.reduce((acc, weight) => (acc += weight));
+
+  const random = randomNumber(rand, 0, total);
+
+  let runningTotal = 0;
+  const result = weighedElements.reduce<T | null>((acc, weighedElement) => {
+    if (acc) {
+      return acc;
+    }
+
+    runningTotal += weighedElement.weight;
+
+    if (runningTotal > random) {
+      return weighedElement.key as T;
+    }
+
+    return null;
+  }, null);
+
+  if (result === null) {
+    throw Error("Unexpected null from weighted results");
+  }
+
+  return result;
 }
