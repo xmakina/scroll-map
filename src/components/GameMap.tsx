@@ -9,37 +9,9 @@ import React, { useEffect, useState } from "react";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
 import Waypoint from "@/models/waypoint/Waypoint";
 import MapStar from "./MapStar";
-import { roundTo } from "@/utils/roundTo";
-import range from "@/utils/range";
-
-export const getStars = async ({
-  north,
-  south,
-  east,
-  west,
-}: {
-  north: number;
-  south: number;
-  east: number;
-  west: number;
-}): Promise<Waypoint[]> => {
-  const rNorth = roundTo(north, 1);
-  const rSouth = roundTo(south, 1);
-  const rEast = roundTo(east, 1);
-  const rWest = roundTo(west, 1);
-
-  const yList = Array.from(range(rSouth, rNorth));
-  const xList = Array.from(range(rWest, rEast));
-
-  return new Promise((resolve) => {
-    const result = yList
-      .flatMap((y) => xList.map((x) => new Waypoint(x, y)))
-      .filter((p) => p.exists)
-      .map((w) => w);
-
-    resolve(result);
-  });
-};
+import StarDetails from "./StarDetails";
+import MapTravel from "./MapTravel";
+import { getStars } from "./getStars";
 
 interface MapProps {
   posix: LatLngExpression | LatLngTuple;
@@ -55,12 +27,6 @@ const GameMap = (Map: MapProps) => {
   const [map, setMap] = useState<Map | null>(null);
   const [stars, setStars] = useState<Waypoint[]>([]);
   const [details, setDetails] = useState<Waypoint | null>(null);
-
-  useEffect(() => {
-    if (map) {
-      updateRequest();
-    }
-  }, [map]);
 
   const updateRequest = async () => {
     if (!map) {
@@ -84,27 +50,33 @@ const GameMap = (Map: MapProps) => {
       return;
     }
 
+    updateRequest();
     map.on("moveend", updateRequest);
-  });
+  }, [map]);
 
   return (
-    <>
-      <MapContainer
-        center={posix}
-        zoom={zoom}
-        maxZoom={12}
-        minZoom={3}
-        ref={setMap}
-        style={{ background: "#000000" }}
-        className="h-full w-full"
-        crs={CRS.Simple}
-      >
-        {stars.map((w) => (
-          <MapStar waypoint={w} key={w.seed} onClick={setDetails} />
-        ))}
-      </MapContainer>
-      <p>{JSON.stringify(details)}</p>
-    </>
+    <div>
+      <div>
+        {map && <MapTravel onTravel={(posix) => map.flyTo(posix, 5)} />}
+      </div>
+      <div className="mx-auto my-5 w-[98vw] h-[480px]">
+        <MapContainer
+          center={posix}
+          zoom={zoom}
+          maxZoom={12}
+          minZoom={3}
+          ref={setMap}
+          style={{ background: "#000000" }}
+          className="h-full w-full"
+          crs={CRS.Simple}
+        >
+          {stars.map((w) => (
+            <MapStar waypoint={w} key={w.seed} onClick={setDetails} />
+          ))}
+        </MapContainer>
+      </div>
+      <div>{details && <StarDetails star={details} />}</div>
+    </div>
   );
 };
 
