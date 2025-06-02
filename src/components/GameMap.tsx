@@ -92,7 +92,7 @@ const GameMap = (Map: MapProps) => {
       <MapContainer
         center={posix}
         zoom={zoom}
-        maxZoom={10}
+        maxZoom={12}
         minZoom={3}
         ref={setMap}
         style={{ background: "#000000" }}

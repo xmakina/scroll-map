@@ -5,6 +5,11 @@ import Waypoint, { StarClass } from "@/models/waypoint/Waypoint";
 import React, { useEffect, useState } from "react";
 import { Circle as LeafletCircle, LeafletMouseEvent } from "leaflet";
 import { Circle } from "react-leaflet";
+import Rand from "rand-seed";
+import randomNumber from "@/utils/randomNumber";
+
+const defaultWeight = 0;
+const defaultColor = "";
 
 type Props = {
   waypoint: Waypoint;
@@ -30,8 +35,8 @@ const resetHighlight = (w: Waypoint) => (e: LeafletMouseEvent) => {
   }
 
   layer.setStyle({
-    weight: 0,
-    color: classColours[w.class],
+    weight: defaultWeight,
+    color: defaultColor,
   });
 };
 
@@ -65,14 +70,20 @@ export default function MapStar({ waypoint, onClick }: Props) {
     return <></>;
   }
 
+  const rand = new Rand(waypoint.seed);
+
+  const xOffset = randomNumber(rand, 10, 90) / 100;
+  const yOffset = randomNumber(rand, 10, 90) / 100;
+
   return (
     <Circle
       key={waypoint.seed}
-      center={[waypoint.yPos, waypoint.xPos]}
+      center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
       radius={waypoint.radius / 16}
-      color={classColours[waypoint.class]}
       fillColor={classColours[waypoint.class]}
       opacity={1}
+      color={defaultColor}
+      weight={defaultWeight}
       fillOpacity={1}
       ref={setCircle}
     ></Circle>
