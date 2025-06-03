@@ -1,10 +1,15 @@
 import React from "react";
 import GameMap from "@/components/map/GameMap";
+import { getShips } from "./queries";
+import { createShip } from "./actions";
 
-function Page() {
+async function Page() {
+  const ships = await getShips();
+  const createShipFunc = createShip.bind(null);
+
   return (
-    <div className="flex flex-col m-2 items-center justify-center w-full">
-      <GameMap posix={[0, 0]} />
+    <div className="flex flex-col m-2 items-center justify-center w-full gap-3">
+      <GameMap ships={ships} posix={[0, 0]} onCreateShip={createShipFunc} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import Waypoint from "@/models/waypoint/Waypoint";
 import range from "@/utils/range";
 import { roundTo } from "@/utils/roundTo";
 
-export const getStars = async ({
+export const getWaypoints = async ({
   north,
   south,
   east,

@@ -14,7 +14,7 @@ const defaultColor = "";
 
 type Props = {
   waypoint: Waypoint;
-  onClick: (waypoint: Waypoint) => void;
+  onClick: (waypoint: Waypoint) => Promise<void> | void;
   selected?: boolean;
 };
 
@@ -28,53 +28,19 @@ const classColours: { [key in StarClass]: string } = {
   M: "#ffcc6f",
 };
 
-export default function MapStar({ waypoint, onClick, selected }: Props) {
+export default function MapStar({
+  waypoint,
+  onClick,
+  selected = false,
+}: Props) {
   const rand = new Rand(waypoint.seed, PRNG.xoshiro128ss);
   const [gridSquare, setGridSquare] = useState<LeafletRectangle | null>(null);
 
   useEffect(() => {
-    if (selected) {
-      return applyHighlight();
-    }
-
-    return removeHighlight();
-  }, [selected]);
-
-  function applyHighlight() {
     if (!gridSquare) {
       return;
     }
 
-    console.log("applying highlight", waypoint.seed);
-
-    gridSquare.setStyle({
-      weight: 5,
-      color: "#666",
-      opacity: 1,
-    });
-  }
-
-  function removeHighlight() {
-    if (!gridSquare || selected) {
-      applyHighlight();
-      return;
-    }
-
-    gridSquare.setStyle({
-      weight: defaultWeight,
-      color: defaultColor,
-    });
-  }
-
-  useEffect(() => {
-    if (!gridSquare) {
-      return;
-    }
-
-    console.log("events set", waypoint.seed);
-
-    gridSquare.on("mouseover", applyHighlight);
-    gridSquare.on("mouseout", removeHighlight);
     gridSquare.on("click", () => onClick(waypoint));
   }, [gridSquare]);
 
@@ -88,13 +54,17 @@ export default function MapStar({ waypoint, onClick, selected }: Props) {
         center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
         radius={Math.max(star.radius, 0.5) / 16}
         fillColor={classColours[star.starClass]}
+        color=""
+        weight={0}
         opacity={1}
-        color={defaultColor}
-        weight={defaultWeight}
         fillOpacity={1}
       ></Circle>
     );
   });
+
+  if (selected) {
+    console.log("selected", waypoint.id);
+  }
 
   return (
     <Rectangle
@@ -102,10 +72,10 @@ export default function MapStar({ waypoint, onClick, selected }: Props) {
         [waypoint.yPos - 0.5, waypoint.xPos - 0.5],
         [waypoint.yPos + 0.5, waypoint.xPos + 0.5],
       ]}
-      weight={selected ? 10 : 5}
       fillColor=""
       fillOpacity={0}
-      color=""
+      color={selected ? "#666" : defaultColor}
+      weight={selected ? 5 : defaultWeight}
       ref={setGridSquare}
     >
       {stars}

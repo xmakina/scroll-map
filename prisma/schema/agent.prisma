@@ -1,7 +1,0 @@
-model Agent {
-  id        String @id @default(cuid())
-  userId    String
-  User      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  locationX Int
-  locationY Int
-}

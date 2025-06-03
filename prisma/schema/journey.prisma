@@ -1,0 +1,10 @@
+model Journey {
+  id        String   @id @default(cuid())
+  completes DateTime
+  shipId    String
+  ship      Ship     @relation(fields: [shipId], references: [id])
+  startX    Int
+  startY    Int
+  endX      Int
+  endY      Int
+}

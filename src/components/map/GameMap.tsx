@@ -1,86 +1,70 @@
 "use client";
 
-import { MapContainer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
-import React, { useEffect, useState } from "react";
-import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
+import React, { useState } from "react";
+import { LatLngExpression, LatLngTuple, Map } from "leaflet";
 import Waypoint from "@/models/waypoint/Waypoint";
-import MapStar from "./MapStar";
 import StarDetails from "./StarDetails";
-import MapTravel from "./MapTravel";
-import { getStars } from "../../utils/getStars";
 import WaypointDetails from "./WaypointDetails";
+import ShipManagement from "../ship/ShipManagement";
+import { Ship } from "@prisma/client";
+import StarMap from "./StarMap";
 
-interface MapProps {
+type Props = {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
-}
+  onSelected?: (waypoint: Waypoint) => Promise<void> | void;
+  ships?: Ship[];
+  onCreateShip: (xy: { x: number; y: number }) => Promise<void>;
+};
 
 const defaults = {
   zoom: 3,
 };
 
-const GameMap = (Map: MapProps) => {
-  const { zoom = defaults.zoom, posix } = Map;
-  const [map, setMap] = useState<Map | null>(null);
-  const [stars, setStars] = useState<Waypoint[]>([]);
-  const [details, setDetails] = useState<Waypoint | null>(null);
+const GameMap = ({
+  zoom = defaults.zoom,
+  posix,
+  ships = [],
+  onCreateShip: createShip,
+}: Props) => {
+  const [details, setDetails] = useState<Waypoint>();
+  const [map, setMap] = useState<Map>();
 
-  const updateRequest = async () => {
-    if (!map) {
+  function handleMapSelection(waypoint: Waypoint) {
+    setDetails(waypoint);
+  }
+
+  async function handleCreateShip() {
+    if (!details) {
       return;
     }
 
-    const bounds = map.getBounds();
+    createShip({ x: details.xPos, y: details.yPos });
+  }
 
-    const newStars = await getStars({
-      north: bounds.getNorth() + 5,
-      south: bounds.getSouth() - 5,
-      east: bounds.getEast() + 5,
-      west: bounds.getWest() - 5,
-    });
-
-    setStars(newStars);
-  };
-
-  useEffect(() => {
-    if (!map) {
-      return;
-    }
-
-    updateRequest();
-    map.on("moveend", updateRequest);
-  }, [map]);
+  function handleLocate(x: number, y: number) {
+    map?.flyTo([y, x], 8);
+  }
 
   return (
     <div className="flex flex-col w-full gap-2">
-      <div>
-        {map && <MapTravel onTravel={(posix) => map.flyTo(posix, 5)} />}
-      </div>
-      <div className="mx-auto w-full h-[60vh]">
-        <MapContainer
-          center={posix}
-          zoom={zoom}
-          maxZoom={12}
-          minZoom={3}
-          ref={setMap}
-          style={{ background: "#000000" }}
-          className="h-full w-full"
-          crs={CRS.Simple}
-        >
-          {stars.map((w) => (
-            <MapStar
-              waypoint={w}
-              key={w.seed}
-              onClick={setDetails}
-              selected={details?.seed === w.seed}
-            />
-          ))}
-        </MapContainer>
-      </div>
+      <ShipManagement
+        ships={ships}
+        selectedStar={details}
+        createShip={handleCreateShip}
+        locate={handleLocate}
+      />
+      <StarMap
+        posix={posix}
+        zoom={zoom}
+        onSelected={handleMapSelection}
+        selected={details}
+        onReady={setMap}
+      />
       <div className="flex flex-col items-center">
         {details && <WaypointDetails waypoint={details} />}
         {details?.stars.map((s, i) => (

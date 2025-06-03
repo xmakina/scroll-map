@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
-import AgentService from "@/services/AgentService";
+import PlayerService from "@/services/PlayerService";
 import { redirect } from "next/navigation";
 
-const agentService = await AgentService.get();
+const playerService = await PlayerService.get();
 
 export async function getUser() {
   const session = await auth();
@@ -13,6 +13,7 @@ export async function getUser() {
 
   return session.user;
 }
+
 export async function getUserId() {
   const user = await getUser();
 
@@ -23,6 +24,11 @@ export async function getUserId() {
   return user.id;
 }
 
-export async function getAgents(userId: string) {
-  return await agentService.findAgents(userId);
+export async function getPlayer() {
+  const user = await getUser();
+  if (!user?.id) {
+    return redirect("/");
+  }
+
+  return await playerService.findPlayer(user.id);
 }
