@@ -2,6 +2,7 @@
   "name": "traders-galaxy",
   "version": "0.0.1",
   "scripts": {
+    "prisma-force": "prisma db push --force-reset --accept-data-loss",
     "dev": "prisma db push --force-reset && next dev",
     "build": "prisma generate && next build --experimental-build-mode compile",
     "build:full": "prisma generate && cross-env DATABASE_URL=mysql://test_user:test_password@localhost:3306/build npm run §Build",

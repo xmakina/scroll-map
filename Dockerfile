@@ -43,4 +43,4 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 EXPOSE 3000
-CMD ["sh", "-c", "npm prisma db push --force-reset --accept-data-loss && node server.js"]
+CMD ["sh", "-c", "npm run prisma-force && node server.js"]
