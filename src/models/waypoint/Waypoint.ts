@@ -1,17 +1,16 @@
 import Rand, { PRNG } from "rand-seed";
 import maybe from "../../utils/maybe";
 import StarsGenerator from "./StarsGenerator";
-import PlanetsGenerator from "./PlanetsGenerator";
-import Planet from "./Planet";
 import Star from "./Star";
+import { randomLetter } from "@/utils/randomLetter";
 
 export default class Waypoint {
   public readonly exists: boolean;
   public readonly seed: string;
   public readonly xPos: number;
   public readonly yPos: number;
+  public readonly id: string;
   public readonly stars: Star[] = [];
-  public readonly planets: Planet[] = [];
 
   constructor(x: number, y: number) {
     this.seed = `${x}x, ${y}y`;
@@ -21,17 +20,14 @@ export default class Waypoint {
     this.xPos = x;
     this.yPos = y;
 
+    const firstLetter = randomLetter(rand);
+    const secondLetter = randomLetter(rand);
+
+    this.id = `${firstLetter}${this.xPos}${secondLetter}${this.yPos}`;
     if (!this.exists) {
       return;
     }
 
-    this.stars = StarsGenerator(rand);
-
-    const hasPlanets = maybe(rand, 30);
-    if (!hasPlanets) {
-      return;
-    }
-
-    this.planets = PlanetsGenerator(rand);
+    this.stars = StarsGenerator(rand, this.id);
   }
 }

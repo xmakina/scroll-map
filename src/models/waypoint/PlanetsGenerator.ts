@@ -2,7 +2,7 @@ import { getRandomWeightedKey } from "@/utils/getRandomWeightedKey";
 import range from "@/utils/range";
 import Rand from "rand-seed";
 import Planet from "./Planet";
-import randomNumber from "@/utils/randomNumber";
+import maybe from "@/utils/maybe";
 
 const PlanetCountWeightings: { [key: number]: number } = {
   1: 10,
@@ -17,10 +17,15 @@ const PlanetCountWeightings: { [key: number]: number } = {
   10: 10,
 };
 
-export default function (rand: Rand) {
+export default function (rand: Rand, starIdentifier: string) {
+  const hasPlanets = maybe(rand, 30);
+  if (!hasPlanets) {
+    return [];
+  }
+
   const planetCount = getRandomWeightedKey(rand, PlanetCountWeightings);
+
   return range(0, planetCount)
-    .map((index) => randomNumber(rand, 2, 4) * index)
-    .map((distance) => new Planet(rand, distance))
+    .map((index) => new Planet(rand, index, starIdentifier))
     .toArray();
 }

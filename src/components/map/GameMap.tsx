@@ -11,7 +11,7 @@ import Waypoint from "@/models/waypoint/Waypoint";
 import MapStar from "./MapStar";
 import StarDetails from "./StarDetails";
 import MapTravel from "./MapTravel";
-import { getStars } from "../utils/getStars";
+import { getStars } from "../../utils/getStars";
 import WaypointDetails from "./WaypointDetails";
 
 interface MapProps {

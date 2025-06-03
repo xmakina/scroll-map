@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="bg-primary text-secondary">
       <body className="flex flex-col min-h-screen m-0 box-border sm:flex-row xl:flex-col sm:justify-between">
-        <div className="flex h-screen w-screen flex-col divide-y overflow-hidden">
+        <div className="flex w-screen flex-col divide-y overflow-hidden">
           <NextIntlClientProvider messages={messages}>
             <div id="content" className="mb-24 sm:mb-8 grow mt-4 mx-2">
               <main className="flex flex-row justify-start items-start">

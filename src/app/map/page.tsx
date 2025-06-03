@@ -1,5 +1,5 @@
 import React from "react";
-import GameMap from "@/components/GameMap";
+import GameMap from "@/components/map/GameMap";
 
 function Page() {
   return (

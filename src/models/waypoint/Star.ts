@@ -1,6 +1,8 @@
 import { getRandomWeightedKey } from "@/utils/getRandomWeightedKey";
 import randomNumber from "@/utils/randomNumber";
 import Rand from "rand-seed";
+import Planet from "./Planet";
+import PlanetsGenerator from "./PlanetsGenerator";
 
 export type StarClass = "O" | "B" | "A" | "F" | "G" | "K" | "M";
 
@@ -18,9 +20,12 @@ export default class Star {
   public readonly starClass: StarClass;
   public readonly temperature: number;
   public readonly radius: number;
+  public readonly planets: Planet[];
+  public readonly id: string;
 
-  constructor(rand: Rand) {
+  constructor(rand: Rand, index: number, waypointIdentifier: string) {
     this.starClass = getRandomWeightedKey(rand, StarClassWeightings);
+    this.id = `${waypointIdentifier}-${index}${this.starClass}`;
     switch (this.starClass) {
       case "O":
         this.temperature = randomNumber(rand, 25000, 50000);
@@ -51,5 +56,7 @@ export default class Star {
         this.radius = randomNumber(rand, 0.3, 0.7);
         break;
     }
+
+    this.planets = PlanetsGenerator(rand, this.id);
   }
 }

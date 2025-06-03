@@ -9,9 +9,9 @@ const StarCountWeightings: { [key: number]: number } = {
   3: 1,
 };
 
-export default function (rand: Rand): Star[] {
+export default function (rand: Rand, waypointId: string): Star[] {
   const starCount = getRandomWeightedKey(rand, StarCountWeightings);
   return range(0, starCount)
-    .map(() => new Star(rand))
+    .map((index) => new Star(rand, index, waypointId))
     .toArray();
 }
