@@ -10,7 +10,7 @@
     "§SetupBuild": "docker compose --file docker-compose.integration.yml up --build --detach --wait build-mysql",
     "§TearDownBuild": "docker compose --file docker-compose.integration.yml down build-mysql --volumes",
     "build-storybook": "storybook build",
-    "start": "prisma db push && prisma migrate deploy && next start",
+    "start": "prisma migrate deploy && next start",
     "lint": "next lint",
     "prepare": "husky",
     "prisma": "prisma generate && prisma format",
