@@ -29,13 +29,18 @@ RUN npm run build
 RUN npm prune --omit=dev
 
 FROM node:lts AS prod
+ENV NODE_ENV=production
+
 WORKDIR /app
-# copy from build image
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 EXPOSE 3000
 CMD ["npm", "run", "start"]
