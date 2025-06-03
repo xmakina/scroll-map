@@ -1,12 +1,13 @@
 "use client";
 
-import Waypoint, { StarClass } from "@/models/waypoint/Waypoint";
+import Waypoint from "@/models/waypoint/Waypoint";
 
 import React, { useEffect, useState } from "react";
-import { Circle as LeafletCircle, LeafletMouseEvent } from "leaflet";
-import { Circle } from "react-leaflet";
-import Rand from "rand-seed";
+import { Rectangle as LeafletRectangle } from "leaflet";
+import { Circle, Rectangle } from "react-leaflet";
+import Rand, { PRNG } from "rand-seed";
 import randomNumber from "@/utils/randomNumber";
+import { StarClass } from "@/models/waypoint/Star";
 
 const defaultWeight = 0;
 const defaultColor = "";
@@ -14,30 +15,7 @@ const defaultColor = "";
 type Props = {
   waypoint: Waypoint;
   onClick: (waypoint: Waypoint) => void;
-};
-
-function highlightFeature(e: LeafletMouseEvent) {
-  const layer = e.target;
-
-  layer.setStyle({
-    weight: 5,
-    color: "#666",
-  });
-
-  layer.bringToFront();
-}
-
-const resetHighlight = (w: Waypoint) => (e: LeafletMouseEvent) => {
-  const layer = e.target;
-
-  if (!w.class) {
-    return;
-  }
-
-  layer.setStyle({
-    weight: defaultWeight,
-    color: defaultColor,
-  });
+  selected?: boolean;
 };
 
 const classColours: { [key in StarClass]: string } = {
@@ -50,42 +28,87 @@ const classColours: { [key in StarClass]: string } = {
   M: "#ffcc6f",
 };
 
-export default function MapStar({ waypoint, onClick }: Props) {
-  const [circle, setCircle] = useState<LeafletCircle | null>(null);
+export default function MapStar({ waypoint, onClick, selected }: Props) {
+  const rand = new Rand(waypoint.seed, PRNG.xoshiro128ss);
+  const [gridSquare, setGridSquare] = useState<LeafletRectangle | null>(null);
 
   useEffect(() => {
-    if (!circle) {
+    if (selected) {
+      return applyHighlight();
+    }
+
+    return removeHighlight();
+  }, [selected]);
+
+  function applyHighlight() {
+    if (!gridSquare) {
       return;
     }
 
-    circle.on("mouseover", highlightFeature);
-    circle.on("mouseout", resetHighlight(waypoint));
-    circle.on("click", (e) => {
-      highlightFeature(e);
-      onClick(waypoint);
-    });
-  });
+    console.log("applying highlight", waypoint.seed);
 
-  if (!waypoint.class || !waypoint.radius) {
-    return <></>;
+    gridSquare.setStyle({
+      weight: 5,
+      color: "#666",
+      opacity: 1,
+    });
   }
 
-  const rand = new Rand(waypoint.seed);
+  function removeHighlight() {
+    if (!gridSquare || selected) {
+      applyHighlight();
+      return;
+    }
 
-  const xOffset = randomNumber(rand, 10, 90) / 100;
-  const yOffset = randomNumber(rand, 10, 90) / 100;
+    gridSquare.setStyle({
+      weight: defaultWeight,
+      color: defaultColor,
+    });
+  }
+
+  useEffect(() => {
+    if (!gridSquare) {
+      return;
+    }
+
+    console.log("events set", waypoint.seed);
+
+    gridSquare.on("mouseover", applyHighlight);
+    gridSquare.on("mouseout", removeHighlight);
+    gridSquare.on("click", () => onClick(waypoint));
+  }, [gridSquare]);
+
+  const stars = waypoint.stars.map((star, index) => {
+    const xOffset = randomNumber(rand, -300, 300) / 1000;
+    const yOffset = randomNumber(rand, -300, 300) / 1000;
+
+    return (
+      <Circle
+        key={waypoint.seed + index}
+        center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
+        radius={Math.max(star.radius, 0.5) / 16}
+        fillColor={classColours[star.starClass]}
+        opacity={1}
+        color={defaultColor}
+        weight={defaultWeight}
+        fillOpacity={1}
+      ></Circle>
+    );
+  });
 
   return (
-    <Circle
-      key={waypoint.seed}
-      center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
-      radius={waypoint.radius / 16}
-      fillColor={classColours[waypoint.class]}
-      opacity={1}
-      color={defaultColor}
-      weight={defaultWeight}
-      fillOpacity={1}
-      ref={setCircle}
-    ></Circle>
+    <Rectangle
+      bounds={[
+        [waypoint.yPos - 0.5, waypoint.xPos - 0.5],
+        [waypoint.yPos + 0.5, waypoint.xPos + 0.5],
+      ]}
+      weight={selected ? 10 : 5}
+      fillColor=""
+      fillOpacity={0}
+      color=""
+      ref={setGridSquare}
+    >
+      {stars}
+    </Rectangle>
   );
 }

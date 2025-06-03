@@ -1,7 +1,7 @@
 import Rand from "rand-seed";
 import randomNumber from "./randomNumber";
 
-export function getRandomWeightedKey<T extends string>(
+export function getRandomWeightedKey<T extends string | number>(
   rand: Rand,
   weightings: { [key in T]: number }
 ) {
@@ -30,7 +30,7 @@ export function getRandomWeightedKey<T extends string>(
 
     runningTotal += weighedElement.weight;
 
-    if (runningTotal > random) {
+    if (runningTotal >= random) {
       return weighedElement.key as T;
     }
 

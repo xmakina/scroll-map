@@ -11,7 +11,8 @@ import Waypoint from "@/models/waypoint/Waypoint";
 import MapStar from "./MapStar";
 import StarDetails from "./StarDetails";
 import MapTravel from "./MapTravel";
-import { getStars } from "./getStars";
+import { getStars } from "../utils/getStars";
+import WaypointDetails from "./WaypointDetails";
 
 interface MapProps {
   posix: LatLngExpression | LatLngTuple;
@@ -71,11 +72,21 @@ const GameMap = (Map: MapProps) => {
           crs={CRS.Simple}
         >
           {stars.map((w) => (
-            <MapStar waypoint={w} key={w.seed} onClick={setDetails} />
+            <MapStar
+              waypoint={w}
+              key={w.seed}
+              onClick={setDetails}
+              selected={details?.seed === w.seed}
+            />
           ))}
         </MapContainer>
       </div>
-      <div>{details && <StarDetails star={details} />}</div>
+      <div className="flex flex-col items-center">
+        {details && <WaypointDetails waypoint={details} />}
+        {details?.stars.map((s, i) => (
+          <StarDetails key={i} star={s} />
+        ))}
+      </div>
     </div>
   );
 };
