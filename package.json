@@ -91,7 +91,7 @@
     "moq.ts": "^10.0.8",
     "open-cli": "^8.0.0",
     "postcss": "^8",
-    "prisma": "^6.8.2",
+    "prisma": "^6.9.0",
     "storybook": "^8.4.7",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
