@@ -65,8 +65,7 @@ export default function MapStar({
           fillColor={classColours[star.starClass]}
           color=""
           weight={0}
-          opacity={1}
-          fillOpacity={1}
+          fillOpacity={rng.randomNumber(5, 10) / 10}
         ></Circle>
       );
     });

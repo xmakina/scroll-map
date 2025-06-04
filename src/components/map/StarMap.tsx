@@ -7,6 +7,7 @@ import Waypoint from "@/models/waypoint/Waypoint";
 import { getWaypoints } from "@/utils/getWaypoints";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
 import MapTravel from "./MapTravel";
+import MapFilters, { MapFilter } from "./MapFilters";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
@@ -23,7 +24,9 @@ const StarMap = ({
   onSelected = () => {},
   onReady = () => {},
 }: Props) => {
-  const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
+  const [filters, setFilters] = useState<MapFilter>({ planets: true });
+  const [allWaypoints, setAllWaypoints] = useState<Waypoint[]>([]);
+  const [filteredWaypoints, setFilteredWaypoints] = useState<Waypoint[]>([]);
   const [map, setMap] = useState<Map | null>(null);
 
   const updateRequest = async () => {
@@ -33,14 +36,14 @@ const StarMap = ({
 
     const bounds = map.getBounds();
 
-    const fetchedWaypoints = await getWaypoints({
+    const waypoints = await getWaypoints({
       north: bounds.getNorth() + 5,
       south: bounds.getSouth() - 5,
       east: bounds.getEast() + 5,
       west: bounds.getWest() - 5,
     });
 
-    setWaypoints(fetchedWaypoints);
+    setAllWaypoints(waypoints);
   };
 
   useEffect(() => {
@@ -52,12 +55,28 @@ const StarMap = ({
     map.on("moveend", updateRequest);
     onReady(map);
   }, [map]);
+
+  const handleFilterChanged = (newFilters: MapFilter) => {
+    setFilters({ ...newFilters });
+  };
+
+  useEffect(() => {
+    const filteredWaypoints = allWaypoints.filter((w) =>
+      filters.planets
+        ? w.stars.filter((s) => s.planets.length > 0).length > 0
+        : true
+    );
+
+    setFilteredWaypoints(filteredWaypoints);
+  }, [filters, allWaypoints]);
+
   return (
     <div>
       <div>
         {map && <MapTravel onTravel={(posix) => map.flyTo(posix, 5)} />}
       </div>
       <div className="mx-auto w-full h-[60vh]">
+        <MapFilters onFilterChanged={handleFilterChanged} />
         <MapContainer
           center={posix}
           zoom={zoom}
@@ -68,7 +87,7 @@ const StarMap = ({
           className="h-full w-full"
           crs={CRS.Simple}
         >
-          {waypoints.map((w) => (
+          {filteredWaypoints.map((w) => (
             <MapStar
               waypoint={w}
               key={`${w.id}${selected?.id}`}
