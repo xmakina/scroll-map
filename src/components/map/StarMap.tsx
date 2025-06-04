@@ -75,8 +75,10 @@ const StarMap = ({
       <div>
         {map && <MapTravel onTravel={(posix) => map.flyTo(posix, 5)} />}
       </div>
-      <div className="mx-auto w-full h-[60vh]">
+      <div>
         <MapFilters onFilterChanged={handleFilterChanged} />
+      </div>
+      <div className="mx-auto w-full h-[60vh]">
         <MapContainer
           center={posix}
           zoom={zoom}

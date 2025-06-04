@@ -29,7 +29,7 @@ export default async function RootLayout({
         <div className="flex w-screen flex-col divide-y overflow-hidden">
           <NextIntlClientProvider messages={messages}>
             <div id="content" className="mb-24 sm:mb-8 grow mt-4 mx-2">
-              <main className="flex flex-row justify-start items-start">
+              <main className="flex flex-row justify-start items-start pb-48">
                 <div className="flex flex-col items-center justify-start grow xl:pb-16">
                   <SessionProvider>
                     <WithAuth>{children}</WithAuth>
