@@ -1,0 +1,14 @@
+enum ActivityType {
+  MINE
+  DELIVER
+  BUILD
+}
+
+model Activity {
+  id       String       @id @default(cuid())
+  type     ActivityType
+  data     Json
+  endTime  DateTime
+  workerId String       @unique
+  worker   Worker       @relation(fields: [workerId], references: [id])
+}

@@ -10,6 +10,7 @@ import Waypoint from "@/models/waypoint/Waypoint";
 const shipService = await ShipService.get();
 
 export const createShip = async (xy: { x: number; y: number }) => {
+  console.log("creating ship", xy);
   const player = await getPlayer();
 
   await shipService.createShip(player.id, xy);
@@ -17,13 +18,17 @@ export const createShip = async (xy: { x: number; y: number }) => {
   await revalidatePath("/map", "page");
 };
 
-export const startMining = async (planetId: string) => {
-  console.log("start mining at", planetId);
+export const startMining = async (planetId: string, shipId: string) => {
+  console.log("start mining at : with", planetId, shipId);
   const planet = planetFromId(planetId);
-  console.log({ planet });
+  if (!planet) {
+    return;
+  }
+
+  await shipService.startWork(shipId, "MINE", {}, 10 * 1000);
 };
 
-function planetFromId(planetId: string): Planet {
+function planetFromId(planetId: string): Planet | undefined {
   try {
     const [x, y] = idToXY(planetId);
     const [starIndex] = planetId.match(/\d+/gm)![2];
@@ -32,6 +37,6 @@ function planetFromId(planetId: string): Planet {
 
     return waypoint.stars[parseInt(starIndex)].planets[parseInt(planetIndex)];
   } catch {
-    throw Error(`Invalid planet id ${planetId}`);
+    return;
   }
 }

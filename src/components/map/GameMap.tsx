@@ -10,16 +10,16 @@ import Waypoint from "@/models/waypoint/Waypoint";
 import StarDetails from "./StarDetails";
 import WaypointDetails from "./WaypointDetails";
 import ShipManagement from "../ship/ShipManagement";
-import { Ship } from "@prisma/client";
 import StarMap from "./StarMap";
+import { ShipWithActivity } from "@/repositories/ShipRepository";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
-  ships?: Ship[];
   onCreateShip: (xy: { x: number; y: number }) => Promise<void>;
-  onStartMining: (planetId: string) => Promise<void>;
+  onStartMining: (planetId: string, shipId: string) => Promise<void>;
+  ships?: ShipWithActivity[];
 };
 
 const defaults = {
@@ -29,9 +29,9 @@ const defaults = {
 const GameMap = ({
   zoom = defaults.zoom,
   posix,
-  ships = [],
   onCreateShip: createShip,
   onStartMining,
+  ships = [],
 }: Props) => {
   const [details, setDetails] = useState<Waypoint>();
   const [map, setMap] = useState<Map>();
@@ -70,7 +70,12 @@ const GameMap = ({
       <div className="flex flex-col items-center">
         {details && <WaypointDetails waypoint={details} />}
         {details?.stars.map((s, i) => (
-          <StarDetails key={i} star={s} onStartMining={onStartMining} />
+          <StarDetails
+            key={i}
+            star={s}
+            onStartMining={onStartMining}
+            ships={ships}
+          />
         ))}
       </div>
     </div>

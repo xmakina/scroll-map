@@ -1,0 +1,5 @@
+model Worker {
+  id       String    @id @default(cuid())
+  Ship     Ship?
+  Activity Activity?
+}

@@ -1,17 +1,17 @@
 import Waypoint from "@/models/waypoint/Waypoint";
-import { Ship } from "@prisma/client";
 import React from "react";
 import ShipList from "./ShipList";
 import FirstShip from "./FirstShip";
+import { ShipWithActivity } from "@/repositories/ShipRepository";
 
 type Props = {
-  ships: Ship[];
   selectedStar?: Waypoint;
   createShip: (waypointId: string) => Promise<void>;
   locate: (x: number, y: number) => void;
+  ships: ShipWithActivity[];
 };
 
-const ShipManagement = ({ ships, selectedStar, createShip, locate }: Props) => {
+const ShipManagement = ({ selectedStar, createShip, locate, ships }: Props) => {
   return (
     <div className="flex flex-col items-center">
       {ships.length > 0 ? (

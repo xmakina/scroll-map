@@ -1,9 +1,11 @@
 model Ship {
   id        String    @id @default(cuid())
-  player    Player    @relation(fields: [playerId], references: [id])
+  Player    Player    @relation(fields: [playerId], references: [id])
   positionX Int
   positionY Int
-  journeys  Journey[]
+  Journeys  Journey[]
   speed     Int
   playerId  String
+  workerId  String    @unique
+  Worker    Worker    @relation(fields: [workerId], references: [id])
 }
