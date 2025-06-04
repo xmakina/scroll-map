@@ -8,7 +8,7 @@ import { Circle, Rectangle } from "react-leaflet";
 import { StarClass } from "@/models/waypoint/Star";
 import RNG from "@/models/RNG";
 import hslToHex from "@/utils/hslToHex";
-import hexToHSL from "@/utils/hexToHsl";
+import hexToHSL from "@/utils/hexToHSL";
 
 const defaultWeight = 0;
 const defaultColor = "";
