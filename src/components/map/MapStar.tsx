@@ -6,6 +6,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { Rectangle as LeafletRectangle } from "leaflet";
 import { Circle, Rectangle } from "react-leaflet";
 import { StarClass } from "@/models/waypoint/Star";
+import RNG from "@/models/RNG";
 
 const defaultWeight = 0;
 const defaultColor = "";
@@ -45,9 +46,12 @@ export default function MapStar({
     if (waypoint.stars.length === 0) {
       return;
     }
+  }, [gridSquare]);
 
-    const rng = waypoint.rng;
+  if (stars.length === 0) {
+    const rng = new RNG(waypoint.seed);
     const starList = waypoint.stars.map((star, index) => {
+      rng.maybe(5); // Do not remove - stops an unexplained bias to low numbers, putting it in constructor does not resolve it
       const left = rng.maybe(50);
       const xOffset = (rng.randomNumber(0, 300) / 1000) * (left ? -1 : 1);
       const bottom = rng.maybe(50);
@@ -68,8 +72,7 @@ export default function MapStar({
     });
 
     setStars(starList);
-  }, [gridSquare]);
-
+  }
   return (
     <Rectangle
       bounds={[
