@@ -7,6 +7,8 @@ import { Rectangle as LeafletRectangle } from "leaflet";
 import { Circle, Rectangle } from "react-leaflet";
 import { StarClass } from "@/models/waypoint/Star";
 import RNG from "@/models/RNG";
+import hslToHex from "@/utils/hslToHex";
+import hexToHSL from "@/utils/hexToHsl";
 
 const defaultWeight = 0;
 const defaultColor = "";
@@ -57,15 +59,23 @@ export default function MapStar({
       const bottom = rng.maybe(50);
       const yOffset = (rng.randomNumber(0, 300) / 1000) * (bottom ? -1 : 1);
 
+      const { h, s } = hexToHSL(classColours[star.starClass]);
+      const hex = hslToHex({
+        h,
+        s,
+        l: Math.max(20, Math.min(star.temperature / 75, 100)),
+      });
+
       return (
         <Circle
           key={waypoint.seed + index}
           center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
           radius={Math.max(star.radius, 0.5) / 16}
-          fillColor={classColours[star.starClass]}
-          color=""
-          weight={0}
-          fillOpacity={rng.randomNumber(5, 10) / 10}
+          fillColor={hex}
+          color={hex}
+          weight={3}
+          opacity={0.4}
+          fillOpacity={1}
         ></Circle>
       );
     });
