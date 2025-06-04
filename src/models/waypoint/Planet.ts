@@ -1,7 +1,6 @@
-import { getRandomWeightedKey } from "@/utils/getRandomWeightedKey";
 import range from "@/utils/range";
-import Rand from "rand-seed";
 import Moon from "./Moon";
+import RNG from "../RNG";
 
 const moonWeightings = {
   0: 20,
@@ -15,14 +14,14 @@ export default class Planet {
   public readonly moons: Moon[];
 
   constructor(
-    rand: Rand,
+    rng: RNG,
     public readonly index: number,
     public readonly starId: string
   ) {
     this.id = `${starId}-${index}`;
-    const numberOfMoons = getRandomWeightedKey(rand, moonWeightings);
+    const numberOfMoons = rng.getRandomWeightedKey(moonWeightings);
     this.moons = range(0, numberOfMoons)
-      .map((index) => new Moon(rand, index, this.id))
+      .map((index) => new Moon(rng, index, this.id))
       .toArray();
   }
 }

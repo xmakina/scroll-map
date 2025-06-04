@@ -1,6 +1,4 @@
-import { getRandomWeightedKey } from "@/utils/getRandomWeightedKey";
-import randomNumber from "@/utils/randomNumber";
-import Rand from "rand-seed";
+import RNG from "../RNG";
 import Planet from "./Planet";
 import PlanetsGenerator from "./PlanetsGenerator";
 
@@ -23,40 +21,43 @@ export default class Star {
   public readonly planets: Planet[];
   public readonly id: string;
 
-  constructor(rand: Rand, index: number, waypointIdentifier: string) {
-    this.starClass = getRandomWeightedKey(rand, StarClassWeightings);
+  constructor(rng: RNG, index: number, waypointIdentifier: string) {
+    const randomNumber = (start: number, end: number) =>
+      rng.randomNumber(start, end);
+
+    this.starClass = rng.getRandomWeightedKey(StarClassWeightings);
     this.id = `${waypointIdentifier}-${index}${this.starClass}`;
     switch (this.starClass) {
       case "O":
-        this.temperature = randomNumber(rand, 25000, 50000);
-        this.radius = randomNumber(rand, 6.6, 16);
+        this.temperature = randomNumber(25000, 50000);
+        this.radius = randomNumber(6.6, 16);
         break;
       case "B":
-        this.temperature = randomNumber(rand, 9700, 30000);
-        this.radius = randomNumber(rand, 1.8, 6.6);
+        this.temperature = randomNumber(9700, 30000);
+        this.radius = randomNumber(1.8, 6.6);
         break;
       case "A":
-        this.temperature = randomNumber(rand, 7200, 9700);
-        this.radius = randomNumber(rand, 1.4, 1.8);
+        this.temperature = randomNumber(7200, 9700);
+        this.radius = randomNumber(1.4, 1.8);
         break;
       case "F":
-        this.temperature = randomNumber(rand, 5700, 7200);
-        this.radius = randomNumber(rand, 1.15, 1.4);
+        this.temperature = randomNumber(5700, 7200);
+        this.radius = randomNumber(1.15, 1.4);
         break;
       case "G":
-        this.temperature = randomNumber(rand, 4900, 5700);
-        this.radius = randomNumber(rand, 0.96, 1.15);
+        this.temperature = randomNumber(4900, 5700);
+        this.radius = randomNumber(0.96, 1.15);
         break;
       case "K":
-        this.temperature = randomNumber(rand, 3400, 4900);
-        this.radius = randomNumber(rand, 0.7, 1.96);
+        this.temperature = randomNumber(3400, 4900);
+        this.radius = randomNumber(0.7, 1.96);
         break;
       case "M":
-        this.temperature = randomNumber(rand, 2100, 3400);
-        this.radius = randomNumber(rand, 0.3, 0.7);
+        this.temperature = randomNumber(2100, 3400);
+        this.radius = randomNumber(0.3, 0.7);
         break;
     }
 
-    this.planets = PlanetsGenerator(rand, this.id);
+    this.planets = PlanetsGenerator(rng, this.id);
   }
 }

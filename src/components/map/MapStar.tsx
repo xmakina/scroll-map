@@ -2,11 +2,9 @@
 
 import Waypoint from "@/models/waypoint/Waypoint";
 
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Rectangle as LeafletRectangle } from "leaflet";
 import { Circle, Rectangle } from "react-leaflet";
-import Rand, { PRNG } from "rand-seed";
-import randomNumber from "@/utils/randomNumber";
 import { StarClass } from "@/models/waypoint/Star";
 
 const defaultWeight = 0;
@@ -33,7 +31,8 @@ export default function MapStar({
   onClick,
   selected = false,
 }: Props) {
-  const rand = new Rand(waypoint.seed, PRNG.xoshiro128ss);
+  const [stars, setStars] = useState<ReactElement[]>([]);
+
   const [gridSquare, setGridSquare] = useState<LeafletRectangle | null>(null);
 
   useEffect(() => {
@@ -42,29 +41,34 @@ export default function MapStar({
     }
 
     gridSquare.on("click", () => onClick(waypoint));
+
+    if (waypoint.stars.length === 0) {
+      return;
+    }
+
+    const rng = waypoint.rng;
+    const starList = waypoint.stars.map((star, index) => {
+      const left = rng.maybe(50);
+      const xOffset = (rng.randomNumber(0, 300) / 1000) * (left ? -1 : 1);
+      const bottom = rng.maybe(50);
+      const yOffset = (rng.randomNumber(0, 300) / 1000) * (bottom ? -1 : 1);
+
+      return (
+        <Circle
+          key={waypoint.seed + index}
+          center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
+          radius={Math.max(star.radius, 0.5) / 16}
+          fillColor={classColours[star.starClass]}
+          color=""
+          weight={0}
+          opacity={1}
+          fillOpacity={1}
+        ></Circle>
+      );
+    });
+
+    setStars(starList);
   }, [gridSquare]);
-
-  const stars = waypoint.stars.map((star, index) => {
-    const xOffset = randomNumber(rand, -300, 300) / 1000;
-    const yOffset = randomNumber(rand, -300, 300) / 1000;
-
-    return (
-      <Circle
-        key={waypoint.seed + index}
-        center={[waypoint.yPos + yOffset, waypoint.xPos + xOffset]}
-        radius={Math.max(star.radius, 0.5) / 16}
-        fillColor={classColours[star.starClass]}
-        color=""
-        weight={0}
-        opacity={1}
-        fillOpacity={1}
-      ></Circle>
-    );
-  });
-
-  if (selected) {
-    console.log("selected", waypoint.id);
-  }
 
   return (
     <Rectangle
