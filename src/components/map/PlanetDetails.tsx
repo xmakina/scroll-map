@@ -1,20 +1,26 @@
 import Planet from "@/models/waypoint/Planet";
 import React from "react";
 import LabeledText from "../ui/LabeledText";
-import MoonDetails from "./MoonDetails";
+import Button from "../ui/Button";
 
 type Props = {
   planet: Planet;
+  onStartMining: (planetId: string) => Promise<void> | void;
 };
 
-const PlanetDetails = ({ planet }: Props) => {
+const PlanetDetails = ({ planet, onStartMining }: Props) => {
+  const handleMining = onStartMining.bind(null, planet.id);
+
   return (
-    <div className="flex flex-row gap-2">
-      <LabeledText label="Planet">{planet.id}</LabeledText>
-      <div className="flex flex-col">
-        {planet.moons.map((m) => (
-          <MoonDetails key={m.id} moon={m} />
-        ))}
+    <div className="flex flex-row justify-between gap-2">
+      <div className="flex flex-row justify-start gap-2">
+        <LabeledText label="Planet">{planet.id}</LabeledText>
+        <LabeledText label="Type">{planet.type}</LabeledText>
+      </div>
+      <div className="flex justify-end">
+        {planet.type !== "Habitable" && (
+          <Button onClick={handleMining}>Mine</Button>
+        )}
       </div>
     </div>
   );

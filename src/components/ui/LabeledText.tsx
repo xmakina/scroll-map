@@ -12,7 +12,7 @@ const LabeledText = ({ label, children, className, column = false }: Props) => {
   return (
     <div
       className={clsx(
-        "flex  items-center justify-end gap-1",
+        "flex  items-center gap-1",
         {
           "flex-row": !column,
           "flex-col": column,
@@ -20,7 +20,7 @@ const LabeledText = ({ label, children, className, column = false }: Props) => {
         className
       )}
     >
-      <div>{label}</div>
+      <div>{label}:</div>
       <div>{children}</div>
     </div>
   );

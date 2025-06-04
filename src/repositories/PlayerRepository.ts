@@ -9,7 +9,7 @@ export default class PlayerRepository {
   }
 
   async createAgent(userId: string) {
-    console.log("creating agent", userId);
+    console.log("creating player for", userId);
     return await prisma.player.upsert({
       where: {
         id: userId,

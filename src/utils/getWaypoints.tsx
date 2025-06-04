@@ -22,15 +22,12 @@ export const getWaypoints = async ({
   const yList = Array.from(range(rSouth, rNorth));
   const xList = Array.from(range(rWest, rEast));
 
-  const start = Date.now();
   return new Promise((resolve) => {
     const result = yList
       .flatMap((y) => xList.map((x) => new Waypoint(x, y)))
       .filter((p) => p.exists)
       .map((w) => w);
 
-    const end = Date.now();
-    console.log("getting stars took", end - start);
     resolve(result);
   });
 };

@@ -19,6 +19,7 @@ type Props = {
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
   ships?: Ship[];
   onCreateShip: (xy: { x: number; y: number }) => Promise<void>;
+  onStartMining: (planetId: string) => Promise<void>;
 };
 
 const defaults = {
@@ -30,6 +31,7 @@ const GameMap = ({
   posix,
   ships = [],
   onCreateShip: createShip,
+  onStartMining,
 }: Props) => {
   const [details, setDetails] = useState<Waypoint>();
   const [map, setMap] = useState<Map>();
@@ -68,7 +70,7 @@ const GameMap = ({
       <div className="flex flex-col items-center">
         {details && <WaypointDetails waypoint={details} />}
         {details?.stars.map((s, i) => (
-          <StarDetails key={i} star={s} />
+          <StarDetails key={i} star={s} onStartMining={onStartMining} />
         ))}
       </div>
     </div>
