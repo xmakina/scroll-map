@@ -25,12 +25,12 @@ export default async function RootLayout({
   const login = <Login user={session?.user} />;
   return (
     <html lang={locale} className="bg-primary text-secondary">
-      <body className="flex flex-col min-h-screen m-0 box-border sm:flex-row xl:flex-col sm:justify-between">
+      <body className="flex flex-col min-h-screen m-0 box-border">
         <div className="flex w-screen flex-col divide-y overflow-hidden">
           <NextIntlClientProvider messages={messages}>
-            <div id="content" className="mb-24 sm:mb-8 grow mt-4 mx-2">
+            <div id="content" className="mb-24 grow mt-4 mx-2">
               <main className="flex flex-row justify-start items-start pb-48">
-                <div className="flex flex-col items-center justify-start grow xl:pb-16">
+                <div className="flex flex-col items-center justify-start grow">
                   <SessionProvider>
                     <WithAuth>{children}</WithAuth>
                   </SessionProvider>

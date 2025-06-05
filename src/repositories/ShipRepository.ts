@@ -7,6 +7,14 @@ export type ShipWithActivity = Prisma.ShipGetPayload<{
 }>;
 
 export default class ShipRepository {
+  async setCargo(id: string, type: string) {
+    return await prisma.ship.update({ where: { id }, data: { cargo: type } });
+  }
+
+  async emptyCargo(id: string) {
+    return await prisma.ship.update({ where: { id }, data: { cargo: null } });
+  }
+
   async startWork(
     shipId: string,
     type: ActivityType,
@@ -50,6 +58,7 @@ export default class ShipRepository {
         positionY: xy.y,
         speed: 10,
         workerId: id,
+        cargoCapacity: 100,
       },
     });
   }

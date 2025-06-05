@@ -1,13 +1,15 @@
-import { Ship } from "@prisma/client";
 import React from "react";
 import Button from "../ui/Button";
+import { ShipWithActivity } from "@/repositories/ShipRepository";
+import ShipActivityDetails from "./ShipActivityDetails";
 
 type Props = {
-  ships: Ship[];
+  ships: ShipWithActivity[];
   locate: (x: number, y: number) => void;
+  onClaim: (shipId: string, activityId: string) => Promise<void>;
 };
 
-const ShipList = ({ ships, locate }: Props) => {
+const ShipList = ({ ships, locate, onClaim }: Props) => {
   return (
     <div className="flex flex-col">
       {ships.map((s) => (
@@ -15,6 +17,12 @@ const ShipList = ({ ships, locate }: Props) => {
           <Button onClick={() => locate(s.positionX, s.positionY)}>
             ship {s.id.substring(0, 5)} @ {s.positionX},{s.positionY} 🔎
           </Button>
+          {s.Worker.Activity && (
+            <ShipActivityDetails
+              activity={s.Worker.Activity}
+              onClaim={onClaim.bind(null, s.id, s.Worker.Activity.id)}
+            />
+          )}
         </div>
       ))}
     </div>

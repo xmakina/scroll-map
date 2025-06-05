@@ -3,9 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getPlayer } from "../queries";
 import ShipService from "@/services/ShipService";
-import Planet from "@/models/waypoint/Planet";
-import idToXY from "@/models/waypoint/idToXY";
-import Waypoint from "@/models/waypoint/Waypoint";
+import { planetFromId } from "../../utils/planetFromId";
 
 const shipService = await ShipService.get();
 
@@ -19,24 +17,16 @@ export const createShip = async (xy: { x: number; y: number }) => {
 };
 
 export const startMining = async (planetId: string, shipId: string) => {
-  console.log("start mining at : with", planetId, shipId);
   const planet = planetFromId(planetId);
   if (!planet) {
     return;
   }
 
-  await shipService.startWork(shipId, "MINE", {}, 10 * 1000);
+  await shipService.startMining({ shipId, type: "MINE", planetId });
+  await revalidatePath("/map", "page");
 };
 
-function planetFromId(planetId: string): Planet | undefined {
-  try {
-    const [x, y] = idToXY(planetId);
-    const [starIndex] = planetId.match(/\d+/gm)![2];
-    const waypoint = new Waypoint(x, y);
-    const [planetIndex] = planetId.match(/[\d]+$/)!;
-
-    return waypoint.stars[parseInt(starIndex)].planets[parseInt(planetIndex)];
-  } catch {
-    return;
-  }
-}
+export const claimActivity = async (shipId: string, activityId: string) => {
+  await shipService.claimActivity(shipId, activityId);
+  await revalidatePath("/map", "page");
+};

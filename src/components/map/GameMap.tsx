@@ -20,6 +20,7 @@ type Props = {
   onCreateShip: (xy: { x: number; y: number }) => Promise<void>;
   onStartMining: (planetId: string, shipId: string) => Promise<void>;
   ships?: ShipWithActivity[];
+  onClaim: (shipId: string, activityId: string) => Promise<void>;
 };
 
 const defaults = {
@@ -32,6 +33,7 @@ const GameMap = ({
   onCreateShip: createShip,
   onStartMining,
   ships = [],
+  onClaim,
 }: Props) => {
   const [details, setDetails] = useState<Waypoint>();
   const [map, setMap] = useState<Map>();
@@ -59,6 +61,7 @@ const GameMap = ({
         selectedStar={details}
         createShip={handleCreateShip}
         locate={handleLocate}
+        onClaim={onClaim}
       />
       <StarMap
         posix={posix}

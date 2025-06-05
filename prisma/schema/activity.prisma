@@ -10,5 +10,5 @@ model Activity {
   data     Json
   endTime  DateTime
   workerId String       @unique
-  worker   Worker       @relation(fields: [workerId], references: [id])
+  Worker   Worker       @relation(fields: [workerId], references: [id])
 }

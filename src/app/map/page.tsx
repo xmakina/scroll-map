@@ -1,12 +1,13 @@
 import React from "react";
 import GameMap from "@/components/map/GameMap";
-import { createShip, startMining } from "./actions";
+import { claimActivity, createShip, startMining } from "./actions";
 import { getShips } from "./queries";
 
 async function Page() {
   const handleCreateShip = createShip.bind(null);
   const handleMining = startMining.bind(null);
   const ships = await getShips();
+  const handleClaim = claimActivity.bind(null);
 
   return (
     <div className="flex flex-col m-2 items-center justify-center w-full gap-3">
@@ -15,6 +16,7 @@ async function Page() {
         onCreateShip={handleCreateShip}
         onStartMining={handleMining}
         ships={ships}
+        onClaim={handleClaim}
       />
     </div>
   );
