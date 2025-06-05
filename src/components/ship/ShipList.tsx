@@ -15,7 +15,8 @@ const ShipList = ({ ships, locate, onClaim }: Props) => {
       {ships.map((s) => (
         <div key={s.id} className="flex flex-row gap-2 items-center">
           <Button onClick={() => locate(s.positionX, s.positionY)}>
-            ship {s.id.substring(0, 5)} @ {s.positionX},{s.positionY} 🔎
+            ship {s.id.substring(0, 5)} @ {s.positionX},{s.positionY} 🔎{" "}
+            {s.cargo ? `carrying ${s.cargo}` : ""}
           </Button>
           {s.Worker.Activity && (
             <ShipActivityDetails
