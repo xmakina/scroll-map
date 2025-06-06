@@ -4,23 +4,20 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LatLngExpression, LatLngTuple, Map } from "leaflet";
 import Waypoint from "@/models/waypoint/Waypoint";
-import StarDetails from "./StarDetails";
-import WaypointDetails from "./WaypointDetails";
-import ShipManagement from "../ship/ShipManagement";
 import StarMap from "./StarMap";
-import { ShipWithActivity } from "@/repositories/ShipRepository";
+import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsAndWorker";
+import TutorialStation from "@/app/map/TutorialStation";
+import StationList from "../station/StationList";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
-  onCreateShip: (xy: { x: number; y: number }) => Promise<void>;
-  onStartMining: (planetId: string, shipId: string) => Promise<void>;
-  ships?: ShipWithActivity[];
-  onClaim: (shipId: string, activityId: string) => Promise<void>;
+  stations: StationWithComponentsAndWorker[];
+  onDeployStation: (waypointId: string) => Promise<void> | void;
 };
 
 const defaults = {
@@ -28,58 +25,65 @@ const defaults = {
 };
 
 const GameMap = ({
-  zoom = defaults.zoom,
-  posix,
-  onCreateShip: createShip,
-  onStartMining,
-  ships = [],
-  onClaim,
+  zoom: defaultZoom = defaults.zoom,
+  posix: defaultPosix,
+  stations,
+  onDeployStation,
 }: Props) => {
+  const [posix, setPosix] = useState(defaultPosix);
+  const [zoom, setZoom] = useState(defaultZoom);
   const [details, setDetails] = useState<Waypoint>();
   const [map, setMap] = useState<Map>();
+
+  useEffect(() => {
+    setPosix(posix);
+  }, [posix]);
+
+  useEffect(() => {
+    map?.flyTo(posix, zoom);
+  }, [posix]);
 
   function handleMapSelection(waypoint: Waypoint) {
     setDetails(waypoint);
   }
 
-  async function handleCreateShip() {
+  function zoomToDetails() {
     if (!details) {
       return;
     }
 
-    createShip({ x: details.xPos, y: details.yPos });
+    setZoom(8);
+    setPosix([details?.yPos, details?.xPos]);
   }
 
-  function handleLocate(x: number, y: number) {
-    map?.flyTo([y, x], 8);
+  async function handleDeployStation() {
+    if (!details) {
+      return;
+    }
+
+    return await onDeployStation(details.id);
   }
 
   return (
-    <div className="flex flex-col w-full gap-2">
-      <ShipManagement
-        ships={ships}
-        selectedStar={details}
-        createShip={handleCreateShip}
-        locate={handleLocate}
-        onClaim={onClaim}
-      />
-      <StarMap
-        posix={posix}
-        zoom={zoom}
-        onSelected={handleMapSelection}
-        selected={details}
-        onReady={setMap}
-      />
-      <div className="flex flex-col items-center">
-        {details && <WaypointDetails waypoint={details} />}
-        {details?.stars.map((s, i) => (
-          <StarDetails
-            key={i}
-            star={s}
-            onStartMining={onStartMining}
-            ships={ships}
+    <div className="flex flex-col-reverse lg:flex-row-reverse lg:mt-4 gap-4 justify-between w-full px-8">
+      <div className="flex flex-col w-full">
+        <StarMap
+          posix={posix}
+          zoom={zoom}
+          onSelected={handleMapSelection}
+          selected={details}
+          onReady={setMap}
+        />
+      </div>
+      <div className="flex flex-col grow w-full justify-center items-center">
+        <StationList stations={stations} />
+        {stations.length === 0 && (
+          <TutorialStation
+            waypoint={details}
+            onZoom={zoomToDetails}
+            onSelect={handleDeployStation}
           />
-        ))}
+        )}
       </div>
     </div>
   );

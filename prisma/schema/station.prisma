@@ -1,0 +1,25 @@
+enum ComponentType {
+  SMELTER
+  VAULT
+  CONSTRUCTION_SITE
+}
+
+model Component {
+  id        String        @id @default(cuid())
+  type      ComponentType
+  data      Json?
+  stationId String?
+  Station   Station?      @relation(fields: [stationId], references: [id])
+}
+
+model Station {
+  id         String      @id @default(cuid())
+  playerId   String
+  Player     Player      @relation(fields: [playerId], references: [id])
+  workerId   String      @unique
+  Worker     Worker      @relation(fields: [workerId], references: [id])
+  hold       Json
+  Components Component[]
+  positionX  Int
+  positionY  Int
+}

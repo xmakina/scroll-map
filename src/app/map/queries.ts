@@ -1,11 +1,11 @@
 "use server";
 
-import ShipService from "@/services/ShipService";
 import { getPlayer } from "../queries";
+import StationService from "@/services/StationService";
 
-const shipService = await ShipService.get();
+const stationService = await StationService.get();
 
-export async function getShips() {
+export async function getStations() {
   const player = await getPlayer();
-  return shipService.getShips(player.id);
+  return await stationService.getStations(player.id);
 }

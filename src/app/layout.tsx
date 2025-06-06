@@ -26,9 +26,9 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="bg-primary text-secondary">
       <body className="flex flex-col min-h-screen m-0 box-border">
-        <div className="flex w-screen flex-col divide-y overflow-hidden">
+        <div className="flex flex-col">
           <NextIntlClientProvider messages={messages}>
-            <div id="content" className="mb-24 grow mt-4 mx-2">
+            <div id="content" className="mb-24 grow">
               <main className="flex flex-row justify-start items-start pb-48">
                 <div className="flex flex-col items-center justify-start grow">
                   <SessionProvider>

@@ -45,8 +45,8 @@ export default class ShipService {
     return await this.activityService.begin(ship, type);
   }
 
-  async createShip(playerId: string, xy: { x: number; y: number }) {
-    return await this.repository.createShip(playerId, xy);
+  async createShip(playerId: string, locationId: string) {
+    return await this.repository.createShip(playerId, locationId);
   }
 
   async getShips(playerId: string) {

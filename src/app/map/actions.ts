@@ -2,31 +2,43 @@
 
 import { revalidatePath } from "next/cache";
 import { getPlayer } from "../queries";
+import StationService from "@/services/StationService";
 import ShipService from "@/services/ShipService";
-import { planetFromId } from "../../utils/planetFromId";
+import WaypointFromId from "@/utils/WaypointFromId";
+import PlanetFromId from "@/utils/planetFromId";
 
+const stationService = await StationService.get();
 const shipService = await ShipService.get();
 
-export const createShip = async (xy: { x: number; y: number }) => {
-  console.log("creating ship", xy);
-  const player = await getPlayer();
+export const createStation = async (waypointId: string) => {
+  console.log("creating station", waypointId);
+  const waypoint = WaypointFromId(waypointId);
 
-  await shipService.createShip(player.id, xy);
+  if (!waypoint) {
+    return;
+  }
 
-  await revalidatePath("/map", "page");
+  const { id: playerId } = await getPlayer();
+
+  await stationService.createStation(
+    { x: waypoint.xPos, y: waypoint.yPos },
+    playerId
+  );
+
+  revalidatePath("/map", "page");
 };
 
 export const startMining = async (planetId: string, shipId: string) => {
-  const planet = planetFromId(planetId);
+  const planet = PlanetFromId(planetId);
   if (!planet) {
     return;
   }
 
   await shipService.startMining({ shipId, type: "MINE", planetId });
-  await revalidatePath("/map", "page");
+  revalidatePath("/map", "page");
 };
 
 export const claimActivity = async (shipId: string, activityId: string) => {
   await shipService.claimActivity(shipId, activityId);
-  await revalidatePath("/map", "page");
+  revalidatePath("/map", "page");
 };

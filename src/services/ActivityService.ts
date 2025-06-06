@@ -1,6 +1,7 @@
 import ActivityRepository from "@/repositories/ActivityRepository";
 import { ShipWithActivity } from "@/repositories/ShipRepository";
-import { planetFromId } from "@/utils/planetFromId";
+import PlanetFromId from "@/utils/PlanetFromId";
+
 import { ActivityType, Ship } from "@prisma/client";
 
 export type MiningData = {
@@ -16,7 +17,7 @@ export default class ActivityService {
   }
 
   private async beginMining(ship: Ship, locationId: string) {
-    const target = planetFromId(locationId);
+    const target = PlanetFromId(locationId);
     if (!target) {
       throw Error(`no planet from id ${locationId}`);
     }

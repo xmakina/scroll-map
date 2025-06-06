@@ -48,14 +48,13 @@ export default class ShipRepository {
     });
   }
 
-  async createShip(playerId: string, xy: { x: number; y: number }) {
+  async createShip(playerId: string, locationId: string) {
     const { id } = await prisma.worker.create({ data: {} });
     console.log("creating ship repo");
     return prisma.ship.create({
       data: {
         playerId,
-        positionX: xy.x,
-        positionY: xy.y,
+        locationId,
         speed: 10,
         workerId: id,
         cargoCapacity: 100,

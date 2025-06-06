@@ -6,7 +6,6 @@ import MapStar from "./MapStar";
 import Waypoint from "@/models/waypoint/Waypoint";
 import { getWaypoints } from "@/utils/getWaypoints";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
-import MapTravel from "./MapTravel";
 import MapFilters, { MapFilter } from "./MapFilters";
 
 type Props = {
@@ -71,13 +70,7 @@ const StarMap = ({
   }, [filters, allWaypoints]);
 
   return (
-    <div>
-      <div>
-        {map && <MapTravel onTravel={(posix) => map.flyTo(posix, 5)} />}
-      </div>
-      <div>
-        <MapFilters onFilterChanged={handleFilterChanged} />
-      </div>
+    <div className="flex flex-col w-full justify-center">
       <div className="mx-auto w-full h-[60vh]">
         <MapContainer
           center={posix}
@@ -98,6 +91,9 @@ const StarMap = ({
             />
           ))}
         </MapContainer>
+      </div>
+      <div>
+        <MapFilters onFilterChanged={handleFilterChanged} />
       </div>
     </div>
   );

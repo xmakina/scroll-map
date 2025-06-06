@@ -6,11 +6,11 @@ import { ShipWithActivity } from "@/repositories/ShipRepository";
 
 type Props = {
   star: Star;
-  onStartMining: (planetId: string, shipId: string) => Promise<void> | void;
-  ships: ShipWithActivity[];
+  onStartMining?: (planetId: string, shipId: string) => Promise<void> | void;
+  ships?: ShipWithActivity[];
 };
 
-const StarDetails = ({ star, onStartMining, ships }: Props) => {
+const StarDetails = ({ star, onStartMining = () => {}, ships = [] }: Props) => {
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="flex flex-row items-center justify-between w-full gap-4">

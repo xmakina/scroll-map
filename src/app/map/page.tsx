@@ -1,22 +1,18 @@
 import React from "react";
 import GameMap from "@/components/map/GameMap";
-import { claimActivity, createShip, startMining } from "./actions";
-import { getShips } from "./queries";
+import { getStations } from "./queries";
+import { createStation } from "./actions";
 
 async function Page() {
-  const handleCreateShip = createShip.bind(null);
-  const handleMining = startMining.bind(null);
-  const ships = await getShips();
-  const handleClaim = claimActivity.bind(null);
+  const stations = await getStations();
+  const handleCreateStation = createStation.bind(null);
 
   return (
-    <div className="flex flex-col m-2 items-center justify-center w-full gap-3">
+    <div className="flex flex-col items-center justify-center w-full gap-3">
       <GameMap
         posix={[0, 0]}
-        onCreateShip={handleCreateShip}
-        onStartMining={handleMining}
-        ships={ships}
-        onClaim={handleClaim}
+        stations={stations}
+        onDeployStation={handleCreateStation}
       />
     </div>
   );
