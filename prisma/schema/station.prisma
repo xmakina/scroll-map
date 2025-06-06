@@ -22,4 +22,5 @@ model Station {
   Components Component[]
   positionX  Int
   positionY  Int
+  data       Json
 }

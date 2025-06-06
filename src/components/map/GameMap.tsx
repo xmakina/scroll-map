@@ -16,8 +16,9 @@ type Props = {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
-  stations: StationWithComponentsAndWorker[];
+  stations: (StationWithComponentsAndWorker & { ships: number })[];
   onDeployStation: (waypointId: string) => Promise<void> | void;
+  onDeployTug: (stationId: string) => Promise<void> | void;
 };
 
 const defaults = {
@@ -29,6 +30,7 @@ const GameMap = ({
   posix: defaultPosix,
   stations,
   onDeployStation,
+  onDeployTug,
 }: Props) => {
   const [posix, setPosix] = useState(defaultPosix);
   const [zoom, setZoom] = useState(defaultZoom);
@@ -76,7 +78,7 @@ const GameMap = ({
         />
       </div>
       <div className="flex flex-col grow w-full justify-center items-center">
-        <StationList stations={stations} />
+        <StationList stations={stations} onDeployTug={onDeployTug} />
         {stations.length === 0 && (
           <TutorialStation
             waypoint={details}

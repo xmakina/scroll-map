@@ -1,3 +1,4 @@
+import { CreateShipDetails } from "@/models/CreateShipDetails";
 import { prisma } from "@/prisma";
 import { ActivityType, Prisma } from "@prisma/client";
 import { InputJsonValue } from "@prisma/client/runtime/library";
@@ -7,6 +8,10 @@ export type ShipWithActivity = Prisma.ShipGetPayload<{
 }>;
 
 export default class ShipRepository {
+  async getAt(locationId: string) {
+    return prisma.ship.findMany({ where: { locationId } });
+  }
+
   async setCargo(id: string, type: string) {
     return await prisma.ship.update({ where: { id }, data: { cargo: type } });
   }
@@ -48,7 +53,11 @@ export default class ShipRepository {
     });
   }
 
-  async createShip(playerId: string, locationId: string) {
+  async createShip(
+    playerId: string,
+    locationId: string,
+    details: CreateShipDetails
+  ) {
     const { id } = await prisma.worker.create({ data: {} });
     console.log("creating ship repo");
     return prisma.ship.create({
@@ -58,6 +67,7 @@ export default class ShipRepository {
         speed: 10,
         workerId: id,
         cargoCapacity: 100,
+        ...details,
       },
     });
   }

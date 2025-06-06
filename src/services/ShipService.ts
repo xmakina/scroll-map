@@ -1,11 +1,17 @@
 import ShipRepository from "@/repositories/ShipRepository";
 import { ActivityType } from "@prisma/client";
 import ActivityService, { MiningData } from "./ActivityService";
+import { CreateShipDetails } from "@/models/CreateShipDetails";
 
 export default class ShipService {
+  async getAt(locationId: string) {
+    return await this.repository.getAt(locationId);
+  }
+
   async setCargo(id: string, type: string) {
     return await this.repository.setCargo(id, type);
   }
+
   async startMining(data: {
     shipId: string;
     type: ActivityType;
@@ -45,8 +51,12 @@ export default class ShipService {
     return await this.activityService.begin(ship, type);
   }
 
-  async createShip(playerId: string, locationId: string) {
-    return await this.repository.createShip(playerId, locationId);
+  async createShip(
+    playerId: string,
+    locationId: string,
+    shipDetails: CreateShipDetails
+  ) {
+    return await this.repository.createShip(playerId, locationId, shipDetails);
   }
 
   async getShips(playerId: string) {
