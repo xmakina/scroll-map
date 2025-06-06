@@ -5,7 +5,7 @@ import { getPlayer } from "../queries";
 import StationService from "@/services/StationService";
 import ShipService from "@/services/ShipService";
 import WaypointFromId from "@/utils/WaypointFromId";
-import PlanetFromId from "@/utils/planetFromId";
+import PlanetFromId from "@/utils/PlanetFromId";
 
 const stationService = await StationService.get();
 const shipService = await ShipService.get();
