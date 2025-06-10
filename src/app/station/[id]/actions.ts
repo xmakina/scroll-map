@@ -19,3 +19,7 @@ export const deployTug = async (stationId: string) => {
   await stationService.updateStation(stationId, { tugDeployed: true });
   revalidatePath("/station/[id]", "page");
 };
+
+export const issueOrder = async (shipId: string, orderName: string) => {
+  console.log(`ordering ${shipId} to ${orderName}`);
+};

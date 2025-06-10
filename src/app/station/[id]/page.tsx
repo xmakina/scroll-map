@@ -2,7 +2,7 @@ import React from "react";
 import { getOrders, getShips, getStation } from "./queries";
 import { StationData } from "@/models/StationData";
 import TugManager from "./DeployTug";
-import { deployTug } from "./actions";
+import { deployTug, issueOrder } from "./actions";
 import ShipRow from "@/components/ship/ShipRow";
 import { NavigationLink } from "@/components/ui/Navigation";
 import ShipOrders from "@/components/ship/ShipOrders";
@@ -15,6 +15,7 @@ const Page = async ({ params }: Props) => {
   const data: StationData = (station.data as StationData) || {};
 
   const handleDeployTug = deployTug.bind(null, id);
+  const handleOrder = issueOrder.bind(null, id);
 
   return (
     <div className="flex flex-col gap-2 items-center">
@@ -28,7 +29,9 @@ const Page = async ({ params }: Props) => {
         {!data.tugDeployed && <TugManager onDeployTug={handleDeployTug} />}
         {ships.map(async (ship) => {
           const orders = await getOrders(ship.id);
-          const orderList = <ShipOrders orders={orders} />;
+          const orderList = (
+            <ShipOrders orders={orders} onIssueOrder={handleOrder} />
+          );
 
           return <ShipRow orders={orderList} ship={ship} />;
         })}

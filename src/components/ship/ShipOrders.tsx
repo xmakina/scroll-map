@@ -1,14 +1,22 @@
+"use client";
+
 import React from "react";
+import OrderButton from "./OrderButton";
 
 type Props = {
   orders: string[];
+  onIssueOrder: (orderName: string) => Promise<void> | void;
 };
 
-const ShipOrders = ({ orders }: Props) => {
+const ShipOrders = ({ orders, onIssueOrder }: Props) => {
   return (
     <div>
       {orders.map((order) => (
-        <div key={order}>{order}</div>
+        <OrderButton
+          key={order}
+          order={order}
+          onIssueOrder={onIssueOrder}
+        ></OrderButton>
       ))}
     </div>
   );
