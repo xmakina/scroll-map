@@ -9,7 +9,10 @@ export type ShipWithActivity = Prisma.ShipGetPayload<{
 
 export default class ShipRepository {
   async getAt(locationId: string) {
-    return prisma.ship.findMany({ where: { locationId } });
+    return prisma.ship.findMany({
+      where: { locationId },
+      include: { Worker: { include: { Activity: true } } },
+    });
   }
 
   async setCargo(id: string, type: string) {

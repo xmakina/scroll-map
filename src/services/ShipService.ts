@@ -2,8 +2,43 @@ import ShipRepository from "@/repositories/ShipRepository";
 import { ActivityType } from "@prisma/client";
 import ActivityService, { MiningData } from "./ActivityService";
 import { CreateShipDetails } from "@/models/CreateShipDetails";
+import { ShipData } from "@/models/ShipData";
+
+const CanMine = (data: ShipData, availableOrders: string[]) => {
+  const { mining, cargoHold } = data;
+  if (mining && cargoHold) {
+    return CanSalvage(data, [...availableOrders, "mine"]);
+  }
+
+  return CanSalvage(data, availableOrders);
+};
+
+const CanSalvage = (data: ShipData, availableOrders: string[]) => {
+  const { tractorBeam } = data;
+  if (tractorBeam) {
+    return [...availableOrders, "salvage"];
+  }
+
+  return availableOrders;
+};
+
+const ConstructOrders = (data?: ShipData) => {
+  const orders = ["scuttle"];
+  if (!data) {
+    return orders;
+  }
+
+  return CanMine(data, orders);
+};
 
 export default class ShipService {
+  async getOrders(id: string) {
+    const ship = await this.repository.getShip(id);
+    const orders = ConstructOrders(ship.data as ShipData);
+
+    return orders;
+  }
+
   async getAt(locationId: string) {
     return await this.repository.getAt(locationId);
   }

@@ -1,12 +1,10 @@
 model Ship {
-  id            String    @id @default(cuid())
-  playerId      String
-  Player        Player    @relation(fields: [playerId], references: [id])
-  locationId    String
-  Journeys      Journey[]
-  speed         Int       @default(1)
-  workerId      String    @unique
-  Worker        Worker    @relation(fields: [workerId], references: [id])
-  cargoCapacity Int       @default(0)
-  cargo         String?
+  id         String    @id @default(cuid())
+  playerId   String
+  Player     Player    @relation(fields: [playerId], references: [id])
+  locationId String
+  workerId   String    @unique
+  Worker     Worker    @relation(fields: [workerId], references: [id])
+  Journey    Journey[]
+  data       Json
 }

@@ -28,17 +28,6 @@ export const createStation = async (waypointId: string) => {
   revalidatePath("/map", "page");
 };
 
-export const deployTug = async (stationId: string) => {
-  console.log("deploying tug", stationId);
-  const { id: playerId } = await getPlayer();
-  await shipService.createShip(playerId, stationId, {
-    speed: 0,
-    cargoCapacity: 100,
-  });
-
-  await stationService.updateStation(stationId, { tugDeployed: true });
-  revalidatePath("/map", "page");
-};
 
 export const startMining = async (planetId: string, shipId: string) => {
   const planet = PlanetFromId(planetId);

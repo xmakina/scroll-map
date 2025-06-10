@@ -2,6 +2,9 @@ import { StationData } from "@/models/StationData";
 import StationRepository from "@/repositories/StationRepository";
 
 export default class StationService {
+  async getStation(id: string) {
+    return await this.repository.getStation(id);
+  }
   async updateStation(stationId: string, data: Partial<StationData>) {
     return await this.repository.updateStation(stationId, data);
   }

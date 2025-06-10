@@ -16,9 +16,8 @@ type Props = {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
-  stations: (StationWithComponentsAndWorker & { ships: number })[];
+  stations: StationWithComponentsAndWorker[];
   onDeployStation: (waypointId: string) => Promise<void> | void;
-  onDeployTug: (stationId: string) => Promise<void> | void;
 };
 
 const defaults = {
@@ -30,7 +29,6 @@ const GameMap = ({
   posix: defaultPosix,
   stations,
   onDeployStation,
-  onDeployTug,
 }: Props) => {
   const [posix, setPosix] = useState(defaultPosix);
   const [zoom, setZoom] = useState(defaultZoom);
@@ -67,7 +65,7 @@ const GameMap = ({
   }
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row-reverse lg:mt-4 gap-4 justify-between w-full px-8">
+    <div className="flex flex-col lg:flex-row-reverse lg:mt-4 gap-4 justify-between w-full px-8">
       <div className="flex flex-col w-full">
         <StarMap
           posix={posix}
@@ -78,7 +76,7 @@ const GameMap = ({
         />
       </div>
       <div className="flex flex-col grow w-full justify-center items-center">
-        <StationList stations={stations} onDeployTug={onDeployTug} />
+        <StationList stations={stations} />
         {stations.length === 0 && (
           <TutorialStation
             waypoint={details}

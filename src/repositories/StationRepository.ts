@@ -10,7 +10,13 @@ export default class StationRepository {
   }
 
   async getStation(id: string) {
-    return prisma.station.findUniqueOrThrow({ where: { id } });
+    return prisma.station.findUniqueOrThrow({
+      where: { id },
+      include: {
+        Worker: { include: { Activity: true } },
+        Components: true,
+      },
+    });
   }
 
   async getStations(
