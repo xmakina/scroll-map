@@ -3,6 +3,7 @@
 import { getPlayer } from "@/app/queries";
 import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
+import { ActivityType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 const shipService = await ShipService.get();
@@ -31,10 +32,9 @@ export const deployTug = async (stationId: string) => {
   revalidatePath("/station/[id]", "page");
 };
 
-export const issueOrder = async (shipId: string, orderName: string) => {
-  console.log(`ordering ${shipId} to ${orderName}`);
+export const issueOrder = async (shipId: string, orderName: ActivityType) => {
   switch (orderName) {
-    case "scuttle": {
+    case "SCUTTLE": {
       await shipService.scuttleShip(shipId);
       break;
     }
@@ -43,4 +43,9 @@ export const issueOrder = async (shipId: string, orderName: string) => {
   }
 
   revalidatePath("/station/[id]", "page");
+};
+
+export const claimActivity = async (shipId: string, activityId: string) => {
+  await shipService.claimActivity(shipId, activityId);
+  revalidatePath("/map", "page");
 };

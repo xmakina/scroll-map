@@ -2,6 +2,8 @@ enum ActivityType {
   MINE
   DELIVER
   BUILD
+  SCUTTLE
+  SALVAGE
 }
 
 model Activity {

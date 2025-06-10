@@ -1,3 +1,5 @@
+"use client";
+
 import { Activity } from "@prisma/client";
 import React, { useState } from "react";
 import Button from "../ui/Button";
@@ -5,7 +7,7 @@ import Countdown from "react-countdown";
 
 type Props = {
   activity: Activity;
-  onClaim: () => Promise<void>;
+  onClaim: () => Promise<void> | void;
 };
 
 const ShipActivityDetails = ({ activity, onClaim }: Props) => {

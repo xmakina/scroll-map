@@ -2,7 +2,7 @@ import React from "react";
 import { getOrders, getShips, getStation } from "./queries";
 import { StationData } from "@/models/StationData";
 import TugManager from "./DeployTug";
-import { deployTug, issueOrder } from "./actions";
+import { claimActivity, deployTug, issueOrder } from "./actions";
 import ShipRow from "@/components/ship/ShipRow";
 import { NavigationLink } from "@/components/ui/Navigation";
 import Orders from "@/components/orders/Orders";
@@ -28,14 +28,24 @@ const Page = async ({ params }: Props) => {
       <div className="flex flex-row justify-center">
         {!data.tugDeployed && <TugManager onDeployTug={handleDeployTug} />}
         {ships.map(async (ship) => {
+          const availableOrders = await getOrders(ship.id);
           const onIssueOrder = handleOrder.bind(null, ship.id);
+          const handleClaimActivity = claimActivity.bind(null, ship.id);
+
           const orders = (
             <Orders
-              availableOrders={await getOrders(ship.id)}
+              availableOrders={availableOrders}
               onIssueOrder={onIssueOrder}
             />
           );
-          return <ShipRow orders={orders} ship={ship} />;
+
+          return (
+            <ShipRow
+              orders={orders}
+              ship={ship}
+              onClaimActivity={handleClaimActivity}
+            />
+          );
         })}
       </div>
     </div>

@@ -1,14 +1,15 @@
 import React from "react";
 import Scuttle from "../orders/Scuttle";
+import { ActivityType } from "@prisma/client";
 
 type Props = {
-  order: string;
-  onIssueOrder: (orderName: string) => Promise<void> | void;
+  order: ActivityType;
+  onIssueOrder: () => Promise<void> | void;
 };
 
 const OrderButton = ({ order, onIssueOrder }: Props) => {
-  if (order === "scuttle") {
-    return <Scuttle onClick={onIssueOrder.bind(null, "scuttle")} />;
+  if (order === "SCUTTLE") {
+    return <Scuttle onClick={onIssueOrder} />;
   }
 };
 

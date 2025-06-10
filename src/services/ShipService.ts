@@ -4,26 +4,26 @@ import ActivityService from "./ActivityService";
 import { ShipData } from "@/models/ShipData";
 import StationService from "./StationService";
 
-const CanMine = (data: ShipData, availableOrders: string[]) => {
+const CanMine = (data: ShipData, availableOrders: ActivityType[]) => {
   const { mining, cargoHold } = data;
   if (mining && cargoHold) {
-    return CanSalvage(data, [...availableOrders, "mine"]);
+    return CanSalvage(data, [...availableOrders, ActivityType.MINE]);
   }
 
   return CanSalvage(data, availableOrders);
 };
 
-const CanSalvage = (data: ShipData, availableOrders: string[]) => {
+const CanSalvage = (data: ShipData, availableOrders: ActivityType[]) => {
   const { tractorBeam } = data;
   if (tractorBeam) {
-    return [...availableOrders, "salvage"];
+    return [...availableOrders, ActivityType.SALVAGE];
   }
 
   return availableOrders;
 };
 
 const ConstructOrders = (data?: ShipData) => {
-  const orders = ["scuttle"];
+  const orders: ActivityType[] = ["SCUTTLE"];
   if (!data) {
     return orders;
   }
@@ -38,12 +38,7 @@ export default class ShipService {
 
   async scuttleShip(id: string) {
     const ship = await this.get(id);
-    const data = ship.data as ShipData;
-    if (data.tug?.stationId) {
-      await this.stationService.setTugDeployed(data.tug.stationId, false);
-    }
-
-    return await this.repository.delete(id);
+    this.activityService.begin(ship.Worker, ActivityType.SCUTTLE);
   }
 
   async getOrders(id: string) {
@@ -58,13 +53,13 @@ export default class ShipService {
   }
 
   async startMining(data: {
-    shipId: string;
+    id: string;
     type: ActivityType;
     planetId: string;
   }) {
-    const { shipId, type, planetId } = data;
-    const ship = await this.repository.get(shipId);
-    return await this.activityService.begin(ship, type, planetId);
+    const { id, type, planetId } = data;
+    const ship = await this.get(id);
+    return await this.activityService.begin(ship.Worker, type, planetId);
   }
 
   async claimActivity(id: string, activityId: string) {
@@ -85,14 +80,21 @@ export default class ShipService {
           throw "This type of worker should not mine";
         }
         break;
+      case "SCUTTLE":
+        if (activity.Worker.Ship) {
+          // TODO: Refund ship cost, place cargo hold somewhere safe?
+          await this.repository.delete(activity.Worker.Ship.id);
+          await this.activityService.deleteActivity(activityId);
+        }
+        break;
       case "DELIVER":
         break;
     }
   }
 
   async startWork(shipId: string, type: ActivityType) {
-    const ship = await this.repository.get(shipId);
-    return await this.activityService.begin(ship, type);
+    const ship = await this.get(shipId);
+    return await this.activityService.begin(ship.Worker, type);
   }
 
   async createShip(playerId: string, locationId: string, data: ShipData) {

@@ -28,18 +28,12 @@ export const createStation = async (waypointId: string) => {
   revalidatePath("/map", "page");
 };
 
-
 export const startMining = async (planetId: string, shipId: string) => {
   const planet = PlanetFromId(planetId);
   if (!planet) {
     return;
   }
 
-  await shipService.startMining({ shipId, type: "MINE", planetId });
-  revalidatePath("/map", "page");
-};
-
-export const claimActivity = async (shipId: string, activityId: string) => {
-  await shipService.claimActivity(shipId, activityId);
+  await shipService.startMining({ id: shipId, type: "MINE", planetId });
   revalidatePath("/map", "page");
 };
