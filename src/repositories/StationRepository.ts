@@ -34,13 +34,14 @@ export default class StationRepository {
   async createStation(xy: { x: number; y: number }, playerId: string) {
     const { x, y } = xy;
     const { id: workerId } = await prisma.worker.create({ data: {} });
+    const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
     return await prisma.station.create({
       data: {
         positionX: x,
         positionY: y,
         playerId,
         workerId,
-        hold: {},
+        cargoHoldId,
         data: {},
       },
     });

@@ -1,8 +1,8 @@
 import ShipRepository from "@/repositories/ShipRepository";
 import { ActivityType } from "@prisma/client";
-import ActivityService, { MiningData } from "./ActivityService";
-import { CreateShipDetails } from "@/models/CreateShipDetails";
+import ActivityService from "./ActivityService";
 import { ShipData } from "@/models/ShipData";
+import StationService from "./StationService";
 
 const CanMine = (data: ShipData, availableOrders: string[]) => {
   const { mining, cargoHold } = data;
@@ -32,8 +32,22 @@ const ConstructOrders = (data?: ShipData) => {
 };
 
 export default class ShipService {
+  async get(id: string) {
+    return await this.repository.get(id);
+  }
+
+  async scuttleShip(id: string) {
+    const ship = await this.get(id);
+    const data = ship.data as ShipData;
+    if (data.tug?.stationId) {
+      await this.stationService.setTugDeployed(data.tug.stationId, false);
+    }
+
+    return await this.repository.delete(id);
+  }
+
   async getOrders(id: string) {
-    const ship = await this.repository.getShip(id);
+    const ship = await this.repository.get(id);
     const orders = ConstructOrders(ship.data as ShipData);
 
     return orders;
@@ -43,17 +57,13 @@ export default class ShipService {
     return await this.repository.getAt(locationId);
   }
 
-  async setCargo(id: string, type: string) {
-    return await this.repository.setCargo(id, type);
-  }
-
   async startMining(data: {
     shipId: string;
     type: ActivityType;
     planetId: string;
   }) {
     const { shipId, type, planetId } = data;
-    const ship = await this.repository.getShip(shipId);
+    const ship = await this.repository.get(shipId);
     return await this.activityService.begin(ship, type, planetId);
   }
 
@@ -70,7 +80,6 @@ export default class ShipService {
         break;
       case "MINE":
         if (activity.Worker.Ship) {
-          await this.setCargo(id, (activity.data as MiningData).type);
           await this.activityService.deleteActivity(activityId);
         } else {
           throw "This type of worker should not mine";
@@ -82,16 +91,12 @@ export default class ShipService {
   }
 
   async startWork(shipId: string, type: ActivityType) {
-    const ship = await this.repository.getShip(shipId);
+    const ship = await this.repository.get(shipId);
     return await this.activityService.begin(ship, type);
   }
 
-  async createShip(
-    playerId: string,
-    locationId: string,
-    shipDetails: CreateShipDetails
-  ) {
-    return await this.repository.createShip(playerId, locationId, shipDetails);
+  async createShip(playerId: string, locationId: string, data: ShipData) {
+    return await this.repository.createShip(playerId, locationId, data);
   }
 
   async getShips(playerId: string) {
@@ -100,13 +105,15 @@ export default class ShipService {
 
   constructor(
     private readonly repository: ShipRepository,
-    private readonly activityService: ActivityService
+    private readonly activityService: ActivityService,
+    private readonly stationService: StationService
   ) {}
 
   static async get() {
     return new ShipService(
       await ShipRepository.get(),
-      await ActivityService.get()
+      await ActivityService.get(),
+      await StationService.get()
     );
   }
 }

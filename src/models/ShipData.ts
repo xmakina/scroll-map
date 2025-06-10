@@ -3,14 +3,19 @@ export type ShipData = {
   cargoHold?: { [key: string]: number };
   tractorBeam?: boolean;
   mining?: MiningData;
+  tug?: TugData;
 };
 
-export type EngineData = {
+type EngineData = {
   speed: number;
   range: number;
 };
 
-export type MiningData = {
+type MiningData = {
   strength: number;
   rate: number;
+};
+
+type TugData = {
+  stationId: string;
 };

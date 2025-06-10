@@ -1,0 +1,24 @@
+enum CargoType {
+  ALLOY
+  ICE
+  ORE
+  GAS
+}
+
+model CargoContainer {
+  id          String    @id @default(cuid())
+  type        CargoType
+  data        Json?
+  amount      Int
+  hold        CargoHold @relation(fields: [cargoHoldId], references: [id])
+  cargoHoldId String
+}
+
+model CargoHold {
+  id String @id @default(cuid())
+
+  data           Json?
+  Station        Station?
+  Ship           Ship?
+  CargoContainer CargoContainer[]
+}

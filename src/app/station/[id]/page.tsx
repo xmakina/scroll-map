@@ -5,7 +5,7 @@ import TugManager from "./DeployTug";
 import { deployTug, issueOrder } from "./actions";
 import ShipRow from "@/components/ship/ShipRow";
 import { NavigationLink } from "@/components/ui/Navigation";
-import ShipOrders from "@/components/ship/ShipOrders";
+import Orders from "@/components/orders/Orders";
 
 type Props = { params: Promise<{ id: string }> };
 const Page = async ({ params }: Props) => {
@@ -15,7 +15,7 @@ const Page = async ({ params }: Props) => {
   const data: StationData = (station.data as StationData) || {};
 
   const handleDeployTug = deployTug.bind(null, id);
-  const handleOrder = issueOrder.bind(null, id);
+  const handleOrder = issueOrder.bind(null);
 
   return (
     <div className="flex flex-col gap-2 items-center">
@@ -28,12 +28,14 @@ const Page = async ({ params }: Props) => {
       <div className="flex flex-row justify-center">
         {!data.tugDeployed && <TugManager onDeployTug={handleDeployTug} />}
         {ships.map(async (ship) => {
-          const orders = await getOrders(ship.id);
-          const orderList = (
-            <ShipOrders orders={orders} onIssueOrder={handleOrder} />
+          const onIssueOrder = handleOrder.bind(null, ship.id);
+          const orders = (
+            <Orders
+              availableOrders={await getOrders(ship.id)}
+              onIssueOrder={onIssueOrder}
+            />
           );
-
-          return <ShipRow orders={orderList} ship={ship} />;
+          return <ShipRow orders={orders} ship={ship} />;
         })}
       </div>
     </div>

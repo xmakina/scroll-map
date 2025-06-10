@@ -2,12 +2,18 @@ import { StationData } from "@/models/StationData";
 import StationRepository from "@/repositories/StationRepository";
 
 export default class StationService {
+  async setTugDeployed(id: string, tugDeployed: boolean) {
+    return await this.repository.updateStation(id, { tugDeployed });
+  }
+
   async getStation(id: string) {
     return await this.repository.getStation(id);
   }
+
   async updateStation(stationId: string, data: Partial<StationData>) {
     return await this.repository.updateStation(stationId, data);
   }
+
   async getStations(playerId: string) {
     return await this.repository.getStations(playerId);
   }

@@ -12,8 +12,19 @@ export const deployTug = async (stationId: string) => {
   console.log("deploying tug", stationId);
   const { id: playerId } = await getPlayer();
   await shipService.createShip(playerId, stationId, {
-    speed: 0,
-    cargoCapacity: 100,
+    engine: {
+      speed: 3,
+      range: 0,
+    },
+    cargoHold: {},
+    tractorBeam: true,
+    mining: {
+      strength: 0,
+      rate: 0,
+    },
+    tug: {
+      stationId,
+    },
   });
 
   await stationService.updateStation(stationId, { tugDeployed: true });
@@ -22,4 +33,14 @@ export const deployTug = async (stationId: string) => {
 
 export const issueOrder = async (shipId: string, orderName: string) => {
   console.log(`ordering ${shipId} to ${orderName}`);
+  switch (orderName) {
+    case "scuttle": {
+      await shipService.scuttleShip(shipId);
+      break;
+    }
+    default:
+      throw Error(`Unknown order: ${orderName}`);
+  }
+
+  revalidatePath("/station/[id]", "page");
 };

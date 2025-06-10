@@ -50,7 +50,7 @@ const Button = ({
         "border border-white rounded-3xl p-1 flex flex-row justify-evenly disabled:bg-alternate",
         {
           "bg-accent": primary,
-          "bg-danger": danger,
+          "bg-danger hover:bg-danger": danger,
           "bg-alternate": active,
           "text-sm p-0 rounded-md": small,
           "hover:bg-alternate hover:text-secondary": !noHover,

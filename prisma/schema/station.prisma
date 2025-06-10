@@ -13,14 +13,17 @@ model Component {
 }
 
 model Station {
-  id         String      @id @default(cuid())
-  playerId   String
-  Player     Player      @relation(fields: [playerId], references: [id])
-  workerId   String      @unique
-  Worker     Worker      @relation(fields: [workerId], references: [id])
-  hold       Json
+  id          String    @id @default(cuid())
+  playerId    String
+  Player      Player    @relation(fields: [playerId], references: [id])
+  workerId    String    @unique
+  Worker      Worker    @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  cargoHoldId String    @unique
+  CargoHold   CargoHold @relation(fields: [cargoHoldId], references: [id], onDelete: Cascade)
+
   Components Component[]
-  positionX  Int
-  positionY  Int
-  data       Json
+
+  positionX Int
+  positionY Int
+  data      Json
 }

@@ -1,4 +1,4 @@
-import { CreateShipDetails } from "@/models/CreateShipDetails";
+import { ShipData } from "@/models/ShipData";
 import { prisma } from "@/prisma";
 import { ActivityType, Prisma } from "@prisma/client";
 import { InputJsonValue } from "@prisma/client/runtime/library";
@@ -8,19 +8,15 @@ export type ShipWithActivity = Prisma.ShipGetPayload<{
 }>;
 
 export default class ShipRepository {
+  async delete(id: string) {
+    return prisma.ship.delete({ where: { id } });
+  }
+
   async getAt(locationId: string) {
     return prisma.ship.findMany({
       where: { locationId },
       include: { Worker: { include: { Activity: true } } },
     });
-  }
-
-  async setCargo(id: string, type: string) {
-    return await prisma.ship.update({ where: { id }, data: { cargo: type } });
-  }
-
-  async emptyCargo(id: string) {
-    return await prisma.ship.update({ where: { id }, data: { cargo: null } });
   }
 
   async startWork(
@@ -29,7 +25,7 @@ export default class ShipRepository {
     data: InputJsonValue,
     endTime: Date
   ) {
-    const { workerId } = await this.getShip(shipId);
+    const { workerId } = await this.get(shipId);
 
     return prisma.activity.create({
       data: {
@@ -41,7 +37,7 @@ export default class ShipRepository {
     });
   }
 
-  async getShip(id: string): Promise<ShipWithActivity> {
+  async get(id: string): Promise<ShipWithActivity> {
     return await prisma.ship.findUniqueOrThrow({
       where: { id },
       include: { Worker: { include: { Activity: true } } },
@@ -56,21 +52,17 @@ export default class ShipRepository {
     });
   }
 
-  async createShip(
-    playerId: string,
-    locationId: string,
-    details: CreateShipDetails
-  ) {
-    const { id } = await prisma.worker.create({ data: {} });
+  async createShip(playerId: string, locationId: string, data: ShipData) {
+    const { id: workerId } = await prisma.worker.create({ data: {} });
+    const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
     console.log("creating ship repo");
     return prisma.ship.create({
       data: {
         playerId,
         locationId,
-        speed: 10,
-        workerId: id,
-        cargoCapacity: 100,
-        ...details,
+        workerId,
+        cargoHoldId,
+        data,
       },
     });
   }

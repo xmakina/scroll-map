@@ -10,7 +10,7 @@ const ShipRow = ({ ship, orders }: Props) => {
   return (
     <div className="flex-col items-center gap-2 justify-center">
       <div>Ship: {ship.id}</div>
-      <div>{orders}</div>
+      {orders}
     </div>
   );
 };

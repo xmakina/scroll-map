@@ -8,7 +8,7 @@ type Props = {
 
 const OrderButton = ({ order, onIssueOrder }: Props) => {
   if (order === "scuttle") {
-    return <Scuttle onClick={() => onIssueOrder("scuttle")} />;
+    return <Scuttle onClick={onIssueOrder.bind(null, "scuttle")} />;
   }
 };
 
