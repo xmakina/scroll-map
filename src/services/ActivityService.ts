@@ -1,4 +1,3 @@
-import { ShipData } from "@/models/ShipData";
 import ActivityRepository from "@/repositories/ActivityRepository";
 import PlanetFromId from "@/utils/PlanetFromId";
 import { ActivityWorker } from "@prisma/client";
@@ -7,13 +6,15 @@ import { ActivityType } from "@prisma/client";
 import ShipService from "./ShipService";
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import StationService from "./StationService";
+import ScuttleActivity from "@/activities/ScuttleActivity";
+import { NowAddSeconds } from "../utils/NowAddSeconds";
+import { IActivityHandler } from "@/activities/IActivityHandler";
+import { NotImplementedActivity } from "@/activities/NotImplementedActivity";
+import BuildActivity from "@/activities/BuildActivity";
 
 export type MiningData = {
   type: string;
 };
-
-const NowAddSeconds = (seconds: number) =>
-  new Date(Date.now() + seconds * 1000);
 
 export default class ActivityService {
   async get(activityWorkerId: string) {
@@ -28,47 +29,7 @@ export default class ActivityService {
       );
     }
 
-    if (activity.endTime > new Date(Date.now())) {
-      console.warn("activity claimed too early", { activityId: activity.id });
-      return;
-    }
-
-    const parent = await this.get(activityWorker.id);
-    switch (activity.type) {
-      case "MINE":
-        if (parent.Ship) {
-          await this.deleteActivity(activity.id);
-        } else {
-          throw "This type of activityWorker should not mine";
-        }
-        break;
-      case "SCUTTLE":
-        if (parent.Ship) {
-          // TODO: Refund ship cost, place cargo hold somewhere safe?
-          const shipData = parent.Ship.data as ShipData;
-          if (shipData.tug?.stationId) {
-            await this.stationService.setTugDeployed(
-              shipData.tug.stationId,
-              false
-            );
-          }
-          await this.shipService.delete(parent.Ship.id);
-          return await this.deleteActivity(activity.id);
-        }
-        throw Error("Only ships can be scuttled");
-      case "BUILD":
-        if (parent.Station) {
-          await this.shipService.createShip(
-            parent.Station.playerId,
-            parent.Station.id,
-            activityWorker.Activity?.data as ShipData
-          );
-          return await this.deleteActivity(activity.id);
-        }
-        throw Error("Only stations can build");
-      default:
-        throw Error(`${activity.type} not implemented yet`);
-    }
+    await this.activities[activity.type].claim(activityWorker);
   }
 
   async deleteActivity(id: string) {
@@ -79,35 +40,26 @@ export default class ActivityService {
     return await this.repository.getActivity(id);
   }
 
+  async create(
+    activityWorkerId: string,
+    activityType: ActivityType,
+    endTime: Date,
+    data?: object
+  ) {
+    return await this.repository.create(
+      activityWorkerId,
+      activityType,
+      endTime,
+      data
+    );
+  }
+
   async begin(
     activityWorker: ActivityWorker,
     type: ActivityType,
-    data?: unknown
+    data?: object
   ) {
-    const { id: activityWorkerId } = activityWorker;
-    switch (type) {
-      case "MINE":
-        if (!data || typeof data !== "string") {
-          throw "Cannot mine without a location";
-        }
-
-        return await this.beginMining(activityWorkerId, data);
-      case "BUILD":
-        return await this.beginBuilding(activityWorkerId, data as ShipData);
-      case "SCUTTLE":
-        return await this.beginScuttle(activityWorkerId);
-      default:
-        throw `Not implemented, ${type}`;
-    }
-  }
-
-  async beginBuilding(activityWorkerId: string, shipData: ShipData) {
-    return await this.repository.create(
-      activityWorkerId,
-      "BUILD",
-      shipData,
-      NowAddSeconds(10)
-    );
+    return await this.activities[type].begin(activityWorker.id, data);
   }
 
   private async beginMining(activityWorkerId: string, locationId: string) {
@@ -118,12 +70,12 @@ export default class ActivityService {
 
     switch (target.type) {
       case "Rock": {
-        const duration = 10; //ship.cargoCapacity * 10;
+        const duration = 3; //ship.cargoCapacity * 10;
         return await this.repository.create(
           activityWorkerId,
           "MINE",
-          { type: target.type } as MiningData,
-          NowAddSeconds(duration)
+          NowAddSeconds(duration),
+          { type: target.type } as MiningData
         );
       }
       case "Gas":
@@ -132,21 +84,21 @@ export default class ActivityService {
     }
   }
 
-  private async beginScuttle(activityWorkerId: string) {
-    const duration = 10;
-    return await this.repository.create(
-      activityWorkerId,
-      "SCUTTLE",
-      {},
-      NowAddSeconds(duration)
-    );
-  }
+  private activities: { [key in ActivityType]: IActivityHandler };
 
   constructor(
     private readonly repository: ActivityRepository,
-    private readonly shipService: ShipService,
-    private readonly stationService: StationService
-  ) {}
+    shipService: ShipService,
+    stationService: StationService
+  ) {
+    this.activities = {
+      SCUTTLE: new ScuttleActivity(shipService, stationService, this),
+      BUILD: new BuildActivity(shipService, this),
+      DELIVER: new NotImplementedActivity(),
+      MINE: new NotImplementedActivity(),
+      SALVAGE: new NotImplementedActivity(),
+    };
+  }
 
   static async get(): Promise<ActivityService> {
     return new ActivityService(

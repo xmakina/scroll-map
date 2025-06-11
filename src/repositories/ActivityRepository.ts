@@ -17,8 +17,8 @@ export default class ActivityRepository {
   async create(
     activityWorkerId: string,
     type: ActivityType,
-    data: object,
-    endTime: Date
+    endTime: Date,
+    data: object = {}
   ) {
     return await prisma.activity.create({
       data: { activityWorkerId, type, data, endTime },
