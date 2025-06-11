@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client";
 
-export type WorkerWithActivity = Prisma.WorkerGetPayload<{
+export type ActivityWorkerWithActivity = Prisma.ActivityWorkerGetPayload<{
   include: { Activity: true };
 }>;
 
-export type WorkerWithParent = Prisma.WorkerGetPayload<{
+export type ActivityWorkerWithParent = Prisma.ActivityWorkerGetPayload<{
   include: { Activity: true; Ship: true; Station: true };
 }>;

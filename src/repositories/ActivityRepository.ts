@@ -1,27 +1,27 @@
-import { WorkerWithParent } from "@/models/WorkerWithActivity";
+import { ActivityWorkerWithParent } from "@/models/WorkerWithActivity";
 import { prisma } from "@/prisma";
 import { ActivityType, Prisma } from "@prisma/client";
 
 export type ActivityWithShip = Prisma.ActivityGetPayload<{
-  include: { Worker: { include: { Ship: true } } };
+  include: { ActivityWorker: { include: { Ship: true } } };
 }>;
 
 export default class ActivityRepository {
-  async getWorker(id: string): Promise<WorkerWithParent> {
-    return prisma.worker.findUniqueOrThrow({
+  async getWorker(id: string): Promise<ActivityWorkerWithParent> {
+    return prisma.activityWorker.findUniqueOrThrow({
       where: { id },
       include: { Ship: true, Station: true, Activity: true },
     });
   }
 
   async create(
-    workerId: string,
+    activityWorkerId: string,
     type: ActivityType,
     data: object,
     endTime: Date
   ) {
     return await prisma.activity.create({
-      data: { workerId, type, data, endTime },
+      data: { activityWorkerId, type, data, endTime },
     });
   }
   async deleteActivity(id: string) {
@@ -31,7 +31,7 @@ export default class ActivityRepository {
   async getActivity(id: string): Promise<ActivityWithShip> {
     return await prisma.activity.findUniqueOrThrow({
       where: { id },
-      include: { Worker: { include: { Ship: true } } },
+      include: { ActivityWorker: { include: { Ship: true } } },
     });
   }
 

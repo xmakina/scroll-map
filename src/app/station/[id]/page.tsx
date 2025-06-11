@@ -33,9 +33,9 @@ const Page = async ({ params }: Props) => {
       </div>
 
       <div>
-        {station.Worker.Activity && (
+        {station.ActivityWorker.Activity && (
           <ActivityDetails
-            activity={station.Worker.Activity}
+            activity={station.ActivityWorker.Activity}
             onClaim={claimActivityForStation.bind(null, station.id)}
           />
         )}

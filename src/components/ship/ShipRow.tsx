@@ -13,14 +13,14 @@ const ShipRow = ({ ship, orders, onClaimActivity }: Props) => {
     <div className="flex-col items-center gap-2 justify-center">
       <div>Ship: {ship.id}</div>
 
-      {ship.Worker.Activity && (
+      {ship.ActivityWorker.Activity && (
         <ActivityDetails
-          activity={ship.Worker.Activity}
-          onClaim={onClaimActivity.bind(null, ship.Worker.Activity.id)}
+          activity={ship.ActivityWorker.Activity}
+          onClaim={onClaimActivity.bind(null, ship.ActivityWorker.Activity.id)}
         />
       )}
 
-      {!ship.Worker.Activity && orders}
+      {!ship.ActivityWorker.Activity && orders}
     </div>
   );
 };

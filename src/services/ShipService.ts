@@ -1,7 +1,6 @@
 import ShipRepository from "@/repositories/ShipRepository";
 import { ActivityType } from "@prisma/client";
 import { ShipData } from "@/models/ShipData";
-import { WorkerWithActivity } from "@/models/WorkerWithActivity";
 
 const CanMine = (data: ShipData, availableOrders: ActivityType[]) => {
   const { mining, cargoHold } = data;
@@ -31,9 +30,9 @@ const ConstructOrders = (data?: ShipData) => {
 };
 
 export default class ShipService {
-  async getWorker(shipId: string) {
+  async getActivityWorker(shipId: string) {
     const ship = await this.get(shipId);
-    return ship.Worker;
+    return ship.ActivityWorker;
   }
 
   async delete(id: string) {

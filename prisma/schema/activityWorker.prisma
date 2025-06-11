@@ -1,4 +1,4 @@
-model Worker {
+model ActivityWorker {
   id       String    @id @default(cuid())
   Activity Activity?
   Ship     Ship?

@@ -12,7 +12,7 @@ export default class ShipRepository {
   async getAt(locationId: string) {
     return prisma.ship.findMany({
       where: { locationId },
-      include: { Worker: { include: { Activity: true } } },
+      include: { ActivityWorker: { include: { Activity: true } } },
     });
   }
 
@@ -22,11 +22,11 @@ export default class ShipRepository {
     data: InputJsonValue,
     endTime: Date
   ) {
-    const { workerId } = await this.get(shipId);
+    const { activityWorkerId } = await this.get(shipId);
 
     return prisma.activity.create({
       data: {
-        workerId,
+        activityWorkerId,
         type,
         data,
         endTime,
@@ -38,7 +38,7 @@ export default class ShipRepository {
     return await prisma.ship.findUniqueOrThrow({
       where: { id },
       include: {
-        Worker: { include: { Activity: true } },
+        ActivityWorker: { include: { Activity: true } },
       },
     });
   }
@@ -47,19 +47,19 @@ export default class ShipRepository {
     console.log("finding ships");
     return await prisma.ship.findMany({
       where: { playerId },
-      include: { Worker: { include: { Activity: true } } },
+      include: { ActivityWorker: { include: { Activity: true } } },
     });
   }
 
   async createShip(playerId: string, locationId: string, data: ShipData) {
-    const { id: workerId } = await prisma.worker.create({ data: {} });
+    const { id: activityWorkerId } = await prisma.activityWorker.create({ data: {} });
     const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
     console.log("creating ship repo");
     return prisma.ship.create({
       data: {
         playerId,
         locationId,
-        workerId,
+        activityWorkerId,
         cargoHoldId,
         data,
       },

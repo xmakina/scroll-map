@@ -1,6 +1,6 @@
 "use server";
 
-import { WorkerWithActivity } from "@/models/WorkerWithActivity";
+import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
@@ -13,7 +13,7 @@ const activityService = await ActivityService.get();
 
 export const deployTug = async (stationId: string) => {
   const station = await stationService.get(stationId);
-  await activityService.begin(station.Worker, ActivityType.BUILD, {
+  await activityService.begin(station.ActivityWorker, ActivityType.BUILD, {
     engine: {
       speed: 3,
       range: 0,
@@ -38,24 +38,26 @@ export const issueOrder = async (
   activityType: ActivityType
 ) => {
   const ship = await shipService.get(shipId);
-  await activityService.begin(ship.Worker, activityType);
+  await activityService.begin(ship.ActivityWorker, activityType);
   revalidatePath("/station/[id]", "page");
 };
 
-export const claimActivity = async (worker: WorkerWithActivity) => {
-  await activityService.claim(worker);
+export const claimActivity = async (
+  activityWorker: ActivityWorkerWithActivity
+) => {
+  await activityService.claim(activityWorker);
 
   revalidatePath("/station/[id]", "page");
 };
 
 export const claimActivityForShip = async (shipId: string) => {
-  const worker = await shipService.getWorker(shipId);
-  await activityService.claim(worker);
+  const activityWorker = await shipService.getActivityWorker(shipId);
+  await activityService.claim(activityWorker);
   revalidatePath("/station/[id]", "page");
 };
 
 export const claimActivityForStation = async (stationId: string) => {
   const station = await stationService.get(stationId);
-  await activityService.claim(station.Worker);
+  await activityService.claim(station.ActivityWorker);
   revalidatePath("/station/[id]", "page");
 };

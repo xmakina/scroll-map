@@ -1,11 +1,11 @@
 import { ShipData } from "@/models/ShipData";
 import ActivityRepository from "@/repositories/ActivityRepository";
 import PlanetFromId from "@/utils/PlanetFromId";
-import { Worker } from "@prisma/client";
+import { ActivityWorker } from "@prisma/client";
 
 import { ActivityType } from "@prisma/client";
 import ShipService from "./ShipService";
-import { WorkerWithActivity } from "@/models/WorkerWithActivity";
+import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import StationService from "./StationService";
 
 export type MiningData = {
@@ -16,14 +16,16 @@ const NowAddSeconds = (seconds: number) =>
   new Date(Date.now() + seconds * 1000);
 
 export default class ActivityService {
-  async get(workerId: string) {
-    return await this.repository.getWorker(workerId);
+  async get(activityWorkerId: string) {
+    return await this.repository.getWorker(activityWorkerId);
   }
 
-  async claim(worker: WorkerWithActivity) {
-    const { Activity: activity } = worker;
+  async claim(activityWorker: ActivityWorkerWithActivity) {
+    const { Activity: activity } = activityWorker;
     if (!activity) {
-      throw Error(`No activity assigned to worker ${worker.id}`);
+      throw Error(
+        `No activity assigned to activityWorker ${activityWorker.id}`
+      );
     }
 
     if (activity.endTime > new Date(Date.now())) {
@@ -31,13 +33,13 @@ export default class ActivityService {
       return;
     }
 
-    const parent = await this.get(worker.id);
+    const parent = await this.get(activityWorker.id);
     switch (activity.type) {
       case "MINE":
         if (parent.Ship) {
           await this.deleteActivity(activity.id);
         } else {
-          throw "This type of worker should not mine";
+          throw "This type of activityWorker should not mine";
         }
         break;
       case "SCUTTLE":
@@ -59,7 +61,7 @@ export default class ActivityService {
           await this.shipService.createShip(
             parent.Station.playerId,
             parent.Station.id,
-            worker.Activity?.data as ShipData
+            activityWorker.Activity?.data as ShipData
           );
           return await this.deleteActivity(activity.id);
         }
@@ -77,34 +79,38 @@ export default class ActivityService {
     return await this.repository.getActivity(id);
   }
 
-  async begin(worker: Worker, type: ActivityType, data?: unknown) {
-    const { id: workerId } = worker;
+  async begin(
+    activityWorker: ActivityWorker,
+    type: ActivityType,
+    data?: unknown
+  ) {
+    const { id: activityWorkerId } = activityWorker;
     switch (type) {
       case "MINE":
         if (!data || typeof data !== "string") {
           throw "Cannot mine without a location";
         }
 
-        return await this.beginMining(workerId, data);
+        return await this.beginMining(activityWorkerId, data);
       case "BUILD":
-        return await this.beginBuilding(workerId, data as ShipData);
+        return await this.beginBuilding(activityWorkerId, data as ShipData);
       case "SCUTTLE":
-        return await this.beginScuttle(workerId);
+        return await this.beginScuttle(activityWorkerId);
       default:
         throw `Not implemented, ${type}`;
     }
   }
 
-  async beginBuilding(workerId: string, shipData: ShipData) {
+  async beginBuilding(activityWorkerId: string, shipData: ShipData) {
     return await this.repository.create(
-      workerId,
+      activityWorkerId,
       "BUILD",
       shipData,
       NowAddSeconds(10)
     );
   }
 
-  private async beginMining(workerId: string, locationId: string) {
+  private async beginMining(activityWorkerId: string, locationId: string) {
     const target = PlanetFromId(locationId);
     if (!target) {
       throw Error(`no planet from id ${locationId}`);
@@ -114,7 +120,7 @@ export default class ActivityService {
       case "Rock": {
         const duration = 10; //ship.cargoCapacity * 10;
         return await this.repository.create(
-          workerId,
+          activityWorkerId,
           "MINE",
           { type: target.type } as MiningData,
           NowAddSeconds(duration)
@@ -126,10 +132,10 @@ export default class ActivityService {
     }
   }
 
-  private async beginScuttle(workerId: string) {
+  private async beginScuttle(activityWorkerId: string) {
     const duration = 10;
     return await this.repository.create(
-      workerId,
+      activityWorkerId,
       "SCUTTLE",
       {},
       NowAddSeconds(duration)

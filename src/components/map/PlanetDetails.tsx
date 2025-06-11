@@ -2,7 +2,6 @@ import Planet from "@/models/waypoint/Planet";
 import React from "react";
 import LabeledText from "../ui/LabeledText";
 import Button from "../ui/Button";
-import idToXY from "@/models/waypoint/idToXY";
 import { ShipWithActivity } from "@/models/ShipWithActivity";
 
 type Props = {
@@ -12,11 +11,9 @@ type Props = {
 };
 
 const PlanetDetails = ({ planet, onStartMining, ships }: Props) => {
-  const [x, y] = idToXY(planet.id);
-
   const availableShips = ships
-    .filter((s) => s.positionX === x && s.positionY === y)
-    .filter((s) => !s.Worker.Activity);
+    .filter((s) => s.locationId === planet.id)
+    .filter((s) => !s.ActivityWorker.Activity);
   return (
     <div className="flex flex-row justify-between gap-2">
       <div className="flex flex-row justify-start gap-2">

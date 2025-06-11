@@ -7,10 +7,10 @@ enum ActivityType {
 }
 
 model Activity {
-  id       String       @id @default(cuid())
-  type     ActivityType
-  data     Json
-  endTime  DateTime
-  workerId String       @unique
-  Worker   Worker       @relation(fields: [workerId], references: [id])
+  id               String         @id @default(cuid())
+  type             ActivityType
+  data             Json
+  endTime          DateTime
+  activityWorkerId String         @unique
+  ActivityWorker   ActivityWorker @relation(fields: [activityWorkerId], references: [id])
 }

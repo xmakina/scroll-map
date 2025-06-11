@@ -13,7 +13,7 @@ export default class StationRepository {
     return prisma.station.findUniqueOrThrow({
       where: { id },
       include: {
-        Worker: { include: { Activity: true } },
+        ActivityWorker: { include: { Activity: true } },
         Components: true,
       },
     });
@@ -25,7 +25,7 @@ export default class StationRepository {
     return await prisma.station.findMany({
       where: { playerId },
       include: {
-        Worker: { include: { Activity: true } },
+        ActivityWorker: { include: { Activity: true } },
         Components: true,
       },
     });
@@ -33,14 +33,16 @@ export default class StationRepository {
 
   async createStation(xy: { x: number; y: number }, playerId: string) {
     const { x, y } = xy;
-    const { id: workerId } = await prisma.worker.create({ data: {} });
+    const { id: activityWorkerId } = await prisma.activityWorker.create({
+      data: {},
+    });
     const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
     return await prisma.station.create({
       data: {
         positionX: x,
         positionY: y,
         playerId,
-        workerId,
+        activityWorkerId,
         cargoHoldId,
         data: {},
       },
