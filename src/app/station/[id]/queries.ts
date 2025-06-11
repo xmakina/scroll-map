@@ -6,8 +6,7 @@ import StationService from "@/services/StationService";
 const stationService = await StationService.get();
 const shipService = await ShipService.get();
 
-export const getStation = async (id: string) =>
-  await stationService.getStation(id);
+export const getStation = async (id: string) => await stationService.get(id);
 
 export const getShips = async (id: string) => await shipService.getAt(id);
 

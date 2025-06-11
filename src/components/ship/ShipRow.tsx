@@ -1,6 +1,6 @@
-import { ShipWithActivity } from "@/repositories/ShipRepository";
+import { ShipWithActivity } from "@/models/ShipWithActivity";
 import React, { ReactElement } from "react";
-import ShipActivityDetails from "../activity/ShipActivityDetails";
+import ActivityDetails from "../activity/ActivityDetails";
 
 type Props = {
   ship: ShipWithActivity;
@@ -14,7 +14,7 @@ const ShipRow = ({ ship, orders, onClaimActivity }: Props) => {
       <div>Ship: {ship.id}</div>
 
       {ship.Worker.Activity && (
-        <ShipActivityDetails
+        <ActivityDetails
           activity={ship.Worker.Activity}
           onClaim={onClaimActivity.bind(null, ship.Worker.Activity.id)}
         />

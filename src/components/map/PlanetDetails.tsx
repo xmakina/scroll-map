@@ -3,7 +3,7 @@ import React from "react";
 import LabeledText from "../ui/LabeledText";
 import Button from "../ui/Button";
 import idToXY from "@/models/waypoint/idToXY";
-import { ShipWithActivity } from "@/repositories/ShipRepository";
+import { ShipWithActivity } from "@/models/ShipWithActivity";
 
 type Props = {
   planet: Planet;

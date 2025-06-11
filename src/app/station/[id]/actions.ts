@@ -1,6 +1,7 @@
 "use server";
 
-import { getPlayer } from "@/app/queries";
+import { WorkerWithActivity } from "@/models/WorkerWithActivity";
+import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
 import { ActivityType } from "@prisma/client";
@@ -8,11 +9,11 @@ import { revalidatePath } from "next/cache";
 
 const shipService = await ShipService.get();
 const stationService = await StationService.get();
+const activityService = await ActivityService.get();
 
 export const deployTug = async (stationId: string) => {
-  console.log("deploying tug", stationId);
-  const { id: playerId } = await getPlayer();
-  await shipService.createShip(playerId, stationId, {
+  const station = await stationService.get(stationId);
+  await activityService.begin(station.Worker, ActivityType.BUILD, {
     engine: {
       speed: 3,
       range: 0,
@@ -32,20 +33,29 @@ export const deployTug = async (stationId: string) => {
   revalidatePath("/station/[id]", "page");
 };
 
-export const issueOrder = async (shipId: string, orderName: ActivityType) => {
-  switch (orderName) {
-    case "SCUTTLE": {
-      await shipService.scuttleShip(shipId);
-      break;
-    }
-    default:
-      throw Error(`Unknown order: ${orderName}`);
-  }
+export const issueOrder = async (
+  shipId: string,
+  activityType: ActivityType
+) => {
+  const ship = await shipService.get(shipId);
+  await activityService.begin(ship.Worker, activityType);
+  revalidatePath("/station/[id]", "page");
+};
+
+export const claimActivity = async (worker: WorkerWithActivity) => {
+  await activityService.claim(worker);
 
   revalidatePath("/station/[id]", "page");
 };
 
-export const claimActivity = async (shipId: string, activityId: string) => {
-  await shipService.claimActivity(shipId, activityId);
-  revalidatePath("/map", "page");
+export const claimActivityForShip = async (shipId: string) => {
+  const worker = await shipService.getWorker(shipId);
+  await activityService.claim(worker);
+  revalidatePath("/station/[id]", "page");
+};
+
+export const claimActivityForStation = async (stationId: string) => {
+  const station = await stationService.get(stationId);
+  await activityService.claim(station.Worker);
+  revalidatePath("/station/[id]", "page");
 };

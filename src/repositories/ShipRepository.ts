@@ -1,11 +1,8 @@
 import { ShipData } from "@/models/ShipData";
 import { prisma } from "@/prisma";
-import { ActivityType, Prisma } from "@prisma/client";
+import { ActivityType } from "@prisma/client";
 import { InputJsonValue } from "@prisma/client/runtime/library";
-
-export type ShipWithActivity = Prisma.ShipGetPayload<{
-  include: { Worker: { include: { Activity: true } } };
-}>;
+import { ShipWithActivity } from "../models/ShipWithActivity";
 
 export default class ShipRepository {
   async delete(id: string) {
@@ -40,7 +37,9 @@ export default class ShipRepository {
   async get(id: string): Promise<ShipWithActivity> {
     return await prisma.ship.findUniqueOrThrow({
       where: { id },
-      include: { Worker: { include: { Activity: true } } },
+      include: {
+        Worker: { include: { Activity: true } },
+      },
     });
   }
 

@@ -1,3 +1,4 @@
+import { WorkerWithParent } from "@/models/WorkerWithActivity";
 import { prisma } from "@/prisma";
 import { ActivityType, Prisma } from "@prisma/client";
 
@@ -6,6 +7,13 @@ export type ActivityWithShip = Prisma.ActivityGetPayload<{
 }>;
 
 export default class ActivityRepository {
+  async getWorker(id: string): Promise<WorkerWithParent> {
+    return prisma.worker.findUniqueOrThrow({
+      where: { id },
+      include: { Ship: true, Station: true, Activity: true },
+    });
+  }
+
   async create(
     workerId: string,
     type: ActivityType,

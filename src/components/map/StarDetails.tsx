@@ -2,7 +2,7 @@ import Star from "@/models/waypoint/Star";
 import React, { ReactNode } from "react";
 import LabeledText from "../ui/LabeledText";
 import PlanetDetails from "./PlanetDetails";
-import { ShipWithActivity } from "@/repositories/ShipRepository";
+import { ShipWithActivity } from "@/models/ShipWithActivity";
 
 type Props = {
   star: Star;

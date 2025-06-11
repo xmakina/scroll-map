@@ -6,7 +6,7 @@ export default class StationService {
     return await this.repository.updateStation(id, { tugDeployed });
   }
 
-  async getStation(id: string) {
+  async get(id: string) {
     return await this.repository.getStation(id);
   }
 

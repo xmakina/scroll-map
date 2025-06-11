@@ -1,22 +1,35 @@
+"use client";
+
 import { Activity } from "@prisma/client";
-import React from "react";
-import ShipActivityDetails from "./ShipActivityDetails";
-import { claimActivity } from "@/app/map/actions";
+import React, { useState } from "react";
+import Button from "../ui/Button";
+import Countdown from "react-countdown";
 
 type Props = {
-  shipId: string;
   activity: Activity;
+  onClaim: (activityId: string) => Promise<void> | void;
 };
 
-const ActivityDetails = ({ shipId, activity }: Props) => {
-  const handleClaim = claimActivity.bind(null, shipId, activity.id);
+const ActivityDetails = ({ activity, onClaim }: Props) => {
+  const handleClaim = onClaim.bind(null, activity.id);
+  const [done, setDone] = useState(activity.endTime < new Date(Date.now()));
+
+  const updateDone = () => setDone(activity.endTime < new Date(Date.now()));
 
   return (
-    <div>
-      <ShipActivityDetails
-        activity={activity}
-        onClaim={handleClaim}
-      ></ShipActivityDetails>
+    <div className="flex flex-row gap-2 items-center">
+      <div>{activity.type}</div>
+      {done && (
+        <div>
+          <Button onClick={handleClaim}>Claim</Button>
+        </div>
+      )}
+      {!done && (
+        <div className="flex flex-row gap-2">
+          <div>Ready in</div>
+          <Countdown date={activity.endTime} onComplete={updateDone} />
+        </div>
+      )}
     </div>
   );
 };
