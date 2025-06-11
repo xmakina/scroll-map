@@ -5,16 +5,16 @@ import { ShipData } from "@/models/ShipData";
 const CanMine = (data: ShipData, availableOrders: ActivityType[]) => {
   const { mining, cargoHold } = data;
   if (mining && cargoHold) {
-    return CanSalvage(data, [...availableOrders, ActivityType.MINE]);
+    return CanScavenge(data, [...availableOrders, ActivityType.MINE]);
   }
 
-  return CanSalvage(data, availableOrders);
+  return CanScavenge(data, availableOrders);
 };
 
-const CanSalvage = (data: ShipData, availableOrders: ActivityType[]) => {
+const CanScavenge = (data: ShipData, availableOrders: ActivityType[]) => {
   const { tractorBeam } = data;
   if (tractorBeam) {
-    return [...availableOrders, ActivityType.SALVAGE];
+    return [...availableOrders, ActivityType.SCAVENGE];
   }
 
   return availableOrders;

@@ -3,7 +3,7 @@ enum ActivityType {
   DELIVER
   BUILD
   SCUTTLE
-  SALVAGE
+  SCAVENGE
 }
 
 model Activity {

@@ -5,5 +5,17 @@
     },
     "Surroundings": {
         "Plain": "You are in a flat area"
+    },
+    "ActivityDetails": {
+        "MINE": "Mining ⛏️",
+        "SCUTTLE": "Scuttling 💥",
+        "SCAVENGE": "Scavenging 🔎",
+        "BUILD": "Building 🧑‍🏭"
+    },
+    "OrderButton": {
+        "MINE": "Mine ⛏️",
+        "SCUTTLE": "Scuttle 💥",
+        "SCAVENGE": "Scavenge 🔎",
+        "BUILD": "Build 🧑‍🏭"
     }
 }

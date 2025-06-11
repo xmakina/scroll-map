@@ -24,6 +24,7 @@ export default class ActivityRepository {
       data: { activityWorkerId, type, data, endTime },
     });
   }
+  
   async deleteActivity(id: string) {
     return await prisma.activity.delete({ where: { id } });
   }
