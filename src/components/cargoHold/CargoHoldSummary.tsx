@@ -15,6 +15,9 @@ const CargoHoldSummary = ({ cargoHold }: Props) => {
             {c.type} : {c.amount}
           </div>
         ))}
+        {cargoHold.CargoContainers.length === 0 && (
+          <div className="italic">Empty</div>
+        )}
       </div>
     </div>
   );
