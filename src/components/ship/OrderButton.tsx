@@ -1,7 +1,7 @@
 import React from "react";
 import Scuttle from "../orders/Scuttle";
 import { ActivityType } from "@prisma/client";
-import Mine from "../orders/Mine";
+import Scavenge from "../orders/Scavenge";
 
 type Props = {
   order: ActivityType;
@@ -10,13 +10,15 @@ type Props = {
 
 const OrderButton = ({ order, onIssueOrder }: Props) => {
   switch (order) {
-    case "MINE":
-      return <Mine onClick={onIssueOrder} data={{ available: [] }} />;
     case "DELIVER":
+      return <></>; // Deliver is issued on the target station
     case "BUILD":
     case "SCUTTLE":
       return <Scuttle onClick={onIssueOrder} />;
     case "SCAVENGE":
+      return <Scavenge onClick={onIssueOrder} />;
+    case "MINE":
+      return <></>; // Mining is issued on the planet
   }
 };
 

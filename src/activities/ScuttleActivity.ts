@@ -5,6 +5,7 @@ import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
 import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import { IActivityHandler } from "./IActivityHandler";
+import { ActivityType } from "@prisma/client";
 
 export default class implements IActivityHandler {
   constructor(
@@ -18,7 +19,7 @@ export default class implements IActivityHandler {
     if (!activity) {
       throw "Activity not present";
     }
-    const parent = await this.activityService.get(activityWorker.id);
+    const parent = await this.activityService.getWorker(activityWorker.id);
     if (parent.Ship) {
       // TODO: Refund ship cost, place cargo hold somewhere safe?
       const shipData = parent.Ship.data as ShipData;
@@ -26,7 +27,7 @@ export default class implements IActivityHandler {
         await this.stationService.setTugDeployed(shipData.tug.stationId, false);
       }
       await this.shipService.delete(parent.Ship.id);
-      await this.activityService.deleteActivity(activity.id);
+      await this.activityService.delete(activity.id);
       return;
     }
     throw Error("Only ships can be scuttled");
@@ -36,7 +37,7 @@ export default class implements IActivityHandler {
     const duration = 3;
     await this.activityService.create(
       activityWorkerId,
-      "SCUTTLE",
+      ActivityType.SCUTTLE,
       NowAddSeconds(duration)
     );
   }

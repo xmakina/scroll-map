@@ -1,4 +1,4 @@
-import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsAndWorker";
+import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
 import React from "react";
 import StationRow from "./StationRow";
 

@@ -10,15 +10,15 @@ model CargoContainer {
   type        CargoType
   data        Json?
   amount      Int
-  hold        CargoHold @relation(fields: [cargoHoldId], references: [id])
   cargoHoldId String
+  CargoHold   CargoHold @relation(fields: [cargoHoldId], references: [id])
 }
 
 model CargoHold {
   id String @id @default(cuid())
 
-  data           Json?
-  Station        Station?
-  Ship           Ship?
-  CargoContainer CargoContainer[]
+  data            Json?
+  Station         Station?
+  Ship            Ship?
+  CargoContainers CargoContainer[]
 }

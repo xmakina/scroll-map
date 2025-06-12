@@ -2,20 +2,27 @@
 
 import React, { useState } from "react";
 import Button from "../ui/Button";
+import { useTranslations } from "next-intl";
+import { ActivityType } from "@prisma/client";
 
 type Props = {
   onClick: () => Promise<void> | void;
 };
 
 const Scuttle = ({ onClick }: Props) => {
+  const t = useTranslations("OrderButton");
   const [confirm, setConfirm] = useState(false);
 
   return (
     <div>
-      {!confirm && <Button onClick={() => setConfirm(true)}>Scuttle</Button>}
+      {!confirm && (
+        <Button onClick={() => setConfirm(true)}>
+          {t(ActivityType.SCUTTLE)}
+        </Button>
+      )}
       {confirm && (
         <Button onClick={onClick} danger>
-          Are you sure?
+          {t("Are you sure?")}
         </Button>
       )}
     </div>

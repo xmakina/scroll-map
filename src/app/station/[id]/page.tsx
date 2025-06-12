@@ -12,6 +12,7 @@ import ShipRow from "@/components/ship/ShipRow";
 import { NavigationLink } from "@/components/ui/Navigation";
 import Orders from "@/components/orders/Orders";
 import ActivityDetails from "@/components/activity/ActivityDetails";
+import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
 
 type Props = { params: Promise<{ id: string }> };
 const Page = async ({ params }: Props) => {
@@ -29,7 +30,12 @@ const Page = async ({ params }: Props) => {
         <div>
           <NavigationLink href="/map">Back</NavigationLink>
         </div>
+      </div>
+      <div>
         <div className="w-full text-center">Station {station.id}</div>
+        <div>
+          <CargoHoldSummary cargoHold={station.CargoHold} />
+        </div>
       </div>
 
       <div>

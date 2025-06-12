@@ -10,6 +10,10 @@ export default class StationService {
     return await this.repository.getStation(id);
   }
 
+  async maybeGet(id: string) {
+    return await this.repository.maybeGetStation(id);
+  }
+
   async updateStation(stationId: string, data: Partial<StationData>) {
     return await this.repository.updateStation(stationId, data);
   }

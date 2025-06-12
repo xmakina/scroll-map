@@ -10,9 +10,11 @@ import { IActivityHandler } from "@/activities/IActivityHandler";
 import { NotImplementedActivity } from "@/activities/NotImplementedActivity";
 import BuildActivity from "@/activities/BuildActivity";
 import MiningActivity from "@/activities/MiningActivity";
+import ScavengeActivity from "@/activities/ScavengeActivity";
+import CargoHoldService from "./CargoHoldService";
 
 export default class ActivityService {
-  async get(activityWorkerId: string) {
+  async getWorker(activityWorkerId: string) {
     return await this.repository.getWorker(activityWorkerId);
   }
 
@@ -27,12 +29,12 @@ export default class ActivityService {
     await this.activities[activity.type].claim(activityWorker);
   }
 
-  async deleteActivity(id: string) {
-    return await this.repository.deleteActivity(id);
+  async delete(id: string) {
+    return await this.repository.delete(id);
   }
 
-  async getActivity(id: string) {
-    return await this.repository.getActivity(id);
+  async get(id: string) {
+    return await this.repository.get(id);
   }
 
   async create(
@@ -62,14 +64,20 @@ export default class ActivityService {
   constructor(
     private readonly repository: ActivityRepository,
     shipService: ShipService,
-    stationService: StationService
+    stationService: StationService,
+    cargoHoldService: CargoHoldService
   ) {
     this.activities = {
       SCUTTLE: new ScuttleActivity(shipService, stationService, this),
       BUILD: new BuildActivity(shipService, this),
       DELIVER: new NotImplementedActivity(),
       MINE: new MiningActivity(this),
-      SCAVENGE: new NotImplementedActivity(),
+      SCAVENGE: new ScavengeActivity(
+        shipService,
+        stationService,
+        this,
+        cargoHoldService
+      ),
     };
   }
 
@@ -77,7 +85,8 @@ export default class ActivityService {
     return new ActivityService(
       await ActivityRepository.get(),
       await ShipService.get(),
-      await StationService.get()
+      await StationService.get(),
+      await CargoHoldService.get()
     );
   }
 }

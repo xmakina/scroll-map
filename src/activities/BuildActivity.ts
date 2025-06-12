@@ -16,7 +16,7 @@ export default class implements IActivityHandler {
       throw Error("No activity for this activity worker");
     }
 
-    const parent = await this.activityService.get(activityWorker.id);
+    const parent = await this.activityService.getWorker(activityWorker.id);
     if (parent.Station) {
       await this.shipService.createShip(
         parent.Station.playerId,
@@ -24,7 +24,7 @@ export default class implements IActivityHandler {
         activityWorker.Activity?.data as ShipData
       );
 
-      await this.activityService.deleteActivity(activityWorker.Activity.id);
+      await this.activityService.delete(activityWorker.Activity.id);
       return;
     }
 

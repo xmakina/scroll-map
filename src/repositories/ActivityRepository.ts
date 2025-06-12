@@ -24,12 +24,12 @@ export default class ActivityRepository {
       data: { activityWorkerId, type, data, endTime },
     });
   }
-  
-  async deleteActivity(id: string) {
+
+  async delete(id: string) {
     return await prisma.activity.delete({ where: { id } });
   }
 
-  async getActivity(id: string): Promise<ActivityWithShip> {
+  async get(id: string): Promise<ActivityWithShip> {
     return await prisma.activity.findUniqueOrThrow({
       where: { id },
       include: { ActivityWorker: { include: { Ship: true } } },

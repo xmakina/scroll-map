@@ -2,7 +2,7 @@ import { ShipData } from "@/models/ShipData";
 import { prisma } from "@/prisma";
 import { ActivityType } from "@prisma/client";
 import { InputJsonValue } from "@prisma/client/runtime/library";
-import { ShipWithActivity } from "../models/ShipWithActivity";
+import { ShipWithActivityAndCargoHold } from "../models/ShipWithActivity";
 
 export default class ShipRepository {
   async delete(id: string) {
@@ -12,7 +12,10 @@ export default class ShipRepository {
   async getAt(locationId: string) {
     return prisma.ship.findMany({
       where: { locationId },
-      include: { ActivityWorker: { include: { Activity: true } } },
+      include: {
+        ActivityWorker: { include: { Activity: true } },
+        CargoHold: { include: { CargoContainers: true } },
+      },
     });
   }
 
@@ -34,25 +37,31 @@ export default class ShipRepository {
     });
   }
 
-  async get(id: string): Promise<ShipWithActivity> {
+  async get(id: string): Promise<ShipWithActivityAndCargoHold> {
     return await prisma.ship.findUniqueOrThrow({
       where: { id },
       include: {
         ActivityWorker: { include: { Activity: true } },
+        CargoHold: { include: { CargoContainers: true } },
       },
     });
   }
 
-  async getShips(playerId: string): Promise<ShipWithActivity[]> {
+  async getShips(playerId: string): Promise<ShipWithActivityAndCargoHold[]> {
     console.log("finding ships");
     return await prisma.ship.findMany({
       where: { playerId },
-      include: { ActivityWorker: { include: { Activity: true } } },
+      include: {
+        ActivityWorker: { include: { Activity: true } },
+        CargoHold: { include: { CargoContainers: true } },
+      },
     });
   }
 
   async createShip(playerId: string, locationId: string, data: ShipData) {
-    const { id: activityWorkerId } = await prisma.activityWorker.create({ data: {} });
+    const { id: activityWorkerId } = await prisma.activityWorker.create({
+      data: {},
+    });
     const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
     console.log("creating ship repo");
     return prisma.ship.create({

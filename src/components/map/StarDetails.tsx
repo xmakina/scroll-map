@@ -2,12 +2,12 @@ import Star from "@/models/waypoint/Star";
 import React, { ReactNode } from "react";
 import LabeledText from "../ui/LabeledText";
 import PlanetDetails from "./PlanetDetails";
-import { ShipWithActivity } from "@/models/ShipWithActivity";
+import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
 
 type Props = {
   star: Star;
   onStartMining?: (planetId: string, shipId: string) => Promise<void> | void;
-  ships?: ShipWithActivity[];
+  ships?: ShipWithActivityAndCargoHold[];
 };
 
 const StarDetails = ({ star, onStartMining = () => {}, ships = [] }: Props) => {

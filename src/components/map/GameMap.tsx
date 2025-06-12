@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { LatLngExpression, LatLngTuple, Map } from "leaflet";
 import Waypoint from "@/models/waypoint/Waypoint";
 import StarMap from "./StarMap";
-import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsAndWorker";
+import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
 import TutorialStation from "@/app/map/TutorialStation";
 import StationList from "../station/StationList";
 

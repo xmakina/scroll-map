@@ -15,6 +15,7 @@
     "OrderButton": {
         "MINE": "Mine ⛏️",
         "SCUTTLE": "Scuttle 💥",
+        "Are you sure?": "Are you sure?",
         "SCAVENGE": "Scavenge 🔎",
         "BUILD": "Build 🧑‍🏭"
     }

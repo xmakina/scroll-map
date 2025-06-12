@@ -1,5 +1,5 @@
 import { StationData } from "@/models/StationData";
-import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsAndWorker";
+import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
 import { prisma } from "@/prisma";
 
 export default class StationRepository {
@@ -15,6 +15,18 @@ export default class StationRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         Components: true,
+        CargoHold: { include: { CargoContainers: true } },
+      },
+    });
+  }
+
+  async maybeGetStation(id: string) {
+    return prisma.station.findUnique({
+      where: { id },
+      include: {
+        ActivityWorker: { include: { Activity: true } },
+        Components: true,
+        CargoHold: { include: { CargoContainers: true } },
       },
     });
   }
@@ -27,6 +39,7 @@ export default class StationRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         Components: true,
+        CargoHold: { include: { CargoContainers: true } },
       },
     });
   }

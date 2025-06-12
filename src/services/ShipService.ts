@@ -1,33 +1,7 @@
 import ShipRepository from "@/repositories/ShipRepository";
-import { ActivityType } from "@prisma/client";
 import { ShipData } from "@/models/ShipData";
+import { ConstructOrders } from "./ConstructOrders";
 
-const CanMine = (data: ShipData, availableOrders: ActivityType[]) => {
-  const { mining, cargoHold } = data;
-  if (mining && cargoHold) {
-    return CanScavenge(data, [...availableOrders, ActivityType.MINE]);
-  }
-
-  return CanScavenge(data, availableOrders);
-};
-
-const CanScavenge = (data: ShipData, availableOrders: ActivityType[]) => {
-  const { tractorBeam } = data;
-  if (tractorBeam) {
-    return [...availableOrders, ActivityType.SCAVENGE];
-  }
-
-  return availableOrders;
-};
-
-const ConstructOrders = (data?: ShipData) => {
-  const orders: ActivityType[] = ["SCUTTLE"];
-  if (!data) {
-    return orders;
-  }
-
-  return CanMine(data, orders);
-};
 
 export default class ShipService {
   async getActivityWorker(shipId: string) {

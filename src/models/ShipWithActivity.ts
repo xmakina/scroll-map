@@ -1,5 +1,8 @@
 import { Prisma } from "@prisma/client";
 
-export type ShipWithActivity = Prisma.ShipGetPayload<{
-  include: { ActivityWorker: { include: { Activity: true } } };
+export type ShipWithActivityAndCargoHold = Prisma.ShipGetPayload<{
+  include: {
+    ActivityWorker: { include: { Activity: true } };
+    CargoHold: { include: { CargoContainers: true } };
+  };
 }>;
