@@ -7,6 +7,7 @@ import Waypoint from "@/models/waypoint/Waypoint";
 import { getWaypoints } from "@/utils/getWaypoints";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
 import MapFilters, { MapFilter } from "./MapFilters";
+import StarDetails from "./StarDetails";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
@@ -94,6 +95,11 @@ const StarMap = ({
       </div>
       <div>
         <MapFilters onFilterChanged={handleFilterChanged} />
+      </div>
+      <div>
+        {selected?.stars.map((s) => (
+          <StarDetails key={s.id} star={s} />
+        ))}
       </div>
     </div>
   );

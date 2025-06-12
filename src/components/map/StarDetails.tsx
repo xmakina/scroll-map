@@ -24,15 +24,19 @@ const StarDetails = ({ star, onStartMining = () => {}, ships = [] }: Props) => {
           {star.temperature}K
         </LabeledText>
       </div>
-      <div className="flex flex-col gap-2">
-        {star.planets.map((p) => (
-          <PlanetDetails
-            key={p.id}
-            planet={p}
-            onStartMining={onStartMining.bind(null, p.id)}
-            ships={ships}
-          />
-        ))}
+      <div className="flex flex-col items-center">
+        <div>Planets:</div>
+        <div className="flex flex-col gap-2">
+          {star.planets.map((p) => (
+            <PlanetDetails
+              key={p.id}
+              planet={p}
+              onStartMining={onStartMining.bind(null, p.id)}
+              ships={ships}
+            />
+          ))}
+          {star.planets.length === 0 && <div className="italic">Empty</div>}
+        </div>
       </div>
     </div>
   );

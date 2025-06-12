@@ -64,6 +64,18 @@ const GameMap = ({
     return await onDeployStation(details.id);
   }
 
+  const handleZoomToStation = (stationId: string) => {
+    const station = stations.find((s) => s.id === stationId);
+    if (!station) {
+      throw Error("Station not found");
+    }
+
+    const waypoint = new Waypoint(station?.positionX, station?.positionY);
+    setDetails(waypoint);
+    setZoom(8);
+    setPosix([station.positionY, station.positionX]);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row-reverse lg:mt-4 gap-4 justify-between w-full px-8">
       <div className="flex flex-col w-full">
@@ -76,7 +88,7 @@ const GameMap = ({
         />
       </div>
       <div className="flex flex-col grow w-full justify-center items-center">
-        <StationList stations={stations} />
+        <StationList stations={stations} onZoom={handleZoomToStation} />
         {stations.length === 0 && (
           <TutorialStation
             waypoint={details}

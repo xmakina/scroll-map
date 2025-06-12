@@ -7,6 +7,6 @@ model Ship {
   ActivityWorker   ActivityWorker @relation(fields: [activityWorkerId], references: [id], onDelete: Cascade)
   Journey          Journey[]
   data             Json
-  cargoHoldId      String         @unique
-  CargoHold        CargoHold      @relation(fields: [cargoHoldId], references: [id], onDelete: Cascade)
+  cargoHoldId      String?        @unique
+  CargoHold        CargoHold?     @relation(fields: [cargoHoldId], references: [id], onDelete: Cascade)
 }

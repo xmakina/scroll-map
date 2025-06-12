@@ -57,6 +57,7 @@ const Page = async ({ params }: Props) => {
             <Orders
               availableOrders={availableOrders}
               onIssueOrder={onIssueOrder}
+              shipId={ship.id}
             />
           );
 

@@ -58,12 +58,22 @@ export default class ShipRepository {
     });
   }
 
+  private async createCargoHold(data: ShipData) {
+    if (data.cargoHold) {
+      const { id } = await prisma.cargoHold.create({ data: {} });
+      return id;
+    }
+
+    return;
+  }
+
   async createShip(playerId: string, locationId: string, data: ShipData) {
     const { id: activityWorkerId } = await prisma.activityWorker.create({
       data: {},
     });
-    const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
-    console.log("creating ship repo");
+
+    const cargoHoldId = await this.createCargoHold(data);
+
     return prisma.ship.create({
       data: {
         playerId,
