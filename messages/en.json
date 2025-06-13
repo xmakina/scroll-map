@@ -18,5 +18,12 @@
         "Are you sure?": "Are you sure?",
         "SCAVENGE": "Scavenge 🔎",
         "BUILD": "Build 🧑‍🏭"
+    },
+    "StationComponentBuilding": {
+        "Build Requirements for": "Build Requirements for",
+        "lvl {level}": "(lvl {level})",
+        "SMELTER": "Smelter",
+        "VAULT": "Vault",
+        "HANGAR": "Hangar"
     }
 }

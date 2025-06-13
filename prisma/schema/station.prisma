@@ -1,15 +1,15 @@
-enum ComponentType {
+enum StationComponentType {
+  HANGAR
   SMELTER
   VAULT
-  CONSTRUCTION_SITE
 }
 
-model Component {
-  id        String        @id @default(cuid())
-  type      ComponentType
+model StationComponent {
+  id        String               @id @default(cuid())
+  type      StationComponentType
   data      Json?
   stationId String?
-  Station   Station?      @relation(fields: [stationId], references: [id])
+  Station   Station?             @relation(fields: [stationId], references: [id])
 }
 
 model Station {
@@ -21,7 +21,7 @@ model Station {
   cargoHoldId      String         @unique
   CargoHold        CargoHold      @relation(fields: [cargoHoldId], references: [id], onDelete: Cascade)
 
-  Components Component[]
+  Components StationComponent[]
 
   positionX Int
   positionY Int

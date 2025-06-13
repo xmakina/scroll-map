@@ -34,6 +34,9 @@ const Page = async ({ params }: Props) => {
       <div>
         <div className="w-full text-center">Station {station.id}</div>
         <div>
+          <NavigationLink href={`./${station.id}/build`}>Build</NavigationLink>
+        </div>
+        <div>
           <CargoHoldSummary cargoHold={station.CargoHold} />
         </div>
       </div>
