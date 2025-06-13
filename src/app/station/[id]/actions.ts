@@ -14,6 +14,7 @@ const activityService = await ActivityService.get();
 export const deployTug = async (stationId: string) => {
   const station = await stationService.get(stationId);
   await activityService.begin(station.ActivityWorker, ActivityType.BUILD, {
+    dataType: "ShipData",
     tractorBeam: true,
     tug: {
       stationId,

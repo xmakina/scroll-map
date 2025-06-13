@@ -3,8 +3,9 @@ import { CargoContainer, CargoType } from "@prisma/client";
 
 export default class {
   async removeFrom(id: string, amount: number) {
-    return await this.addTo(id, amount*-1)
+    return await this.addTo(id, amount * -1);
   }
+
   async addTo(id: string, amount: number) {
     return await prisma.cargoContainer.update({
       where: { id },

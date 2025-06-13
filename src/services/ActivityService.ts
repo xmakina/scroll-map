@@ -12,6 +12,8 @@ import BuildActivity from "@/activities/BuildActivity";
 import MiningActivity from "@/activities/MiningActivity";
 import ScavengeActivity from "@/activities/ScavengeActivity";
 import CargoHoldService from "./CargoHoldService";
+import { UnknownData } from "@/models/UnknownData";
+import StationComponentService from "./StationComponentService";
 
 export default class ActivityService {
   async getWorker(activityWorkerId: string) {
@@ -37,24 +39,24 @@ export default class ActivityService {
     return await this.repository.get(id);
   }
 
-  async create(
+  async create<T extends object>(
     activityWorkerId: string,
     activityType: ActivityType,
     endTime: Date,
-    data?: object
+    data?: T & UnknownData
   ) {
     return await this.repository.create(
       activityWorkerId,
       activityType,
       endTime,
-      data
+      data ?? { dataType: "None" }
     );
   }
 
-  async begin(
+  async begin<T extends object>(
     activityWorker: ActivityWorker,
     type: ActivityType,
-    data?: object
+    data?: T & UnknownData
   ) {
     return await this.activities[type].begin(activityWorker.id, data);
   }
@@ -65,11 +67,12 @@ export default class ActivityService {
     private readonly repository: ActivityRepository,
     shipService: ShipService,
     stationService: StationService,
-    cargoHoldService: CargoHoldService
+    cargoHoldService: CargoHoldService,
+    stationComponentService: StationComponentService
   ) {
     this.activities = {
       SCUTTLE: new ScuttleActivity(shipService, stationService, this),
-      BUILD: new BuildActivity(shipService, this),
+      BUILD: new BuildActivity(shipService, stationComponentService, this),
       DELIVER: new NotImplementedActivity(),
       MINE: new MiningActivity(this),
       SCAVENGE: new ScavengeActivity(
@@ -86,7 +89,8 @@ export default class ActivityService {
       await ActivityRepository.get(),
       await ShipService.get(),
       await StationService.get(),
-      await CargoHoldService.get()
+      await CargoHoldService.get(),
+      await StationComponentService.get()
     );
   }
 }

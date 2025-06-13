@@ -1,3 +1,4 @@
+import { UnknownData } from "@/models/UnknownData";
 import { ActivityWorkerWithParent } from "@/models/WorkerWithActivity";
 import { prisma } from "@/prisma";
 import { ActivityType, Prisma } from "@prisma/client";
@@ -14,11 +15,11 @@ export default class ActivityRepository {
     });
   }
 
-  async create(
+  async create<T extends object>(
     activityWorkerId: string,
     type: ActivityType,
     endTime: Date,
-    data: object = {}
+    data: T & UnknownData
   ) {
     return await prisma.activity.create({
       data: { activityWorkerId, type, data, endTime },

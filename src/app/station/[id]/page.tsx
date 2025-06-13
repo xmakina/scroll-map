@@ -13,6 +13,7 @@ import { NavigationLink } from "@/components/ui/Navigation";
 import Orders from "@/components/orders/Orders";
 import ActivityDetails from "@/components/activity/ActivityDetails";
 import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
+import StationComponents from "@/components/station/StationComponents";
 
 type Props = { params: Promise<{ id: string }> };
 const Page = async ({ params }: Props) => {
@@ -31,10 +32,14 @@ const Page = async ({ params }: Props) => {
           <NavigationLink href="/map">Back</NavigationLink>
         </div>
       </div>
-      <div>
+      <div className="flex flex-col gap-4 items-center border border-white rounded-lg p-2">
+        <div className="italic">Station Details</div>
         <div className="w-full text-center">Station {station.id}</div>
         <div>
           <NavigationLink href={`./${station.id}/build`}>Build</NavigationLink>
+        </div>
+        <div>
+          <StationComponents components={station.Components} />
         </div>
         <div>
           <CargoHoldSummary cargoHold={station.CargoHold} />
@@ -49,29 +54,35 @@ const Page = async ({ params }: Props) => {
           />
         )}
       </div>
-      <div className="flex flex-row justify-center">
-        {!data.tugDeployed && <TugManager onDeployTug={handleDeployTug} />}
-        {ships.map(async (ship) => {
-          const availableOrders = await getOrders(ship.id);
-          const onIssueOrder = handleOrder.bind(null, ship.id);
-          const handleClaimActivity = claimActivityForShip.bind(null, ship.id);
+      <div className="flex flex-col items-center gap-2">
+        <div>Ships</div>
+        <div className="flex flex-row justify-center">
+          {!data.tugDeployed && <TugManager onDeployTug={handleDeployTug} />}
+          {ships.map(async (ship) => {
+            const availableOrders = await getOrders(ship.id);
+            const onIssueOrder = handleOrder.bind(null, ship.id);
+            const handleClaimActivity = claimActivityForShip.bind(
+              null,
+              ship.id
+            );
 
-          const orders = (
-            <Orders
-              availableOrders={availableOrders}
-              onIssueOrder={onIssueOrder}
-              shipId={ship.id}
-            />
-          );
+            const orders = (
+              <Orders
+                availableOrders={availableOrders}
+                onIssueOrder={onIssueOrder}
+                shipId={ship.id}
+              />
+            );
 
-          return (
-            <ShipRow
-              orders={orders}
-              ship={ship}
-              onClaimActivity={handleClaimActivity}
-            />
-          );
-        })}
+            return (
+              <ShipRow
+                orders={orders}
+                ship={ship}
+                onClaimActivity={handleClaimActivity}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

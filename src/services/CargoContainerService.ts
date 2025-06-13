@@ -2,6 +2,10 @@ import CargoContainerRepository from "@/repositories/CargoContainerRepository";
 import { CargoContainer, CargoType } from "@prisma/client";
 
 export default class {
+  async removeFrom(container: CargoContainer, amount: number) {
+    return await this.repository.removeFrom(container.id, amount);
+  }
+
   async addTo(container: CargoContainer, amount: number) {
     return await this.repository.addTo(container.id, amount);
   }

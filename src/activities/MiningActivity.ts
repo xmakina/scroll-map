@@ -3,7 +3,6 @@ import { IActivityHandler } from "./IActivityHandler";
 import PlanetFromId from "@/utils/PlanetFromId";
 import ActivityService from "@/services/ActivityService";
 import { NowAddSeconds } from "@/utils/NowAddSeconds";
-import { MiningData } from "@/models/MiningData";
 
 export default class implements IActivityHandler {
   constructor(private readonly activityService: ActivityService) {}
@@ -31,7 +30,7 @@ export default class implements IActivityHandler {
           activityWorkerId,
           "MINE",
           NowAddSeconds(duration),
-          { type: target.type } as MiningData
+          { dataType: "MiningData", type: target.type }
         );
 
         return;

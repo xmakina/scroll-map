@@ -1,25 +1,13 @@
 "use client";
 
-import {
-  CargoType,
-  StationComponent,
-  StationComponentType,
-} from "@prisma/client";
+import { StationComponent, StationComponentType } from "@prisma/client";
 import React from "react";
 import Button from "../ui/Button";
-import { BuildRequirements } from "@/models/BuildRequirements";
+import { StationComponentRequirements } from "@/models/StationComponentRequirements";
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import NeededAvailable from "../ui/NeededAvailable";
-import { StationComponentData } from "@/models/StationComponents";
-
-const getContained = (
-  cargoHold: CargoHoldWithContainers,
-  cargoType: CargoType
-) =>
-  cargoHold.CargoContainers.filter((cont) => cont.type === cargoType).reduce(
-    (acc, cont) => acc + cont.amount,
-    0
-  );
+import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
+import getCostBreakdowns from "@/utils/getCostBreakdowns";
 
 type Props = {
   level: number;
@@ -30,12 +18,6 @@ type Props = {
     type: StationComponentType,
     level: number
   ) => Promise<void> | void;
-};
-
-type CostBreakdown = {
-  cargoType: CargoType;
-  required: number;
-  available: number;
 };
 
 const BuildComponent = ({
@@ -51,39 +33,25 @@ const BuildComponent = ({
     level
   );
 
-  const target = BuildRequirements[componentType][level];
-  const requiredCargoTypes = Object.keys(target.Cost).map(
-    (c) => c as CargoType
+  const target = StationComponentRequirements[componentType][level];
+
+  const requirementBreakdowns = getRequirementsBreakdown(
+    target,
+    stationComponents
   );
 
-  const costBreakdowns: CostBreakdown[] = requiredCargoTypes.map((ct) => ({
-    cargoType: ct,
-    required: target.Cost[ct] || 0,
-    available: getContained(cargoHold, ct),
-  }));
-
-  const requiredComponents = Object.keys(target.Prerequisites).map(
-    (p) => p as StationComponentType
-  );
-
-  const requirementBreakdowns = requiredComponents.map((p) => ({
-    componentType: p,
-    required: target.Prerequisites[p] || 0,
-    available:
-      (
-        stationComponents.find((s) => s.type === p)
-          ?.data as StationComponentData
-      )?.level || 0,
-  }));
-
+  const costBreakdowns = getCostBreakdowns(target, cargoHold);
   const canAfford = costBreakdowns.every((b) => b.available >= b.required);
   const hasRequired = requirementBreakdowns.every(
     (b) => b.available >= b.required
   );
 
   return (
-    <div>
+    <div className="flex flex-col border border-white p-2 rounded-md items-center">
       <div>
+        {componentType} {level}
+      </div>
+      <div className="flex flex-col justify-between">
         {costBreakdowns.map((cb) => (
           <div key={cb.cargoType}>
             <NeededAvailable needed={cb.required} available={cb.available}>

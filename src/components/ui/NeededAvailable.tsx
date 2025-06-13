@@ -9,7 +9,7 @@ type Props = {
 
 const NeededAvailable = ({ needed, available, children }: Props) => {
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-3 justify-between">
       <div>{children}</div>
       <div className="flex flex-row">
         <div

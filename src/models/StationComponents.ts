@@ -6,5 +6,6 @@ export type StationComponentRequirement = {
 };
 
 export type StationComponentData = {
+  type: StationComponentType;
   level: number;
 };

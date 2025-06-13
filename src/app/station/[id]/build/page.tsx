@@ -3,7 +3,7 @@ import React from "react";
 import { getStation } from "../queries";
 import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
 import { startBuilding } from "./actions";
-import StationComponents from "@/components/station/StationComponents";
+import BuildStationComponents from "@/components/station/BuildStationComponents";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -21,7 +21,7 @@ const Page = async ({ params }: Props) => {
       </div>
       <div>Build Page for station {id}</div>
       <CargoHoldSummary cargoHold={station.CargoHold} />
-      <StationComponents
+      <BuildStationComponents
         stationComponents={station.Components}
         cargoHold={station.CargoHold}
         onBuildComponent={handleBuild}

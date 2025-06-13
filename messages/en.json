@@ -25,5 +25,9 @@
         "SMELTER": "Smelter",
         "VAULT": "Vault",
         "HANGAR": "Hangar"
+    },
+    "ComponentDetails": {
+        "SMELTER": "Smelter",
+        "level {level}": "lvl {level}"
     }
 }

@@ -11,6 +11,7 @@ import StationService from "@/services/StationService";
 import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
 import CargoHoldService from "@/services/CargoHoldService";
 import { findLowestCargo } from "../utils/findLowestCargo";
+import { UnknownData } from "@/models/UnknownData";
 
 export const basicResources = [CargoType.GAS, CargoType.ICE, CargoType.ORE];
 
@@ -31,12 +32,14 @@ export default class implements IActivityHandler {
     }
 
     const { Ship: ship } = parent;
-    if (ship) {
+    if (ship && ship.cargoHoldId) {
       const cargoHold = await this.cargoHoldService.get(ship.cargoHoldId);
       return findLowestCargo(cargoHold, basicResources);
     }
 
-    throw Error("Scavenge can only be done from a ship or station");
+    throw Error(
+      "Scavenge can only be done from a ship with a cargo hold or a station"
+    );
   }
 
   async findStation(
@@ -80,7 +83,10 @@ export default class implements IActivityHandler {
     await this.activityService.delete(activity.id);
   }
 
-  async begin(activityWorkerId: string, data?: object): Promise<void> {
+  async begin<T extends object>(
+    activityWorkerId: string,
+    data?: T & UnknownData
+  ): Promise<void> {
     await this.activityService.create(
       activityWorkerId,
       ActivityType.SCAVENGE,

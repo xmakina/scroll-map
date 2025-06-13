@@ -1,7 +1,7 @@
 import { StationComponentType } from "@prisma/client";
 import { StationComponentRequirement } from "./StationComponents";
 
-export const BuildRequirements: {
+export const StationComponentRequirements: {
   [key in StationComponentType]: {
     [level: number]: StationComponentRequirement;
   };
