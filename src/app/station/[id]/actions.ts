@@ -19,6 +19,13 @@ export const issueShipOrder = async (
   revalidatePath("/station/[id]", "page");
 };
 
+export const issueStationOrder = async (
+  stationId: string,
+  activityType: ActivityType
+) => {
+  console.log(`ordering station ${stationId} to ${activityType}`);
+};
+
 export const claimActivityForShip = async (shipId: string) => {
   const activityWorker = await shipService.getActivityWorker(shipId);
   await activityService.claim(activityWorker);

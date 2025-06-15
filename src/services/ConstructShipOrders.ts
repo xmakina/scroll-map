@@ -28,7 +28,7 @@ const CanDeliver = (data: ShipData, availableOrders: ActivityType[]) => {
   return availableOrders;
 };
 
-export const ConstructOrders = (data?: ShipData) => {
+const ConstructShipOrders = (data?: ShipData) => {
   const orders: ActivityType[] = ["SCUTTLE"];
   if (!data) {
     return orders;
@@ -36,3 +36,5 @@ export const ConstructOrders = (data?: ShipData) => {
 
   return CanMine(data, orders);
 };
+
+export default ConstructShipOrders;

@@ -8,6 +8,10 @@ const shipService = await ShipService.get();
 
 export const getStation = async (id: string) => await stationService.get(id);
 
+export const getStationOrders = async (id: string) =>
+  await stationService.getOrders(id);
+
 export const getShips = async (id: string) => await shipService.getAt(id);
 
-export const getOrders = async (id: string) => await shipService.getOrders(id);
+export const getShipOrders = async (id: string) =>
+  await shipService.getOrders(id);

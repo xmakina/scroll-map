@@ -3,9 +3,17 @@ import { StationData } from "@/models/StationData";
 import StationRepository from "@/repositories/StationRepository";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
 import CargoHoldService from "./CargoHoldService";
+import ConstructStationOrders from "./ConstructStationOrders";
 
 const cargoHoldService = await CargoHoldService.get();
 export default class StationService {
+  async getOrders(id: string) {
+    const station = await this.repository.get(id);
+    const orders = ConstructStationOrders(station);
+
+    return orders;
+  }
+
   async consumeFromCargoHold(id: string, cost: Cost) {
     const station = await this.get(id);
     const costBreakdowns = getCostBreakdowns(cost, station.CargoHold);
@@ -20,16 +28,12 @@ export default class StationService {
     );
   }
 
-  async setTugDeployed(id: string, tugDeployed: boolean) {
-    return await this.repository.updateStation(id, { tugDeployed });
-  }
-
   async get(id: string) {
-    return await this.repository.getStation(id);
+    return await this.repository.get(id);
   }
 
   async maybeGet(id: string) {
-    return await this.repository.maybeGetStation(id);
+    return await this.repository.maybeGet(id);
   }
 
   async updateStation(stationId: string, data: Partial<StationData>) {

@@ -1,7 +1,6 @@
 import ShipRepository from "@/repositories/ShipRepository";
 import { ShipData } from "@/models/ShipData";
-import { ConstructOrders } from "./ConstructOrders";
-
+import ConstructShipOrders from "./ConstructShipOrders";
 
 export default class ShipService {
   async getActivityWorker(shipId: string) {
@@ -19,7 +18,7 @@ export default class ShipService {
 
   async getOrders(id: string) {
     const ship = await this.repository.get(id);
-    const orders = ConstructOrders(ship.data as ShipData);
+    const orders = ConstructShipOrders(ship.data as ShipData);
 
     return orders;
   }
