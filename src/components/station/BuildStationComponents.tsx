@@ -14,17 +14,19 @@ type Props = {
     type: StationComponentType,
     level: number
   ) => Promise<void> | void;
+  isBusy: boolean;
 };
 
 const BuildStationComponents = ({
   stationComponents,
   cargoHold,
   onBuildComponent,
+  isBusy,
 }: Props) => {
   const currentLevel: { [key in StationComponentType]?: number } =
     stationComponents.reduce((acc, s) => {
       const data = s.data as StationComponentData;
-      return { ...acc, s: data.level };
+      return { ...acc, [s.type]: data.level };
     }, {});
 
   return (
@@ -41,6 +43,7 @@ const BuildStationComponents = ({
               cargoHold={cargoHold}
               stationComponents={stationComponents}
               onBuildComponent={onBuildComponent}
+              isBusy={isBusy}
             />
           ))}
       </div>

@@ -28,6 +28,7 @@ const Page = async ({ params }: Props) => {
         stationComponents={station.Components}
         cargoHold={station.CargoHold}
         onBuildComponent={handleBuildComponent}
+        isBusy={!!station.ActivityWorker.Activity}
       />
       <BuildStationShips
         stationComponents={station.Components}

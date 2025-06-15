@@ -34,11 +34,10 @@ export default class implements IActivityHandler {
   }
 
   async begin(activityWorkerId: string) {
-    const duration = 3;
     await this.activityService.create(
       activityWorkerId,
       ActivityType.SCUTTLE,
-      NowAddSeconds(duration)
+      NowAddSeconds(3)
     );
   }
 }

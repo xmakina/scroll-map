@@ -18,6 +18,7 @@ type Props = {
     type: StationComponentType,
     level: number
   ) => Promise<void> | void;
+  isBusy: boolean;
 };
 
 const BuildComponent = ({
@@ -26,6 +27,7 @@ const BuildComponent = ({
   stationComponents,
   cargoHold,
   onBuildComponent,
+  isBusy,
 }: Props) => {
   const handleBuildComponents = onBuildComponent.bind(
     null,
@@ -60,7 +62,7 @@ const BuildComponent = ({
           </div>
         ))}
       </div>
-      {canAfford && hasRequired && (
+      {canAfford && hasRequired && !isBusy && (
         <Button onClick={handleBuildComponents}>
           Build {componentType} lvl {level}
         </Button>

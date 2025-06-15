@@ -55,22 +55,22 @@ const Page = async ({ params }: Props) => {
         <div className="flex flex-col gap-4 items-center border-b border-white rounded-lg p-2">
           <div>Station Activities</div>
           <div className="flex flex-row">
-            <Orders
-              availableOrders={availableOrders}
-              onIssueOrder={handleStationOrder}
-            />
+            {station.ActivityWorker.Activity && (
+              <ActivityDetails
+                activity={station.ActivityWorker.Activity}
+                onClaim={claimActivityForStation.bind(null, station.id)}
+              />
+            )}
+            {!station.ActivityWorker.Activity && (
+              <Orders
+                availableOrders={availableOrders}
+                onIssueOrder={handleStationOrder}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      <div>
-        {station.ActivityWorker.Activity && (
-          <ActivityDetails
-            activity={station.ActivityWorker.Activity}
-            onClaim={claimActivityForStation.bind(null, station.id)}
-          />
-        )}
-      </div>
       <div className="flex flex-col items-center gap-2">
         <div>Ships</div>
         <div className="flex flex-row justify-center">

@@ -23,7 +23,9 @@ export const issueStationOrder = async (
   stationId: string,
   activityType: ActivityType
 ) => {
-  console.log(`ordering station ${stationId} to ${activityType}`);
+  const station = await stationService.get(stationId);
+  await activityService.begin(station.ActivityWorker, activityType);
+  revalidatePath("/station/[id]", "page");
 };
 
 export const claimActivityForShip = async (shipId: string) => {

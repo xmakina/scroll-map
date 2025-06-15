@@ -1,40 +1,38 @@
 import { ShipData } from "@/models/ShipData";
 import { ActivityType } from "@prisma/client";
 
-const CanMine = (data: ShipData, availableOrders: ActivityType[]) => {
-  const { mining, cargoHold } = data;
-  if (mining && cargoHold) {
-    return CanScavenge(data, [...availableOrders, ActivityType.MINE]);
-  }
-
-  return CanScavenge(data, availableOrders);
+type PossibleOrders = {
+  [key in ActivityType]: (data: ShipData) => boolean;
 };
 
-const CanScavenge = (data: ShipData, availableOrders: ActivityType[]) => {
-  const { tractorBeam } = data;
-  if (tractorBeam) {
-    return CanDeliver(data, [...availableOrders, ActivityType.SCAVENGE]);
-  }
+const PossibilityList: PossibleOrders = {
+  MINE: function (data: ShipData): boolean {
+    const { mining, cargoHold } = data;
+    return !!(mining && cargoHold);
+  },
 
-  return CanDeliver(data, availableOrders);
+  DELIVER: function (data: ShipData): boolean {
+    const { engine, cargoHold } = data;
+    return !!(engine && cargoHold);
+  },
+
+  BUILD: function (): boolean {
+    return false;
+  },
+
+  SCUTTLE: function (): boolean {
+    return true;
+  },
+
+  SCAVENGE: function (data: ShipData): boolean {
+    const { tractorBeam } = data;
+    return !!tractorBeam;
+  },
 };
 
-const CanDeliver = (data: ShipData, availableOrders: ActivityType[]) => {
-  const { engine } = data;
-  if ((engine?.range || 0) > 0) {
-    return [...availableOrders, ActivityType.DELIVER];
-  }
-
-  return availableOrders;
-};
-
-const ConstructShipOrders = (data?: ShipData) => {
-  const orders: ActivityType[] = ["SCUTTLE"];
-  if (!data) {
-    return orders;
-  }
-
-  return CanMine(data, orders);
-};
-
-export default ConstructShipOrders;
+export default function (data: ShipData): ActivityType[] {
+  const activityTypeKeys = Object.keys(ActivityType).map(
+    (a) => a as ActivityType
+  );
+  return activityTypeKeys.filter((a) => PossibilityList[a](data));
+}

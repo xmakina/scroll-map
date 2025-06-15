@@ -90,7 +90,7 @@ export default class implements IActivityHandler {
     await this.activityService.create(
       activityWorkerId,
       ActivityType.SCAVENGE,
-      NowAddSeconds(3),
+      NowAddSeconds(1),
       data
     );
   }
