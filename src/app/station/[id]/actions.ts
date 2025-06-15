@@ -1,6 +1,5 @@
 "use server";
 
-import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
@@ -11,34 +10,12 @@ const shipService = await ShipService.get();
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
 
-export const deployTug = async (stationId: string) => {
-  const station = await stationService.get(stationId);
-  await activityService.begin(station.ActivityWorker, ActivityType.BUILD, {
-    dataType: "ShipData",
-    tractorBeam: true,
-    tug: {
-      stationId,
-    },
-  });
-
-  await stationService.updateStation(stationId, { tugDeployed: true });
-  revalidatePath("/station/[id]", "page");
-};
-
-export const issueOrder = async (
+export const issueShipOrder = async (
   shipId: string,
   activityType: ActivityType
 ) => {
   const ship = await shipService.get(shipId);
   await activityService.begin(ship.ActivityWorker, activityType);
-  revalidatePath("/station/[id]", "page");
-};
-
-export const claimActivity = async (
-  activityWorker: ActivityWorkerWithActivity
-) => {
-  await activityService.claim(activityWorker);
-
   revalidatePath("/station/[id]", "page");
 };
 

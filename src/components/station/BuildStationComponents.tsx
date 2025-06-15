@@ -1,11 +1,11 @@
 "use client";
 
-import { StationComponentRequirements } from "@/models/StationComponentRequirements";
-import { StationComponentData } from "@/models/StationComponents";
+import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 import { StationComponent, StationComponentType } from "@prisma/client";
 import React from "react";
 import BuildComponent from "./BuildComponent";
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
+import StationComponentData from "@/models/StationComponentsData";
 
 type Props = {
   stationComponents: StationComponent[];
@@ -28,23 +28,21 @@ const BuildStationComponents = ({
     }, {});
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <div>Components</div>
-      <div>
-        <ul>
-          {Object.keys(StationComponentRequirements)
-            .map((k) => k as StationComponentType)
-            .map((b) => (
-              <BuildComponent
-                key={b}
-                level={currentLevel[b] || 1}
-                componentType={b}
-                cargoHold={cargoHold}
-                stationComponents={stationComponents}
-                onBuildComponent={onBuildComponent}
-              />
-            ))}
-        </ul>
+      <div className="flex flex-row gap-4">
+        {Object.keys(StationComponentCostAndRequirements)
+          .map((k) => k as StationComponentType)
+          .map((b) => (
+            <BuildComponent
+              key={b}
+              level={(currentLevel[b] || 0) + 1}
+              componentType={b}
+              cargoHold={cargoHold}
+              stationComponents={stationComponents}
+              onBuildComponent={onBuildComponent}
+            />
+          ))}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
 import { StationComponent, StationComponentType } from "@prisma/client";
 import React from "react";
 import Button from "../ui/Button";
-import { StationComponentRequirements } from "@/models/StationComponentRequirements";
+import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import NeededAvailable from "../ui/NeededAvailable";
 import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
@@ -33,14 +33,14 @@ const BuildComponent = ({
     level
   );
 
-  const target = StationComponentRequirements[componentType][level];
+  const target = StationComponentCostAndRequirements[componentType][level];
 
   const requirementBreakdowns = getRequirementsBreakdown(
     target,
     stationComponents
   );
 
-  const costBreakdowns = getCostBreakdowns(target, cargoHold);
+  const costBreakdowns = getCostBreakdowns(target.cost, cargoHold);
   const canAfford = costBreakdowns.every((b) => b.available >= b.required);
   const hasRequired = requirementBreakdowns.every(
     (b) => b.available >= b.required

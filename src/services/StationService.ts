@@ -1,4 +1,4 @@
-import { StationComponentRequirement } from "@/models/StationComponents";
+import { Cost } from "@/models/CostAndRequirements/CostAndRequirements";
 import { StationData } from "@/models/StationData";
 import StationRepository from "@/repositories/StationRepository";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
@@ -6,12 +6,9 @@ import CargoHoldService from "./CargoHoldService";
 
 const cargoHoldService = await CargoHoldService.get();
 export default class StationService {
-  async beginBuildComponent(
-    id: string,
-    requirements: StationComponentRequirement
-  ) {
+  async consumeFromCargoHold(id: string, cost: Cost) {
     const station = await this.get(id);
-    const costBreakdowns = getCostBreakdowns(requirements, station.CargoHold);
+    const costBreakdowns = getCostBreakdowns(cost, station.CargoHold);
     const canAfford = costBreakdowns.every((b) => b.available >= b.required);
     if (!canAfford) {
       throw Error("You cannot afford this component");
