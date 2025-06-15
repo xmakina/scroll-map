@@ -1,4 +1,6 @@
+import { Cost } from "@/models/CostAndRequirements/CostAndRequirements";
 import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
+import getCostBreakdowns from "@/utils/getCostBreakdowns";
 import { ActivityType, StationComponentType } from "@prisma/client";
 
 type PossibleOrders = {
@@ -22,6 +24,19 @@ const PossibilityList: PossibleOrders = {
     return !station.Components.some(
       (c) => c.type === StationComponentType.HANGAR
     );
+  },
+  SMELT: function (station: StationWithComponentsAndWorker): boolean {
+    const smelterMinimum: Cost = { ORE: 500, GAS: 500 };
+    const hasSmelter = station.Components.some(
+      (c) => c.type === StationComponentType.SMELTER
+    );
+
+    const hasMinimum = getCostBreakdowns(
+      smelterMinimum,
+      station.CargoHold
+    ).every((cb) => cb.available >= cb.required);
+
+    return hasSmelter && hasMinimum;
   },
 };
 

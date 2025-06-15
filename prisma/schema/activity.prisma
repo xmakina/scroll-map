@@ -4,6 +4,7 @@ enum ActivityType {
   BUILD
   SCUTTLE
   SCAVENGE
+  SMELT
 }
 
 model Activity {

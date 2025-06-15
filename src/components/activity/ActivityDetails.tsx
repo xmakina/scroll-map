@@ -64,7 +64,6 @@ const ActivityDetails = ({ activity, onClaim }: Props) => {
             renderer={renderer}
             onComplete={updateDone}
           />
-          <Button className="w-full">Cancel</Button>
         </div>
       )}
     </div>

@@ -1,7 +1,6 @@
 "use server";
 
 import { ShipData } from "@/models/ShipData";
-import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 import CostAndRequirements from "@/models/CostAndRequirements/CostAndRequirements";
 import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
@@ -17,11 +16,6 @@ export const startBuilding = async (
   componentType: StationComponentType,
   level: number
 ) => {
-  await stationService.consumeFromCargoHold(
-    stationId,
-    StationComponentCostAndRequirements[componentType][level].cost
-  );
-
   const station = await stationService.get(stationId);
 
   const data: StationComponentData = {

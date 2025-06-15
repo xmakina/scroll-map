@@ -10,14 +10,16 @@
         "MINE": "Mining ⛏️",
         "SCUTTLE": "Scuttling 💥",
         "SCAVENGE": "Scavenging 🔎",
-        "BUILD": "Building 🧑‍🏭"
+        "BUILD": "Building 🧑‍🏭",
+        "SMELT": "Smelting 🔥"
     },
     "OrderButton": {
         "MINE": "Mine ⛏️",
         "SCUTTLE": "Scuttle 💥",
         "Are you sure?": "Are you sure?",
         "SCAVENGE": "Scavenge 🔎",
-        "BUILD": "Build 🧑‍🏭"
+        "BUILD": "Build 🧑‍🏭",
+        "SMELT": "Smelt 🔥"
     },
     "StationComponentBuilding": {
         "Build Requirements for": "Build Requirements for",

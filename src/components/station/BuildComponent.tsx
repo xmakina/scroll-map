@@ -8,6 +8,7 @@ import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import NeededAvailable from "../ui/NeededAvailable";
 import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
+import CostAndRequirements from "@/models/CostAndRequirements/CostAndRequirements";
 
 type Props = {
   level: number;
@@ -35,7 +36,8 @@ const BuildComponent = ({
     level
   );
 
-  const target = StationComponentCostAndRequirements[componentType][level];
+  const target: CostAndRequirements =
+    StationComponentCostAndRequirements[componentType][level];
 
   const requirementBreakdowns = getRequirementsBreakdown(
     target,

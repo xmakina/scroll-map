@@ -1,5 +1,6 @@
 "use server";
 
+import { UnknownData } from "@/models/UnknownData";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
@@ -10,21 +11,23 @@ const shipService = await ShipService.get();
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
 
-export const issueShipOrder = async (
+export const issueShipOrder = async <T>(
   shipId: string,
-  activityType: ActivityType
+  activityType: ActivityType,
+  data?: T & UnknownData
 ) => {
   const ship = await shipService.get(shipId);
-  await activityService.begin(ship.ActivityWorker, activityType);
+  await activityService.begin(ship.ActivityWorker, activityType, data);
   revalidatePath("/station/[id]", "page");
 };
 
-export const issueStationOrder = async (
+export const issueStationOrder = async <T>(
   stationId: string,
-  activityType: ActivityType
+  activityType: ActivityType,
+  data?: T & UnknownData
 ) => {
   const station = await stationService.get(stationId);
-  await activityService.begin(station.ActivityWorker, activityType);
+  await activityService.begin(station.ActivityWorker, activityType, data);
   revalidatePath("/station/[id]", "page");
 };
 

@@ -28,6 +28,9 @@ const PossibilityList: PossibleOrders = {
     const { tractorBeam } = data;
     return !!tractorBeam;
   },
+  SMELT: function (): boolean {
+    return false;
+  },
 };
 
 export default function (data: ShipData): ActivityType[] {

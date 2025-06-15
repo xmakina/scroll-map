@@ -17,6 +17,7 @@ import Orders from "@/components/orders/Orders";
 import ActivityDetails from "@/components/activity/ActivityDetails";
 import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
 import StationComponents from "@/components/station/StationComponents";
+import { StationContextProvider } from "@/StationContextProvider";
 
 type Props = { params: Promise<{ id: string }> };
 const Page = async ({ params }: Props) => {
@@ -62,10 +63,12 @@ const Page = async ({ params }: Props) => {
               />
             )}
             {!station.ActivityWorker.Activity && (
-              <Orders
-                availableOrders={availableOrders}
-                onIssueOrder={handleStationOrder}
-              />
+              <StationContextProvider station={station}>
+                <Orders
+                  availableOrders={availableOrders}
+                  onIssueOrder={handleStationOrder}
+                />
+              </StationContextProvider>
             )}
           </div>
         </div>

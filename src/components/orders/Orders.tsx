@@ -1,5 +1,5 @@
 import React from "react";
-import OrderButton from "../ship/OrderButton";
+import OrderButton from "./OrderButton";
 import { ActivityType } from "@prisma/client";
 
 type Props = {

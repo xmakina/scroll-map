@@ -7,11 +7,14 @@ import { ShipData } from "@/models/ShipData";
 import { UnknownData } from "@/models/UnknownData";
 import StationComponentService from "@/services/StationComponentService";
 import StationComponentData from "@/models/StationComponentsData";
+import StationService from "@/services/StationService";
+import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 
 export default class implements IActivityHandler {
   constructor(
     private readonly shipService: ShipService,
     private readonly stationComponentService: StationComponentService,
+    private readonly stationService: StationService,
     private readonly activityService: ActivityService
   ) {}
 
@@ -36,7 +39,7 @@ export default class implements IActivityHandler {
           return;
         }
         case "StationComponentData": {
-          await this.stationComponentService.createComponent(
+          await this.stationComponentService.buildComponent(
             parent.Station.id,
             activityWorker.Activity?.data as StationComponentData
           );
@@ -53,10 +56,29 @@ export default class implements IActivityHandler {
     throw Error("Only stations can build");
   }
 
-  async begin<T extends object>(
+  async begin<T extends StationComponentData>(
     activityWorkerId: string,
     data: T & UnknownData
   ): Promise<void> {
+    if (data.dataType !== "StationComponentData") {
+      throw new Error("Wrong data provided");
+    }
+
+    const activityWorker = await this.activityService.getWorker(
+      activityWorkerId
+    );
+    const stationId = activityWorker.Station?.id;
+    if (!stationId) {
+      throw new Error("Only Stations can build");
+    }
+
+    const { type: componentType, level } = data;
+
+    await this.stationService.consumeFromCargoHold(
+      stationId,
+      StationComponentCostAndRequirements[componentType][level].cost
+    );
+
     await this.activityService.create(
       activityWorkerId,
       "BUILD",
