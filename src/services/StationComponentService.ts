@@ -1,4 +1,4 @@
-import { StationComponentData } from "@/models/StationComponentsData";
+import StationComponentData from "@/models/StationComponentsData";
 import StationComponentRepository from "@/repositories/StationComponentRepository";
 
 export default class {

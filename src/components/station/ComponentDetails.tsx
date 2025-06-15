@@ -1,4 +1,4 @@
-import { StationComponentData } from "@/models/StationComponentsData";
+import StationComponentData from "@/models/StationComponentsData";
 import { StationComponent } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export default async () => {
   await prisma.$transaction([
-    prisma.agent.deleteMany(),
+    prisma.player.deleteMany(),
     prisma.user.deleteMany(),
   ]);
 

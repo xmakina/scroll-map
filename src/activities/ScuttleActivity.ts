@@ -1,4 +1,3 @@
-import { ShipData } from "@/models/ShipData";
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
@@ -22,10 +21,6 @@ export default class implements IActivityHandler {
     const parent = await this.activityService.getWorker(activityWorker.id);
     if (parent.Ship) {
       // TODO: Refund ship cost, place cargo hold somewhere safe?
-      const shipData = parent.Ship.data as ShipData;
-      if (shipData.tug?.stationId) {
-        await this.stationService.setTugDeployed(shipData.tug.stationId, false);
-      }
       await this.shipService.delete(parent.Ship.id);
       await this.activityService.delete(activity.id);
       return;

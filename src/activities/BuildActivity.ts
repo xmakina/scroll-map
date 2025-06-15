@@ -5,8 +5,8 @@ import ShipService from "@/services/ShipService";
 import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import { ShipData } from "@/models/ShipData";
 import { UnknownData } from "@/models/UnknownData";
-import { StationComponentData } from "@/models/StationComponentsData";
 import StationComponentService from "@/services/StationComponentService";
+import StationComponentData from "@/models/StationComponentsData";
 
 export default class implements IActivityHandler {
   constructor(
