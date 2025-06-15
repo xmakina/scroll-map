@@ -8,7 +8,6 @@ import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import NeededAvailable from "../ui/NeededAvailable";
 import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
-import CostAndRequirements from "@/models/CostAndRequirements/CostAndRequirements";
 
 type Props = {
   level: number;
@@ -36,8 +35,18 @@ const BuildComponent = ({
     level
   );
 
-  const target: CostAndRequirements =
-    StationComponentCostAndRequirements[componentType][level];
+  const target = StationComponentCostAndRequirements[componentType][level];
+
+  if (!target) {
+    return (
+      <div className="flex flex-col border border-white p-2 rounded-md items-center justify-between">
+        <div className="mt-4">
+          {componentType} {level - 1}
+        </div>
+        <div className="mb-4">✅</div>
+      </div>
+    );
+  }
 
   const requirementBreakdowns = getRequirementsBreakdown(
     target,

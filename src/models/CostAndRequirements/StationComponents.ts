@@ -3,7 +3,7 @@ import CostAndRequirements from "./CostAndRequirements";
 
 export const StationComponentCostAndRequirements: {
   [key in StationComponentType]: {
-    [level: number]: CostAndRequirements;
+    [level: number]: CostAndRequirements | undefined;
   };
 } = {
   SMELTER: {

@@ -74,10 +74,15 @@ export default class implements IActivityHandler {
 
     const { type: componentType, level } = data;
 
-    await this.stationService.consumeFromCargoHold(
-      stationId,
-      StationComponentCostAndRequirements[componentType][level].cost
-    );
+    const target = StationComponentCostAndRequirements[componentType][level];
+
+    if (!target) {
+      throw new Error(
+        `Station Component ${componentType} at level ${level} does not exist`
+      );
+    }
+
+    await this.stationService.consumeFromCargoHold(stationId, target.cost);
 
     await this.activityService.create(
       activityWorkerId,
