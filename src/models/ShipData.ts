@@ -1,11 +1,12 @@
 import { UnknownData } from "./UnknownData";
 
 export type ShipData = {
+  shipClassName: string;
+  size: number;
   engine?: EngineData;
-  cargoHold?: { [key: string]: number };
+  cargoHold?: boolean;
   tractorBeam?: boolean;
   mining?: MiningData;
-  tug?: TugData;
 } & UnknownData;
 
 type EngineData = {
@@ -16,8 +17,4 @@ type EngineData = {
 type MiningData = {
   strength: number;
   rate: number;
-};
-
-type TugData = {
-  stationId: string;
 };

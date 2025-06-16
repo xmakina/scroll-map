@@ -1,7 +1,6 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
-import ShipService from "@/services/ShipService";
 import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import { ShipData } from "@/models/ShipData";
 import { UnknownData } from "@/models/UnknownData";
@@ -12,7 +11,6 @@ import { StationComponentCostAndRequirements } from "@/models/CostAndRequirement
 
 export default class implements IActivityHandler {
   constructor(
-    private readonly shipService: ShipService,
     private readonly stationComponentService: StationComponentService,
     private readonly stationService: StationService,
     private readonly activityService: ActivityService
@@ -28,16 +26,6 @@ export default class implements IActivityHandler {
 
     if (parent.Station) {
       switch (dataType) {
-        case "ShipData": {
-          await this.shipService.createShip(
-            parent.Station.playerId,
-            parent.Station.id,
-            activityWorker.Activity?.data as ShipData
-          );
-
-          await this.activityService.delete(activityWorker.Activity.id);
-          return;
-        }
         case "StationComponentData": {
           await this.stationComponentService.buildComponent(
             parent.Station.id,
@@ -56,39 +44,52 @@ export default class implements IActivityHandler {
     throw Error("Only stations can build");
   }
 
-  async begin<T extends StationComponentData>(
+  async begin<T extends StationComponentData | ShipData>(
     activityWorkerId: string,
     data: T & UnknownData
   ): Promise<void> {
-    if (data.dataType !== "StationComponentData") {
-      throw new Error("Wrong data provided");
+    switch (data.dataType) {
+      case "StationComponentData":
+        return beginStationComponent(
+          this.activityService,
+          this.stationService,
+          activityWorkerId,
+          data as StationComponentData
+        );
+      default:
+        throw new Error(`Wrong data provided: ${data.dataType}`);
     }
+  }
+}
 
-    const activityWorker = await this.activityService.getWorker(
-      activityWorkerId
-    );
-    const stationId = activityWorker.Station?.id;
-    if (!stationId) {
-      throw new Error("Only Stations can build");
-    }
+async function beginStationComponent(
+  activityService: ActivityService,
+  stationService: StationService,
+  activityWorkerId: string,
+  data: StationComponentData & UnknownData
+) {
+  const activityWorker = await activityService.getWorker(activityWorkerId);
+  const stationId = activityWorker.Station?.id;
+  if (!stationId) {
+    throw new Error("Only Stations can build");
+  }
 
-    const { type: componentType, level } = data;
+  const { type: componentType, level } = data;
 
-    const target = StationComponentCostAndRequirements[componentType][level];
+  const target = StationComponentCostAndRequirements[componentType][level];
 
-    if (!target) {
-      throw new Error(
-        `Station Component ${componentType} at level ${level} does not exist`
-      );
-    }
-
-    await this.stationService.consumeFromCargoHold(stationId, target.cost);
-
-    await this.activityService.create(
-      activityWorkerId,
-      "BUILD",
-      NowAddSeconds(3),
-      data
+  if (!target) {
+    throw new Error(
+      `Station Component ${componentType} at level ${level} does not exist`
     );
   }
+
+  await stationService.consumeFromCargoHold(stationId, target.cost);
+
+  await activityService.create(
+    activityWorkerId,
+    "BUILD",
+    NowAddSeconds(3),
+    data
+  );
 }

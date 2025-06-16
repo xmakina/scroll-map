@@ -76,7 +76,7 @@ const Page = async ({ params }: Props) => {
 
       <div className="flex flex-col items-center gap-2">
         <div>Ships</div>
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-col justify-center gap-2">
           {ships.length === 0 && <div className="italic">Empty</div>}
           {ships.map(async (ship) => {
             const availableOrders = await getShipOrders(ship.id);

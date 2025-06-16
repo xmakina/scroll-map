@@ -1,12 +1,11 @@
 "use server";
 
-import { ShipData } from "@/models/ShipData";
-import CostAndRequirements from "@/models/CostAndRequirements/CostAndRequirements";
 import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
 import { ActivityType, StationComponentType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import StationComponentData from "@/models/StationComponentsData";
+import { ShipDataWithCost } from "@/models/CostAndRequirements/Ships";
 
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
@@ -19,6 +18,7 @@ export const startBuilding = async (
   const station = await stationService.get(stationId);
 
   const data: StationComponentData = {
+    dataType: "StationComponentData",
     type: componentType,
     level,
   };
@@ -33,17 +33,16 @@ export const startBuilding = async (
 
 export const startBuildingShip = async (
   stationId: string,
-  shipCostAndRequirements: CostAndRequirements,
-  shipData: ShipData
+  shipData: ShipDataWithCost
 ) => {
   await stationService.consumeFromCargoHold(
     stationId,
-    shipCostAndRequirements.cost
+    shipData.costAndRequirements.cost
   );
 
   const station = await stationService.get(stationId);
 
-  await activityService.begin(station.ActivityWorker, ActivityType.BUILD, {
+  await activityService.begin(station.ActivityWorker, ActivityType.BuildShip, {
     ...shipData,
     dataType: "ShipData",
   });

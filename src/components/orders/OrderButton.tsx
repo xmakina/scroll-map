@@ -17,6 +17,7 @@ const orderButtons: {
   MINE: () => <></>,
   DELIVER: () => <></>, // Deliver is issued on the target station,
   BUILD: () => <></>,
+  BuildShip: () => <></>,
   SCUTTLE: (onIssueOrder) => <Scuttle onClick={onIssueOrder} />,
   SCAVENGE: (onIssueOrder) => <Scavenge onClick={onIssueOrder} />,
   SMELT: (onIssueOrder) => <Smelt onClick={onIssueOrder} />,

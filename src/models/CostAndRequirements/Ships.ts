@@ -1,25 +1,35 @@
 import CostAndRequirements from "./CostAndRequirements";
 import { ShipData } from "../ShipData";
 
-export const ShipCostAndRequirements: {
-  [key in string]: {
-    costAndRequirements: CostAndRequirements;
-    data: ShipData;
-    size: number;
-  };
-} = {
-  TUG: {
+export type ShipDataWithCost = {
+  costAndRequirements: CostAndRequirements;
+  data: ShipData;
+};
+
+export const ShipBlueprints: ShipDataWithCost[] = [
+  {
     costAndRequirements: {
-      cost: {},
-      requirements: {},
+      cost: {
+        ALLOY: 100,
+      },
+      requirements: { HANGAR: 1 },
     },
     data: {
+      shipClassName: "Miner",
+      size: 1,
       dataType: "ShipData",
-      tractorBeam: true,
+      engine: {
+        speed: 1,
+        range: 0,
+      },
+      mining: {
+        strength: 1,
+        rate: 100,
+      },
+      cargoHold: true,
     },
-    size: 0,
   },
-  SCOUT: {
+  {
     costAndRequirements: {
       cost: {
         ALLOY: 100,
@@ -28,8 +38,9 @@ export const ShipCostAndRequirements: {
         HANGAR: 1,
       },
     },
-    size: 1,
     data: {
+      shipClassName: "Scout",
+      size: 1,
       dataType: "ShipData",
       engine: {
         speed: 10,
@@ -37,4 +48,4 @@ export const ShipCostAndRequirements: {
       },
     },
   },
-};
+];

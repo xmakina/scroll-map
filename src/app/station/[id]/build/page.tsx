@@ -5,6 +5,7 @@ import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
 import { startBuilding, startBuildingShip } from "./actions";
 import BuildStationComponents from "@/components/station/BuildStationComponents";
 import BuildStationShips from "@/components/station/BuildStationShips";
+import { StationContextProvider } from "@/StationContextProvider";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -24,17 +25,15 @@ const Page = async ({ params }: Props) => {
       </div>
       <div>Building at {id}</div>
       <CargoHoldSummary cargoHold={station.CargoHold} />
-      <BuildStationComponents
-        stationComponents={station.Components}
-        cargoHold={station.CargoHold}
-        onBuildComponent={handleBuildComponent}
-        isBusy={!!station.ActivityWorker.Activity}
-      />
-      <BuildStationShips
-        stationComponents={station.Components}
-        cargoHold={station.CargoHold}
-        onBuildShip={handleBuildShip}
-      />
+      <StationContextProvider station={station}>
+        <BuildStationComponents
+          onBuildComponent={handleBuildComponent}
+          isBusy={!!station.ActivityWorker.Activity}
+        />
+        <BuildStationShips
+          onBuildShip={handleBuildShip}
+        />
+      </StationContextProvider>
     </div>
   );
 };

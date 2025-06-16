@@ -17,13 +17,14 @@ const PossibilityList: PossibleOrders = {
   BUILD: function (): boolean {
     return false;
   },
+  BuildShip: function (): boolean {
+    return false;
+  },
   SCUTTLE: function (): boolean {
     return false;
   },
-  SCAVENGE: function (station: StationWithComponentsAndWorker): boolean {
-    return !station.Components.some(
-      (c) => c.type === StationComponentType.HANGAR
-    );
+  SCAVENGE: function (): boolean {
+    return true;
   },
   SMELT: function (station: StationWithComponentsAndWorker): boolean {
     const smelterMinimum: Cost = { ORE: 500, GAS: 500 };

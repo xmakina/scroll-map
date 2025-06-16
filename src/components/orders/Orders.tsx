@@ -9,7 +9,7 @@ type Props = {
 
 const Orders = ({ availableOrders, onIssueOrder }: Props) => {
   return (
-    <div className="flex flex-row justify-between gap-2">
+    <div className="flex flex-row gap-2 justify-around">
       {availableOrders.map((order) => {
         const handleOrder = onIssueOrder.bind(null, order);
         return (

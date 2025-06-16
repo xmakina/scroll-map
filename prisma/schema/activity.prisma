@@ -2,6 +2,7 @@ enum ActivityType {
   MINE
   DELIVER
   BUILD
+  BuildShip
   SCUTTLE
   SCAVENGE
   SMELT

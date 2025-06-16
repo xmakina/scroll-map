@@ -1,15 +1,13 @@
 "use client";
 
 import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
-import { StationComponent, StationComponentType } from "@prisma/client";
+import { StationComponentType } from "@prisma/client";
 import React from "react";
 import BuildComponent from "./BuildComponent";
-import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import StationComponentData from "@/models/StationComponentsData";
+import { useStationContext } from "@/StationContextProvider";
 
 type Props = {
-  stationComponents: StationComponent[];
-  cargoHold: CargoHoldWithContainers;
   onBuildComponent: (
     type: StationComponentType,
     level: number
@@ -17,12 +15,8 @@ type Props = {
   isBusy: boolean;
 };
 
-const BuildStationComponents = ({
-  stationComponents,
-  cargoHold,
-  onBuildComponent,
-  isBusy,
-}: Props) => {
+const BuildStationComponents = ({ onBuildComponent, isBusy }: Props) => {
+  const { Components: stationComponents } = useStationContext().station;
   const currentLevel: { [key in StationComponentType]?: number } =
     stationComponents.reduce((acc, s) => {
       const data = s.data as StationComponentData;
@@ -40,8 +34,6 @@ const BuildStationComponents = ({
               key={b}
               level={(currentLevel[b] || 0) + 1}
               componentType={b}
-              cargoHold={cargoHold}
-              stationComponents={stationComponents}
               onBuildComponent={onBuildComponent}
               isBusy={isBusy}
             />

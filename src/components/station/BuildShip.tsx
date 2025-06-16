@@ -1,16 +1,47 @@
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
-import { StationComponent } from "@prisma/client";
+import { ShipDataWithCost } from "@/models/CostAndRequirements/Ships";
+import getCostBreakdowns, { CostBreakdown } from "@/utils/getCostBreakdowns";
+import { useTranslations } from "next-intl";
 import React from "react";
+import NeededAvailable from "../ui/NeededAvailable";
+import Button from "../ui/Button";
+
+export const CanAfford = (cb: CostBreakdown) => cb.available >= cb.required;
 
 type Props = {
-  shipKey: string;
+  shipData: ShipDataWithCost;
   cargoHold: CargoHoldWithContainers;
-  stationComponents: StationComponent[];
   onBuildShip: () => Promise<void> | void;
 };
 
-const BuildShip = ({ shipKey }: Props) => {
-  return <div>Build {shipKey}</div>;
+const BuildShip = ({ shipData, cargoHold, onBuildShip }: Props) => {
+  const t = useTranslations("BuildShip");
+  const { cost } = shipData.costAndRequirements;
+
+  const costBreakdowns = getCostBreakdowns(cost, cargoHold);
+  const canAfford = costBreakdowns.every(CanAfford);
+
+  return (
+    <div className="flex flex-col gap-2 items-center">
+      <div>{t(shipData.data.shipClassName)}</div>
+      <div>
+        {costBreakdowns.map((cb) => (
+          <NeededAvailable
+            key={cb.cargoType}
+            needed={cb.required}
+            available={cb.available}
+          >
+            {cb.cargoType}
+          </NeededAvailable>
+        ))}
+      </div>
+      {canAfford && (
+        <Button onClick={onBuildShip}>
+          {t("Build {shipName}", { shipName: t(shipData.data.shipClassName) })}
+        </Button>
+      )}
+    </div>
+  );
 };
 
 export default BuildShip;

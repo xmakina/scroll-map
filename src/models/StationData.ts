@@ -1,3 +1,3 @@
 export type StationData = {
-  tugDeployed?: boolean;
+  vaultSize: number; // TODO: Care about this
 };

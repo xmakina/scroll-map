@@ -1,19 +1,17 @@
 "use client";
 
-import { StationComponent, StationComponentType } from "@prisma/client";
+import { StationComponentType } from "@prisma/client";
 import React from "react";
 import Button from "../ui/Button";
 import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
-import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import NeededAvailable from "../ui/NeededAvailable";
 import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
+import { useStationContext } from "@/StationContextProvider";
 
 type Props = {
   level: number;
   componentType: StationComponentType;
-  stationComponents: StationComponent[];
-  cargoHold: CargoHoldWithContainers;
   onBuildComponent: (
     type: StationComponentType,
     level: number
@@ -24,8 +22,6 @@ type Props = {
 const BuildComponent = ({
   level,
   componentType,
-  stationComponents,
-  cargoHold,
   onBuildComponent,
   isBusy,
 }: Props) => {
@@ -48,12 +44,14 @@ const BuildComponent = ({
     );
   }
 
+  const { Components, CargoHold } = useStationContext().station;
+
   const requirementBreakdowns = getRequirementsBreakdown(
-    target,
-    stationComponents
+    target.requirements,
+    Components
   );
 
-  const costBreakdowns = getCostBreakdowns(target.cost, cargoHold);
+  const costBreakdowns = getCostBreakdowns(target.cost, CargoHold);
   const canAfford = costBreakdowns.every((b) => b.available >= b.required);
   const hasRequired = requirementBreakdowns.every(
     (b) => b.available >= b.required

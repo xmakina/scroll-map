@@ -11,7 +11,8 @@
         "SCUTTLE": "Scuttling 💥",
         "SCAVENGE": "Scavenging 🔎",
         "BUILD": "Building 🧑‍🏭",
-        "SMELT": "Smelting 🔥"
+        "SMELT": "Smelting 🔥",
+        "BuildShip": "Building ship 🧑‍🔧"
     },
     "OrderButton": {
         "MINE": "Mine ⛏️",
@@ -30,6 +31,12 @@
     },
     "ComponentDetails": {
         "SMELTER": "Smelter",
-        "level {level}": "lvl {level}"
+        "level {level}": "lvl {level}",
+        "HANGAR": "Hangar"
+    },
+    "BuildShip": {
+        "Miner": "Mining ship",
+        "Scout": "Scout vessel",
+        "Build {shipName}": "Build {shipName}"
     }
 }

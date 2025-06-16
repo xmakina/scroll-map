@@ -31,6 +31,9 @@ const PossibilityList: PossibleOrders = {
   SMELT: function (): boolean {
     return false;
   },
+  BuildShip: function (): boolean {
+    return false;
+  },
 };
 
 export default function (data: ShipData): ActivityType[] {

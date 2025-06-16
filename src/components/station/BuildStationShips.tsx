@@ -1,48 +1,39 @@
-import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
-import CostAndRequirements from "@/models/CostAndRequirements/CostAndRequirements";
-import { ShipCostAndRequirements } from "@/models/CostAndRequirements/Ships";
-import { ShipData } from "@/models/ShipData";
-import { StationComponent } from "@prisma/client";
+"use client";
+
+import {
+  ShipBlueprints,
+  ShipDataWithCost,
+} from "@/models/CostAndRequirements/Ships";
 import React from "react";
 import BuildShip from "./BuildShip";
-import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
+import { useStationContext } from "@/StationContextProvider";
+import StationComponentData from "@/models/StationComponentsData";
+import { StationComponentType } from "@prisma/client";
 
 type Props = {
-  stationComponents: StationComponent[];
-  cargoHold: CargoHoldWithContainers;
   onBuildShip: (
-    shipCostAndRequirements: CostAndRequirements,
-    shipData: ShipData
+    shipData: ShipDataWithCost
   ) => Promise<void> | void;
 };
 
-const BuildStationShips = ({
-  stationComponents,
-  cargoHold,
-  onBuildShip,
-}: Props) => {
-  const shipKeys = Object.keys(ShipCostAndRequirements);
+const BuildStationShips = ({ onBuildShip }: Props) => {
+  const { Components: stationComponents, CargoHold: cargoHold } =
+    useStationContext().station;
+  const currentLevel: { [key in StationComponentType]?: number } =
+    stationComponents.reduce((acc, s) => {
+      const data = s.data as StationComponentData;
+      return { ...acc, [s.type]: data.level };
+    }, {});
 
-  const costAndRequirements = shipKeys.map((sk) => ({
-    shipKey: sk,
-    costAndRequirements: ShipCostAndRequirements[sk].costAndRequirements,
-  }));
-
-  const breakdowns = costAndRequirements.map((cr) => ({
-    shipKey: cr.shipKey,
-    breakdown: getRequirementsBreakdown(
-      cr.costAndRequirements,
-      stationComponents
-    ),
-  }));
-
-  const requirementMetShipKeys = breakdowns.map((b) => ({
-    shipKey: b.shipKey,
-    requirmentsMet: b.breakdown.every((bk) => bk.available >= bk.required),
-  }));
-
-  const displayedShipKeys = requirementMetShipKeys.filter(
-    (sk) => sk.requirmentsMet
+  const displayedShips = ShipBlueprints.filter((scr) =>
+    Object.keys(scr.costAndRequirements.requirements)
+      .map((k) => k as StationComponentType)
+      .reduce(
+        (acc, k) =>
+          ((acc && currentLevel[k]) || 0) >=
+          (scr.costAndRequirements.requirements[k] || 0),
+        true
+      )
   );
 
   return (
@@ -50,19 +41,17 @@ const BuildStationShips = ({
       <div>Build Ships</div>
       <div className="flex flex-row gap-2">
         <div className="flex flex-row gap-4">
-          {displayedShipKeys.map(({ shipKey }) => {
+          {displayedShips.map((shipCostAndRequirements) => {
             const handleBuildShip = onBuildShip.bind(
               null,
-              ShipCostAndRequirements[shipKey].costAndRequirements,
-              ShipCostAndRequirements[shipKey].data
+              shipCostAndRequirements
             );
             return (
               <BuildShip
-                key={shipKey}
-                shipKey={shipKey}
+                key={shipCostAndRequirements.data.shipClassName}
                 cargoHold={cargoHold}
-                stationComponents={stationComponents}
                 onBuildShip={handleBuildShip}
+                shipData={shipCostAndRequirements}
               />
             );
           })}
