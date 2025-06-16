@@ -2,8 +2,9 @@ import { Meta, StoryObj } from "@storybook/react";
 import BuildComponent from "./BuildComponent";
 import { StationComponent, StationComponentType } from "@prisma/client";
 import { withReactContext } from "storybook-react-context";
-import StationContext from "@/StationContext";
+
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
+import StationContext from "@/context/StationContext";
 
 const meta: Meta<typeof BuildComponent> = {
   component: BuildComponent,

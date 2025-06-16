@@ -1,7 +1,22 @@
 "use client";
 
-import { useContext, useMemo } from "react";
-import StationContext, { StationContextProps } from "./StationContext";
+import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
+import { createContext, ReactNode, useContext, useMemo } from "react";
+
+export type StationContextProps = {
+  station: StationWithComponentsAndWorker;
+  children: ReactNode | ReactNode[];
+};
+
+interface StationContextInterface {
+  station: StationWithComponentsAndWorker;
+}
+
+const StationContext = createContext<StationContextInterface | undefined>(
+  undefined
+);
+
+export default StationContext;
 
 export const StationContextProvider: React.FC<StationContextProps> = ({
   station,

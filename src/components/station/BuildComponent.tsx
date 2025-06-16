@@ -7,7 +7,8 @@ import { StationComponentCostAndRequirements } from "@/models/CostAndRequirement
 import NeededAvailable from "../ui/NeededAvailable";
 import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
-import { useStationContext } from "@/StationContextProvider";
+import { useStationContext } from "@/context/StationContext";
+
 
 type Props = {
   level: number;

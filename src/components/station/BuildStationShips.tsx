@@ -6,14 +6,12 @@ import {
 } from "@/models/CostAndRequirements/Ships";
 import React from "react";
 import BuildShip from "./BuildShip";
-import { useStationContext } from "@/StationContextProvider";
 import StationComponentData from "@/models/StationComponentsData";
 import { StationComponentType } from "@prisma/client";
+import { useStationContext } from "@/context/StationContext";
 
 type Props = {
-  onBuildShip: (
-    shipData: ShipDataWithCost
-  ) => Promise<void> | void;
+  onBuildShip: (shipData: ShipDataWithCost) => Promise<void> | void;
 };
 
 const BuildStationShips = ({ onBuildShip }: Props) => {

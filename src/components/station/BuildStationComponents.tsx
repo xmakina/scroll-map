@@ -5,7 +5,7 @@ import { StationComponentType } from "@prisma/client";
 import React from "react";
 import BuildComponent from "./BuildComponent";
 import StationComponentData from "@/models/StationComponentsData";
-import { useStationContext } from "@/StationContextProvider";
+import { useStationContext } from "@/context/StationContext";
 
 type Props = {
   onBuildComponent: (

@@ -17,7 +17,7 @@ import Orders from "@/components/orders/Orders";
 import ActivityDetails from "@/components/activity/ActivityDetails";
 import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
 import StationComponents from "@/components/station/StationComponents";
-import { StationContextProvider } from "@/StationContextProvider";
+import { StationContextProvider } from "@/context/StationContext";
 
 type Props = { params: Promise<{ id: string }> };
 const Page = async ({ params }: Props) => {
