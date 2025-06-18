@@ -8,7 +8,6 @@ import { getWaypoints } from "@/utils/getWaypoints";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
 import MapFilters, { MapFilter } from "./MapFilters";
 import StarDetails from "./StarDetails";
-import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
@@ -16,7 +15,6 @@ type Props = {
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
   selected?: Waypoint;
   onReady?: (map: Map) => void;
-  playerShips?: ShipWithActivityAndCargoHold[];
 };
 
 const StarMap = ({
@@ -25,7 +23,6 @@ const StarMap = ({
   selected,
   onSelected = () => {},
   onReady = () => {},
-  playerShips = [],
 }: Props) => {
   const [filters, setFilters] = useState<MapFilter>({ planets: true });
   const [allWaypoints, setAllWaypoints] = useState<Waypoint[]>([]);
@@ -101,7 +98,7 @@ const StarMap = ({
       </div>
       <div>
         {selected?.stars.map((s) => (
-          <StarDetails key={s.id} star={s} ships={playerShips} />
+          <StarDetails key={s.id} star={s} />
         ))}
       </div>
     </div>

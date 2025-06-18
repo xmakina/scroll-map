@@ -12,9 +12,10 @@ type Props = {
   shipData: ShipDataWithCost;
   cargoHold: CargoHoldWithContainers;
   onBuildShip: () => Promise<void> | void;
+  isBusy: boolean;
 };
 
-const BuildShip = ({ shipData, cargoHold, onBuildShip }: Props) => {
+const BuildShip = ({ shipData, cargoHold, onBuildShip, isBusy }: Props) => {
   const t = useTranslations("BuildShip");
   const { cost } = shipData.costAndRequirements;
 
@@ -35,7 +36,7 @@ const BuildShip = ({ shipData, cargoHold, onBuildShip }: Props) => {
           </NeededAvailable>
         ))}
       </div>
-      {canAfford && (
+      {canAfford && !isBusy && (
         <Button onClick={onBuildShip}>
           {t("Build {shipName}", { shipName: t(shipData.data.shipClassName) })}
         </Button>

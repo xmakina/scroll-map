@@ -67,13 +67,17 @@ export default class ShipRepository {
     return;
   }
 
-  async createShip(playerId: string, locationId: string, data: ShipData) {
+  async createShip(
+    playerId: string,
+    locationId: string,
+    data: ShipData,
+    label: string
+  ) {
     const { id: activityWorkerId } = await prisma.activityWorker.create({
       data: {},
     });
 
     const cargoHoldId = await this.createCargoHold(data);
-
     return prisma.ship.create({
       data: {
         playerId,
@@ -81,6 +85,7 @@ export default class ShipRepository {
         activityWorkerId,
         cargoHoldId,
         data,
+        label,
       },
     });
   }

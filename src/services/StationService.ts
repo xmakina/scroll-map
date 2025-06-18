@@ -4,6 +4,8 @@ import StationRepository from "@/repositories/StationRepository";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
 import CargoHoldService from "./CargoHoldService";
 import ConstructStationOrders from "./ConstructStationOrders";
+import generateUniqueName from "@/utils/generateUniqueName";
+import { adjectives, colors } from "unique-names-generator";
 
 const cargoHoldService = await CargoHoldService.get();
 export default class StationService {
@@ -45,7 +47,8 @@ export default class StationService {
   }
 
   async createStation(xy: { x: number; y: number }, playerId: string) {
-    return await this.repository.createStation(xy, playerId);
+    const label = generateUniqueName(adjectives, colors);
+    return await this.repository.createStation(xy, playerId, label);
   }
 
   constructor(private readonly repository: StationRepository) {}

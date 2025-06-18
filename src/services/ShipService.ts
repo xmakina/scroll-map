@@ -1,6 +1,8 @@
 import ShipRepository from "@/repositories/ShipRepository";
 import { ShipData } from "@/models/ShipData";
 import ConstructShipOrders from "./ConstructShipOrders";
+import generateUniqueName from "@/utils/generateUniqueName";
+import { adjectives, animals } from "unique-names-generator";
 
 export default class ShipService {
   async getActivityWorker(shipId: string) {
@@ -28,7 +30,8 @@ export default class ShipService {
   }
 
   async createShip(playerId: string, locationId: string, data: ShipData) {
-    return await this.repository.createShip(playerId, locationId, data);
+    const label = generateUniqueName(adjectives, animals);
+    return await this.repository.createShip(playerId, locationId, data, label);
   }
 
   async getShips(playerId: string) {

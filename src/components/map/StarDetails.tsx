@@ -2,15 +2,13 @@ import Star from "@/models/waypoint/Star";
 import React, { ReactNode } from "react";
 import LabeledText from "../ui/LabeledText";
 import PlanetDetails from "./PlanetDetails";
-import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
 
 type Props = {
   star: Star;
   onStartMining?: (planetId: string, shipId: string) => Promise<void> | void;
-  ships?: ShipWithActivityAndCargoHold[];
 };
 
-const StarDetails = ({ star, onStartMining = () => {}, ships = [] }: Props) => {
+const StarDetails = ({ star, onStartMining = () => {} }: Props) => {
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="flex flex-row items-center justify-between w-full gap-4">
@@ -32,7 +30,6 @@ const StarDetails = ({ star, onStartMining = () => {}, ships = [] }: Props) => {
               key={p.id}
               planet={p}
               onStartMining={onStartMining.bind(null, p.id)}
-              ships={ships}
             />
           ))}
           {star.planets.length === 0 && <div className="italic">Empty</div>}

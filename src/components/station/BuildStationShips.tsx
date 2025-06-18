@@ -12,9 +12,10 @@ import { useStationContext } from "@/context/StationContext";
 
 type Props = {
   onBuildShip: (shipData: ShipDataWithCost) => Promise<void> | void;
+  isBusy: boolean;
 };
 
-const BuildStationShips = ({ onBuildShip }: Props) => {
+const BuildStationShips = ({ onBuildShip, isBusy }: Props) => {
   const { Components: stationComponents, CargoHold: cargoHold } =
     useStationContext().station;
   const currentLevel: { [key in StationComponentType]?: number } =
@@ -50,6 +51,7 @@ const BuildStationShips = ({ onBuildShip }: Props) => {
                 cargoHold={cargoHold}
                 onBuildShip={handleBuildShip}
                 shipData={shipCostAndRequirements}
+                isBusy={isBusy}
               />
             );
           })}

@@ -15,7 +15,7 @@ const ShipRow = ({ ship, orders, onClaimActivity }: Props) => {
     <div className="flex-col items-center gap-2 justify-center p-4 border border-white rounded-md">
       <div className="flex flex-row gap-4">
         <div>{(ship.data as ShipData).shipClassName}</div>
-        <div>{ship.id}</div>
+        <div>{ship.label}</div>
       </div>
       {ship.ActivityWorker.Activity && (
         <ActivityDetails

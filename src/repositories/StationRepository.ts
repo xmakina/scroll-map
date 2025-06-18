@@ -44,7 +44,11 @@ export default class StationRepository {
     });
   }
 
-  async createStation(xy: { x: number; y: number }, playerId: string) {
+  async createStation(
+    xy: { x: number; y: number },
+    playerId: string,
+    label: string
+  ) {
     const { x, y } = xy;
     const { id: activityWorkerId } = await prisma.activityWorker.create({
       data: {},
@@ -58,6 +62,7 @@ export default class StationRepository {
         activityWorkerId,
         cargoHoldId,
         data: {},
+        label,
       },
     });
   }

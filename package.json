@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
-    "@prisma/client": "^6.3.0",
+    "@prisma/client": "^6.10.0",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
     "leaflet": "^1.9.4",
@@ -92,7 +92,7 @@
     "moq.ts": "^10.0.8",
     "open-cli": "^8.0.0",
     "postcss": "^8",
-    "prisma": "^6.9.0",
+    "prisma": "^6.10.0",
     "storybook": "^8.4.7",
     "storybook-react-context": "^0.7.0",
     "tailwindcss": "^3.4.1",

@@ -2,18 +2,24 @@ import Planet from "@/models/waypoint/Planet";
 import React from "react";
 import LabeledText from "../ui/LabeledText";
 import Button from "../ui/Button";
-import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
+import { usePlayerShipsContext } from "@/context/PlayerShipsContext";
 
 type Props = {
   planet: Planet;
   onStartMining: (shipId: string) => Promise<void> | void;
-  ships: ShipWithActivityAndCargoHold[];
 };
 
-const PlanetDetails = ({ planet, onStartMining, ships }: Props) => {
-  const availableShips = ships
-    .filter((s) => s.locationId === planet.id)
-    .filter((s) => !s.ActivityWorker.Activity);
+function safeGetShipsFromContext() {
+  try {
+    return usePlayerShipsContext().ships;
+  } catch {
+    return [];
+  }
+}
+
+const PlanetDetails = ({ planet, onStartMining }: Props) => {
+  const ships = safeGetShipsFromContext();
+  const availableShips = ships.filter((s) => !s.ActivityWorker.Activity);
   return (
     <div className="flex flex-row justify-between gap-2">
       <div className="flex flex-row justify-start gap-2">
@@ -24,7 +30,7 @@ const PlanetDetails = ({ planet, onStartMining, ships }: Props) => {
         {planet.type !== "Habitable" &&
           availableShips.map((s) => (
             <Button key={s.id} onClick={onStartMining.bind(null, s.id)}>
-              Mine with {s.id}
+              Mine with {s.label}
             </Button>
           ))}
       </div>

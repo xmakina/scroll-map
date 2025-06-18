@@ -9,4 +9,5 @@ model Ship {
   data             Json
   cargoHoldId      String?        @unique
   CargoHold        CargoHold?     @relation(fields: [cargoHoldId], references: [id], onDelete: Cascade)
+  label            String
 }

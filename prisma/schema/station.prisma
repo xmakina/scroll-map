@@ -1,17 +1,3 @@
-enum StationComponentType {
-  HANGAR
-  SMELTER
-  VAULT
-}
-
-model StationComponent {
-  id        String               @id @default(cuid())
-  type      StationComponentType
-  data      Json?
-  stationId String?
-  Station   Station?             @relation(fields: [stationId], references: [id])
-}
-
 model Station {
   id               String         @id @default(cuid())
   playerId         String
@@ -26,4 +12,5 @@ model Station {
   positionX Int
   positionY Int
   data      Json
+  label     String
 }

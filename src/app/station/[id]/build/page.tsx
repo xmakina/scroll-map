@@ -30,7 +30,8 @@ const Page = async ({ params }: Props) => {
           onBuildComponent={handleBuildComponent}
           isBusy={!!station.ActivityWorker.Activity}
         />
-        <BuildStationShips onBuildShip={handleBuildShip} />
+        <BuildStationShips onBuildShip={handleBuildShip}
+          isBusy={!!station.ActivityWorker.Activity} />
       </StationContextProvider>
     </div>
   );
