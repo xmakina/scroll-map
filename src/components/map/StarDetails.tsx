@@ -23,7 +23,7 @@ const StarDetails = ({ star }: Props) => {
       </div>
       <div className="flex flex-col items-center">
         <div>Planets:</div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {star.planets.map((p) => (
             <PlanetDetails key={p.id} planet={p} />
           ))}
