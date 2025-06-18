@@ -48,7 +48,9 @@ export default class implements IActivityHandler {
 
     const cargoHoldId = findCargoHoldId(parent);
 
-    await this.cargoHoldService.addCargo(cargoHoldId, targetCargoType, 500);
+    await this.cargoHoldService.provide(cargoHoldId, [
+      { type: targetCargoType, amount: 500 },
+    ]);
   }
 
   async begin<T extends object>(

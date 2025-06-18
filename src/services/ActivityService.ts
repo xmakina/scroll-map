@@ -7,7 +7,6 @@ import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import StationService from "./StationService";
 import ScuttleActivity from "@/activities/ScuttleActivity";
 import { IActivityHandler } from "@/activities/IActivityHandler";
-import { NotImplementedActivity } from "@/activities/NotImplementedActivity";
 import BuildActivity from "@/activities/BuildActivity";
 import MiningActivity from "@/activities/MiningActivity";
 import ScavengeActivity from "@/activities/ScavengeActivity";
@@ -16,6 +15,7 @@ import { UnknownData } from "@/models/UnknownData";
 import StationComponentService from "./StationComponentService";
 import SmeltActivity from "@/activities/SmeltActivity";
 import BuildShipActivity from "@/activities/BuildShipActivity";
+import DeliverCargoActivity from "@/activities/DeliverCargoActivity";
 
 export default class ActivityService {
   async getWorker(activityWorkerId: string) {
@@ -77,7 +77,7 @@ export default class ActivityService {
       SCUTTLE: new ScuttleActivity(shipService, stationService, this),
       BUILD: new BuildActivity(stationComponentService, stationService, this),
       BuildShip: new BuildShipActivity(this, stationService, shipService),
-      DELIVER: new NotImplementedActivity(),
+      DELIVER: new DeliverCargoActivity(stationService, cargoHoldService, this),
       MINE: new MiningActivity(cargoHoldService, this),
       SCAVENGE: new ScavengeActivity(stationService, cargoHoldService, this),
       SMELT: new SmeltActivity(cargoHoldService, stationService, this),

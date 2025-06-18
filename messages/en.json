@@ -1,43 +1,45 @@
 {
-    "Greeting": {
-        "Unknown": "Hello, world!",
-        "Greetings, {name}": "Greetings, {name}"
-    },
-    "Surroundings": {
-        "Plain": "You are in a flat area"
-    },
-    "ActivityDetails": {
-        "MINE": "Mining ⛏️",
-        "SCUTTLE": "Scuttling 💥",
-        "SCAVENGE": "Scavenging 🔎",
-        "BUILD": "Building 🧑‍🏭",
-        "SMELT": "Smelting 🔥",
-        "BuildShip": "Building ship 🧑‍🔧"
-    },
-    "OrderButton": {
-        "MINE": "Mine ⛏️",
-        "SCUTTLE": "Scuttle 💥",
-        "Are you sure?": "Are you sure?",
-        "SCAVENGE": "Scavenge 🔎",
-        "BUILD": "Build 🧑‍🏭",
-        "SMELT": "Smelt 🔥"
-    },
-    "StationComponentBuilding": {
-        "Build Requirements for": "Build Requirements for",
-        "lvl {level}": "(lvl {level})",
-        "SMELTER": "Smelter",
-        "VAULT": "Vault",
-        "HANGAR": "Hangar"
-    },
-    "ComponentDetails": {
-        "SMELTER": "Smelter",
-        "level {level}": "lvl {level}",
-        "HANGAR": "Hangar",
-        "VAULT": "Vault"
-    },
-    "BuildShip": {
-        "Miner": "Mining ship",
-        "Scout": "Scout vessel",
-        "Build {shipName}": "Build {shipName}"
-    }
+  "Greeting": {
+    "Unknown": "Hello, world!",
+    "Greetings, {name}": "Greetings, {name}"
+  },
+  "Surroundings": {
+    "Plain": "You are in a flat area"
+  },
+  "ActivityDetails": {
+    "MINE": "Mining ⛏️",
+    "SCUTTLE": "Scuttling 💥",
+    "SCAVENGE": "Scavenging 🔎",
+    "BUILD": "Building 🧑‍🏭",
+    "SMELT": "Smelting 🔥",
+    "BuildShip": "Building ship 🧑‍🔧",
+    "DELIVER": "Delivering 📦"
+  },
+  "OrderButton": {
+    "MINE": "Mine ⛏️",
+    "SCUTTLE": "Scuttle 💥",
+    "Are you sure?": "Are you sure?",
+    "SCAVENGE": "Scavenge 🔎",
+    "BUILD": "Build 🧑‍🏭",
+    "SMELT": "Smelt 🔥",
+    "DELIVER": "Deliver 📦"
+  },
+  "StationComponentBuilding": {
+    "Build Requirements for": "Build Requirements for",
+    "lvl {level}": "(lvl {level})",
+    "SMELTER": "Smelter",
+    "VAULT": "Vault",
+    "HANGAR": "Hangar"
+  },
+  "ComponentDetails": {
+    "SMELTER": "Smelter",
+    "level {level}": "lvl {level}",
+    "HANGAR": "Hangar",
+    "VAULT": "Vault"
+  },
+  "BuildShip": {
+    "Miner": "Mining ship",
+    "Scout": "Scout vessel",
+    "Build {shipName}": "Build {shipName}"
+  }
 }

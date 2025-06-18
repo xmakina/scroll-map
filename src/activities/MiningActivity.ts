@@ -21,15 +21,13 @@ export default class implements IActivityHandler {
     const cargoHoldId = findCargoHoldId(parent);
 
     const type = (parent.Activity?.data as MiningData).type;
-    await this.cargoHoldService.addCargo(cargoHoldId, type, 500);
+    await this.cargoHoldService.provide(cargoHoldId, [{ type, amount: 500 }]);
   }
 
   async begin(activityWorkerId: string, data?: MiningData): Promise<void> {
-    await this.activityService.create(
-      activityWorkerId,
-      "MINE",
-      1,
-      { ...data, dataType: "MiningData" }
-    );
+    await this.activityService.create(activityWorkerId, "MINE", 1, {
+      ...data,
+      dataType: "MiningData",
+    });
   }
 }

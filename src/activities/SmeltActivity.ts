@@ -37,11 +37,12 @@ export default class implements IActivityHandler {
 
     const addPromises = cargoTypes.map(
       async (targetCargoType) =>
-        await this.cargoHoldService.addCargo(
-          cargoHoldId,
-          targetCargoType,
-          smeltData.output[targetCargoType] || 0
-        )
+        await this.cargoHoldService.provide(cargoHoldId, [
+          {
+            type: targetCargoType,
+            amount: smeltData.output[targetCargoType] || 0,
+          },
+        ])
     );
 
     await Promise.all(addPromises);

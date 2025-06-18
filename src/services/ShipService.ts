@@ -20,7 +20,7 @@ export default class ShipService {
 
   async getOrders(id: string) {
     const ship = await this.repository.get(id);
-    const orders = ConstructShipOrders(ship.data as ShipData);
+    const orders = ConstructShipOrders(ship);
 
     return orders;
   }

@@ -29,16 +29,32 @@ export default class {
     await Promise.all(consumptionUpdates);
   }
 
-  async addCargo(id: string, targetCargoType: CargoType, amount: number) {
+  async provide(
+    id: string,
+    provisionList: { type: CargoType; amount: number }[]
+  ) {
     const cargoHold = await this.get(id);
-    const container = cargoHold.CargoContainers.find(
-      (c) => c.type === targetCargoType
-    );
-    if (!container) {
-      return this.cargoContainerService.create(id, targetCargoType, amount);
-    }
 
-    return this.cargoContainerService.addTo(container, amount);
+    const provisionUpdates = provisionList.map((provision) => {
+      const cargoContainer = cargoHold.CargoContainers.find(
+        (c) => c.type == provision.type
+      );
+
+      if (cargoContainer) {
+        return this.cargoContainerService.addTo(
+          cargoContainer,
+          provision.amount
+        );
+      }
+
+      return this.cargoContainerService.create(
+        id,
+        provision.type,
+        provision.amount
+      );
+    });
+
+    await Promise.all(provisionUpdates);
   }
 
   async get(id: string) {
