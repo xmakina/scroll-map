@@ -1,43 +1,37 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
-import PlanetFromId from "@/utils/PlanetFromId";
 import ActivityService from "@/services/ActivityService";
 import { NowAddSeconds } from "@/utils/NowAddSeconds";
+import { MiningData } from "@/models/MiningData";
+import findCargoHoldId from "@/utils/findCargoHoldId";
+import CargoHoldService from "@/services/CargoHoldService";
 
 export default class implements IActivityHandler {
-  constructor(private readonly activityService: ActivityService) {}
+  constructor(
+    private readonly cargoHoldService: CargoHoldService,
+    private readonly activityService: ActivityService
+  ) {}
 
   async claim(activityWorker: ActivityWorkerWithActivity): Promise<void> {
-    console.log("claiming", activityWorker.id);
-    throw new Error("Method not implemented.");
+    const { Activity: activity } = activityWorker;
+    if (!activity) {
+      throw "Activity not present";
+    }
+
+    const parent = await this.activityService.getWorker(activityWorker.id);
+    const cargoHoldId = findCargoHoldId(parent);
+
+    const type = (parent.Activity?.data as MiningData).type;
+    await this.cargoHoldService.addCargo(cargoHoldId, type, 500);
   }
 
-  async begin(activityWorkerId: string, data?: object): Promise<void> {
-    const locationId = data as unknown as string;
-    if (!locationId) {
-      throw Error("Mining requires a location id");
-    }
-
-    const target = PlanetFromId(locationId);
-    if (!target) {
-      throw Error(`no planet from id ${locationId}`);
-    }
-
-    switch (target.type) {
-      case "Rock": {
-        const duration = 3; //ship.cargoCapacity * 10;
-        await this.activityService.create(
-          activityWorkerId,
-          "MINE",
-          NowAddSeconds(duration),
-          { dataType: "MiningData", type: target.type }
-        );
-
-        return;
-      }
-      case "Gas":
-      case "Ice":
-      case "Habitable":
-    }
+  async begin(activityWorkerId: string, data?: MiningData): Promise<void> {
+    const duration = 1;
+    await this.activityService.create(
+      activityWorkerId,
+      "MINE",
+      NowAddSeconds(duration),
+      { ...data, dataType: "MiningData" }
+    );
   }
 }

@@ -31,7 +31,6 @@ export default class implements IActivityHandler {
             parent.Station.id,
             activityWorker.Activity?.data as StationComponentData
           );
-          await this.activityService.delete(activityWorker.Activity.id);
           return;
         }
         default:

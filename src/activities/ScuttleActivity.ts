@@ -22,7 +22,6 @@ export default class implements IActivityHandler {
     if (parent.Ship) {
       // TODO: Refund ship cost, place cargo hold somewhere safe?
       await this.shipService.delete(parent.Ship.id);
-      await this.activityService.delete(activity.id);
       return;
     }
     throw Error("Only ships can be scuttled");

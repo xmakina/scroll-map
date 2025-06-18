@@ -1,3 +1,5 @@
+import { CargoType } from "@prisma/client";
+
 export type MiningData = {
-  type: string;
+  type: CargoType;
 };

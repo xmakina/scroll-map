@@ -8,6 +8,7 @@ import {
 import {
   claimActivityForShip,
   claimActivityForStation,
+  issueMultipleShipsOrder,
   issueShipOrder,
   issueStationOrder,
 } from "./actions";
@@ -27,6 +28,7 @@ const Page = async ({ params }: Props) => {
   const ships = await getShips(id);
 
   const handleOrder = issueShipOrder.bind(null);
+  const handleMultiShipOrder = issueMultipleShipsOrder.bind(null);
   const handleStationOrder = issueStationOrder.bind(null, station.id);
 
   const availableOrders = await getStationOrders(station.id);
@@ -109,6 +111,7 @@ const Page = async ({ params }: Props) => {
             ships={ships}
             x={station.positionX}
             y={station.positionY}
+            onIssueOrder={handleMultiShipOrder}
           />
         </div>
       </div>

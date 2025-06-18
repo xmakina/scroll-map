@@ -31,6 +31,7 @@ export default class ActivityService {
     }
 
     await this.activities[activity.type].claim(activityWorker);
+    await this.repository.delete(activity.id);
   }
 
   async delete(id: string) {
@@ -74,20 +75,11 @@ export default class ActivityService {
   ) {
     this.activities = {
       SCUTTLE: new ScuttleActivity(shipService, stationService, this),
-      BUILD: new BuildActivity(
-        stationComponentService,
-        stationService,
-        this
-      ),
+      BUILD: new BuildActivity(stationComponentService, stationService, this),
       BuildShip: new BuildShipActivity(this, stationService, shipService),
       DELIVER: new NotImplementedActivity(),
-      MINE: new MiningActivity(this),
-      SCAVENGE: new ScavengeActivity(
-        shipService,
-        stationService,
-        this,
-        cargoHoldService
-      ),
+      MINE: new MiningActivity(cargoHoldService, this),
+      SCAVENGE: new ScavengeActivity(stationService, cargoHoldService, this),
       SMELT: new SmeltActivity(cargoHoldService, stationService, this),
     };
   }

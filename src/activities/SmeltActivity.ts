@@ -46,8 +46,6 @@ export default class implements IActivityHandler {
     );
 
     await Promise.all(addPromises);
-
-    await this.activityService.delete(activity.id);
   }
 
   async begin(activityWorkerId: string): Promise<void> {

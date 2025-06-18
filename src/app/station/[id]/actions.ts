@@ -11,6 +11,14 @@ const shipService = await ShipService.get();
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
 
+export const issueMultipleShipsOrder = async <T>(
+  activityType: ActivityType,
+  shipId: string,
+  data?: T & UnknownData
+) => {
+  return await issueShipOrder(shipId, activityType, data);
+};
+
 export const issueShipOrder = async <T>(
   shipId: string,
   activityType: ActivityType,

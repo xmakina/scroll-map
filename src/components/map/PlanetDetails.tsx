@@ -3,23 +3,18 @@ import React from "react";
 import LabeledText from "../ui/LabeledText";
 import Button from "../ui/Button";
 import { usePlayerShipsContext } from "@/context/PlayerShipsContext";
+import { CargoType } from "@prisma/client";
 
 type Props = {
   planet: Planet;
-  onStartMining: (shipId: string) => Promise<void> | void;
 };
 
-function safeGetShipsFromContext() {
-  try {
-    return usePlayerShipsContext().ships;
-  } catch {
-    return [];
-  }
-}
-
-const PlanetDetails = ({ planet, onStartMining }: Props) => {
-  const ships = safeGetShipsFromContext();
+const PlanetDetails = ({ planet }: Props) => {
+  const { ships, issueOrder } = usePlayerShipsContext();
   const availableShips = ships.filter((s) => !s.ActivityWorker.Activity);
+
+  const handleMine = issueOrder.bind(null, "MINE");
+
   return (
     <div className="flex flex-row justify-between gap-2">
       <div className="flex flex-row justify-start gap-2">
@@ -29,7 +24,10 @@ const PlanetDetails = ({ planet, onStartMining }: Props) => {
       <div className="flex justify-end">
         {planet.type !== "Habitable" &&
           availableShips.map((s) => (
-            <Button key={s.id} onClick={onStartMining.bind(null, s.id)}>
+            <Button
+              key={s.id}
+              onClick={handleMine.bind(null, s.id, { type: CargoType.ORE })}
+            >
               Mine with {s.label}
             </Button>
           ))}

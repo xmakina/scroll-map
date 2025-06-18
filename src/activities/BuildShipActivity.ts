@@ -31,8 +31,6 @@ export default class implements IActivityHandler {
       parent.Station.id,
       activityWorker.Activity?.data as ShipData
     );
-
-    await this.activityService.delete(activityWorker.Activity.id);
   }
 
   async begin(activityWorkerId: string, data: ShipDataWithCost): Promise<void> {

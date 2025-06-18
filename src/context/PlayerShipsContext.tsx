@@ -1,15 +1,20 @@
 "use client";
 
 import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
+import { ActivityType } from "@prisma/client";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
 export type PlayerShipsContextProps = {
-  ships: ShipWithActivityAndCargoHold[];
   children: ReactNode | ReactNode[];
-};
+} & PlayerShipsContextInterface;
 
-interface PlayerShipsContextInterface {
+export interface PlayerShipsContextInterface {
   ships: ShipWithActivityAndCargoHold[];
+  issueOrder: (
+    activity: ActivityType,
+    id: string,
+    data?: object
+  ) => Promise<void> | void;
 }
 
 const PlayerShipsContext = createContext<
@@ -20,9 +25,10 @@ export default PlayerShipsContext;
 
 export const PlayerShipsContextProvider: React.FC<PlayerShipsContextProps> = ({
   ships,
+  issueOrder,
   children,
 }) => {
-  const values = useMemo(() => ({ ships }), [ships]);
+  const values = useMemo(() => ({ ships, issueOrder }), [ships, issueOrder]);
 
   return (
     <PlayerShipsContext.Provider value={values}>
@@ -31,12 +37,13 @@ export const PlayerShipsContextProvider: React.FC<PlayerShipsContextProps> = ({
   );
 };
 
-export const usePlayerShipsContext = () => {
+export const usePlayerShipsContext = (): PlayerShipsContextInterface => {
   const context = useContext(PlayerShipsContext);
-  if (context?.ships === undefined) {
-    throw new Error(
-      "usePlayerShipsContext must be used within a PlayerShipsContextProvider"
-    );
+  if (context === undefined) {
+    return {
+      ships: [],
+      issueOrder: () => {},
+    };
   }
 
   return context;

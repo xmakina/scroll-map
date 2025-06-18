@@ -5,19 +5,21 @@ import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
 import Waypoint from "@/models/waypoint/Waypoint";
 import React from "react";
 import StarDetails from "../map/StarDetails";
+import { ActivityType } from "@prisma/client";
 
 type Props = {
   ships: ShipWithActivityAndCargoHold[];
   x: number;
   y: number;
+  onIssueOrder: (activity: ActivityType, id: string) => Promise<void> | void;
 };
 
-const LocalVolume = ({ ships, x, y }: Props) => {
+const LocalVolume = ({ ships, x, y, onIssueOrder: issueOrder }: Props) => {
   const waypoint = new Waypoint(x, y);
   return (
     <div>
       <div>Local Volume</div>
-      <PlayerShipsContext.Provider value={{ ships }}>
+      <PlayerShipsContext.Provider value={{ ships, issueOrder }}>
         <div>
           {waypoint.stars.map((s) => (
             <StarDetails key={s.id} star={s} />

@@ -5,10 +5,9 @@ import PlanetDetails from "./PlanetDetails";
 
 type Props = {
   star: Star;
-  onStartMining?: (planetId: string, shipId: string) => Promise<void> | void;
 };
 
-const StarDetails = ({ star, onStartMining = () => {} }: Props) => {
+const StarDetails = ({ star }: Props) => {
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="flex flex-row items-center justify-between w-full gap-4">
@@ -26,11 +25,7 @@ const StarDetails = ({ star, onStartMining = () => {} }: Props) => {
         <div>Planets:</div>
         <div className="flex flex-col gap-2">
           {star.planets.map((p) => (
-            <PlanetDetails
-              key={p.id}
-              planet={p}
-              onStartMining={onStartMining.bind(null, p.id)}
-            />
+            <PlanetDetails key={p.id} planet={p} />
           ))}
           {star.planets.length === 0 && <div className="italic">Empty</div>}
         </div>
