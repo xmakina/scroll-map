@@ -45,13 +45,13 @@ export default class ActivityService {
   async create<T extends object>(
     activityWorkerId: string,
     activityType: ActivityType,
-    endTime: Date,
+    duration: number,
     data?: T & UnknownData
   ) {
     return await this.repository.create(
       activityWorkerId,
       activityType,
-      endTime,
+      duration,
       data ?? { dataType: "None" }
     );
   }

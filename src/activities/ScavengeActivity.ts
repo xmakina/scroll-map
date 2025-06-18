@@ -1,6 +1,5 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
-import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import { ActivityType, CargoType } from "@prisma/client";
 import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
@@ -59,7 +58,7 @@ export default class implements IActivityHandler {
     await this.activityService.create(
       activityWorkerId,
       ActivityType.SCAVENGE,
-      NowAddSeconds(1),
+      1,
       data
     );
   }

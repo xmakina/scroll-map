@@ -32,7 +32,8 @@
     "ComponentDetails": {
         "SMELTER": "Smelter",
         "level {level}": "lvl {level}",
-        "HANGAR": "Hangar"
+        "HANGAR": "Hangar",
+        "VAULT": "Vault"
     },
     "BuildShip": {
         "Miner": "Mining ship",

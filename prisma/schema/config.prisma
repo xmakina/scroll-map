@@ -1,0 +1,8 @@
+enum ConfigKey {
+  DurationMultiplier
+}
+
+model Config {
+  key   ConfigKey @unique
+  value String
+}

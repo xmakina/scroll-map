@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import seed from "../../prisma/seed";
-
 const prisma = new PrismaClient();
 
 export default async () => {

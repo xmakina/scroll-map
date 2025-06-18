@@ -1,7 +1,8 @@
 import { UnknownData } from "@/models/UnknownData";
 import { ActivityWorkerWithParent } from "@/models/WorkerWithActivity";
 import { prisma } from "@/prisma";
-import { ActivityType, Prisma } from "@prisma/client";
+import { NowAddSeconds } from "@/utils/NowAddSeconds";
+import { ActivityType, ConfigKey, Prisma } from "@prisma/client";
 
 export type ActivityWithShip = Prisma.ActivityGetPayload<{
   include: { ActivityWorker: { include: { Ship: true } } };
@@ -18,9 +19,19 @@ export default class ActivityRepository {
   async create<T extends object>(
     activityWorkerId: string,
     type: ActivityType,
-    endTime: Date,
+    duration: number,
     data: T & UnknownData
   ) {
+    const fullDuration =
+      duration *
+      parseInt(
+        (
+          await prisma.config.findUniqueOrThrow({
+            where: { key: ConfigKey.DurationMultiplier },
+          })
+        ).value
+      );
+    const endTime = NowAddSeconds(fullDuration);
     return await prisma.activity.create({
       data: { activityWorkerId, type, data, endTime },
     });

@@ -3,7 +3,6 @@ import { IActivityHandler } from "./IActivityHandler";
 import { ShipDataWithCost } from "@/models/CostAndRequirements/Ships";
 import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
-import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import ShipService from "@/services/ShipService";
 import { ShipData } from "@/models/ShipData";
 import { ActivityType } from "@prisma/client";
@@ -50,7 +49,7 @@ export default class implements IActivityHandler {
     await this.activityService.create(
       activityWorkerId,
       ActivityType.BuildShip,
-      NowAddSeconds(3),
+      3,
       data.data
     );
   }

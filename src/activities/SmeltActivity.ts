@@ -3,7 +3,6 @@ import { IActivityHandler } from "./IActivityHandler";
 import { ActivityType, CargoType, StationComponentType } from "@prisma/client";
 import ActivityService from "@/services/ActivityService";
 import CargoHoldService from "@/services/CargoHoldService";
-import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import SmeltData from "@/models/SmeltData";
 import StationService from "@/services/StationService";
 import StationComponentData from "@/models/StationComponentsData";
@@ -101,7 +100,7 @@ export default class implements IActivityHandler {
     await this.activityService.create(
       activityWorkerId,
       ActivityType.SMELT,
-      NowAddSeconds(1),
+      1,
       smeltData
     );
   }

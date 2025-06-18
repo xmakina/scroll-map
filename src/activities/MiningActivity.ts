@@ -1,7 +1,6 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
-import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import { MiningData } from "@/models/MiningData";
 import findCargoHoldId from "@/utils/findCargoHoldId";
 import CargoHoldService from "@/services/CargoHoldService";
@@ -26,11 +25,10 @@ export default class implements IActivityHandler {
   }
 
   async begin(activityWorkerId: string, data?: MiningData): Promise<void> {
-    const duration = 1;
     await this.activityService.create(
       activityWorkerId,
       "MINE",
-      NowAddSeconds(duration),
+      1,
       { ...data, dataType: "MiningData" }
     );
   }

@@ -1,7 +1,6 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
-import { NowAddSeconds } from "@/utils/NowAddSeconds";
 import { ShipData } from "@/models/ShipData";
 import { UnknownData } from "@/models/UnknownData";
 import StationComponentService from "@/services/StationComponentService";
@@ -88,7 +87,7 @@ async function beginStationComponent(
   await activityService.create(
     activityWorkerId,
     "BUILD",
-    NowAddSeconds(3),
+    3,
     data
   );
 }
