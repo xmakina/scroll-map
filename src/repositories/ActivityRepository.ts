@@ -22,15 +22,13 @@ export default class ActivityRepository {
     duration: number,
     data: T & UnknownData
   ) {
-    const fullDuration =
-      duration *
-      parseInt(
-        (
-          await prisma.config.findUniqueOrThrow({
-            where: { key: ConfigKey.DurationMultiplier },
-          })
-        ).value
-      );
+    const durationMultiplierConfig = await prisma.config.findUnique({
+      where: { key: ConfigKey.DurationMultiplier },
+    });
+
+    const durationMultiplier = parseInt(durationMultiplierConfig?.value ?? "1");
+
+    const fullDuration = duration * durationMultiplier;
     const endTime = NowAddSeconds(fullDuration);
     return await prisma.activity.create({
       data: { activityWorkerId, type, data, endTime },

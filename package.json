@@ -2,7 +2,7 @@
   "name": "traders-galaxy",
   "version": "0.0.1",
   "scripts": {
-    "prisma-force": "prisma db push --force-reset --accept-data-loss && prisma db seed",
+    "prisma-force": "prisma db push --force-reset --accept-data-loss",
     "dev": "npm run prisma-force && next dev",
     "build": "prisma generate && next build --experimental-build-mode compile",
     "build:full": "prisma generate && cross-env DATABASE_URL=mysql://test_user:test_password@localhost:3306/build npm run §Build",
@@ -23,7 +23,7 @@
     "§IntegrationTests": "npm run §SetupIntegrations && npm run §RunIntegrationTestSuite && npm run §TearDownIntegrations",
     "§SetupIntegrations": "docker compose --file docker-compose.integration.yml up --build --detach --wait test-mysql test-phpmyadmin",
     "§TearDownIntegrations": "docker compose --file docker-compose.integration.yml down test-mysql test-phpmyadmin --volumes",
-    "§RunIntegrationTestSuite": "prisma db push --force-reset && prisma db seed --environment test && jest -i --selectProjects integration",
+    "§RunIntegrationTestSuite": "prisma db push --force-reset && prisma db seed && jest -i --selectProjects integration",
     "§SetupStorybook": "docker compose --file docker-compose.integration.yml up --build --detach --wait storybook",
     "§TearDownStorybook": "docker compose --file docker-compose.integration.yml down storybook --volumes",
     "§RunStorybookTests": "test-storybook",
