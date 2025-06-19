@@ -11,9 +11,11 @@ type Props = {
 const StationRow = ({ station, onClick }: Props) => {
   return (
     <div className="flex flex-row gap-2 items-center">
-      <NavigationLink href={`/station/${station.id}`}>
-        Station {station.id}
-      </NavigationLink>
+      <div className="text-center">
+        <NavigationLink href={`/station/${station.id}`}>
+          Station {station.label}
+        </NavigationLink>
+      </div>
       <Button onClick={onClick}>Find</Button>
     </div>
   );

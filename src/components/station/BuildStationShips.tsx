@@ -38,7 +38,7 @@ const BuildStationShips = ({ onBuildShip, isBusy }: Props) => {
   return (
     <div className="flex flex-col items-center">
       <div>Build Ships</div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         <div className="flex flex-row gap-4">
           {displayedShips.map((shipCostAndRequirements) => {
             const handleBuildShip = onBuildShip.bind(

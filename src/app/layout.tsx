@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="bg-primary text-secondary">
       <body className="flex flex-col min-h-screen m-0 box-border">
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-2 px-8">
           <NextIntlClientProvider messages={messages}>
             <div id="content" className="mb-24 grow">
               <main className="flex flex-row justify-start items-start pb-48">

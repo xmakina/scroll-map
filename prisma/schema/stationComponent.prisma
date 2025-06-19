@@ -1,7 +1,7 @@
 enum StationComponentType {
   HANGAR
   SMELTER
-  VAULT
+  COMMUNICATOR
 }
 
 model StationComponent {

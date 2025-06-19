@@ -77,16 +77,7 @@ const GameMap = ({
   };
 
   return (
-    <div className="flex flex-col lg:flex-row-reverse lg:mt-4 gap-4 justify-between w-full px-8">
-      <div className="flex flex-col w-full">
-        <StarMap
-          posix={posix}
-          zoom={zoom}
-          onSelected={handleMapSelection}
-          selected={details}
-          onReady={setMap}
-        />
-      </div>
+    <div className="flex flex-col lg:flex-row-reverse lg:mt-4 gap-4 justify-between w-full">
       <div className="flex flex-col grow w-full justify-center items-center">
         <StationList stations={stations} onZoom={handleZoomToStation} />
         {stations.length === 0 && (
@@ -96,6 +87,15 @@ const GameMap = ({
             onSelect={handleDeployStation}
           />
         )}
+      </div>
+      <div className="flex flex-col w-full">
+        <StarMap
+          posix={posix}
+          zoom={zoom}
+          onSelected={handleMapSelection}
+          selected={details}
+          onReady={setMap}
+        />
       </div>
     </div>
   );

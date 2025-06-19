@@ -12,8 +12,13 @@ const CargoHoldSummary = ({ cargoHold }: Props) => {
       <div>Cargo Hold</div>
       <div className="flex flex-row gap-2">
         {displayedValues.map((c) => (
-          <div key={c.type} className="border border-white rounded-md p-2">
-            {c.type} : {c.amount}
+          <div
+            key={c.type}
+            className="flex flex-col border border-white rounded-md p-2 md:flex-row md:gap-1 text-center md:text-left md:flex-nowrap items-center"
+          >
+            <div>{c.type}</div>
+            <div className="hidden md:flex">:</div>
+            <div>{c.amount}</div>
           </div>
         ))}
         {displayedValues.length === 0 && <div className="italic">Empty</div>}

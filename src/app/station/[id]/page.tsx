@@ -40,7 +40,7 @@ const Page = async ({ params }: Props) => {
           <NavigationLink href="/map">Back</NavigationLink>
         </div>
       </div>
-      <div className="flex sm:flex-row gap-8 justify-between">
+      <div className="flex flex-col lg:flex-row gap-8 justify-between">
         <div className="flex flex-col border border-white gap-0 rounded-lg">
           <div className="flex flex-col gap-4 items-center border-b border-white  p-2">
             <div className="italic">Station Details</div>

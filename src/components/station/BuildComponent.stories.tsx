@@ -1,6 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import BuildComponent from "./BuildComponent";
-import { StationComponent, StationComponentType } from "@prisma/client";
+import {
+  CargoType,
+  StationComponent,
+  StationComponentType,
+} from "@prisma/client";
 import { withReactContext } from "storybook-react-context";
 
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
@@ -42,8 +46,20 @@ export const BuildComponentHasRequiredCargo: Story = {
       id: "",
       data: {},
       CargoContainers: [
-        { id: "", type: "ORE", data: null, amount: 1000, cargoHoldId: "" },
-        { id: "", type: "ICE", amount: 500, data: null, cargoHoldId: "" },
+        {
+          id: "",
+          type: CargoType.ORE,
+          data: null,
+          amount: 1000,
+          cargoHoldId: "",
+        },
+        {
+          id: "",
+          type: CargoType.ICE,
+          amount: 500,
+          data: null,
+          cargoHoldId: "",
+        },
       ],
     }),
   },
@@ -60,8 +76,20 @@ export const BuildComponentHasInsufficientButPresentCargo: Story = {
       id: "",
       data: {},
       CargoContainers: [
-        { id: "", type: "ORE", data: null, amount: 999, cargoHoldId: "" },
-        { id: "", type: "ICE", amount: 499, data: null, cargoHoldId: "" },
+        {
+          id: "",
+          type: CargoType.ORE,
+          data: null,
+          amount: 999,
+          cargoHoldId: "",
+        },
+        {
+          id: "",
+          type: CargoType.ICE,
+          amount: 499,
+          data: null,
+          cargoHoldId: "",
+        },
       ],
     }),
   },
@@ -73,7 +101,13 @@ export const BuildComponentHasMissingCargo: Story = {
       id: "",
       data: {},
       CargoContainers: [
-        { id: "", type: "ORE", data: null, amount: 1000, cargoHoldId: "" },
+        {
+          id: "",
+          type: CargoType.ORE,
+          data: null,
+          amount: 1000,
+          cargoHoldId: "",
+        },
       ],
     }),
   },
@@ -91,7 +125,13 @@ export const BuildComponentCanAffordAndHasPrerequisite: Story = {
         id: "",
         data: {},
         CargoContainers: [
-          { id: "", type: "ALLOY", data: null, amount: 1000, cargoHoldId: "" },
+          {
+            id: "",
+            type: CargoType.ALLOY,
+            data: null,
+            amount: 1000,
+            cargoHoldId: "",
+          },
         ],
       },
       [{ id: "", type: "SMELTER", data: { level: 1 }, stationId: null }]

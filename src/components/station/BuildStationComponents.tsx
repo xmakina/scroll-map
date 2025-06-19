@@ -26,7 +26,7 @@ const BuildStationComponents = ({ onBuildComponent, isBusy }: Props) => {
   return (
     <div className="flex flex-col items-center">
       <div>Components</div>
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         {Object.keys(StationComponentCostAndRequirements)
           .map((k) => k as StationComponentType)
           .map((b) => (

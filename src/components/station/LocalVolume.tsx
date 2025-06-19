@@ -17,8 +17,8 @@ type Props = {
 const LocalVolume = ({ ships, x, y, onIssueOrder: issueOrder }: Props) => {
   const waypoint = new Waypoint(x, y);
   return (
-    <div>
-      <div>Local Volume</div>
+    <div className="flex flex-col items-center gap-4">
+      <div className="italic">Local Volume</div>
       <PlayerShipsContext.Provider value={{ ships, issueOrder }}>
         <div>
           {waypoint.stars.map((s) => (
