@@ -3,6 +3,12 @@
     "Unknown": "Hello, world!",
     "Greetings, {name}": "Greetings, {name}"
   },
+  "LoginLink": {
+    "Login with {provider}": "Login with {provider}",
+    "github": "Github",
+    "google": "Google",
+    "discord": "Discord"
+  },
   "Surroundings": {
     "Plain": "You are in a flat area"
   },

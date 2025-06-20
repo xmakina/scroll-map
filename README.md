@@ -14,6 +14,10 @@ npm run build will throw errors locally because there is no accessible database.
 
 Create a `secrets` folder with the following files:
 
+- auth_google_id.txt
+- auth_google_secret.txt
+- auth_discord_id.txt
+- auth_discord_secret.txt
 - auth_github_id.txt
 - auth_github_secret.txt
 - auth_secret.txt

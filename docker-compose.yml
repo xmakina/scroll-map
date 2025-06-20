@@ -13,10 +13,14 @@ services:
       mysql:
         condition: service_healthy
     secrets:
-      - auth_github_id
       - auth_secret
       - db_url
+      - auth_github_id
       - auth_github_secret
+      - auth_google_id
+      - auth_google_secret
+      - auth_discord_id
+      - auth_discord_secret
     healthcheck:
       test: ["CMD", "curl", "--fail", "-G", "http://127.0.0.1:3000"]
       interval: 5s
@@ -72,6 +76,14 @@ secrets:
     file: ./secrets/auth_github_secret.txt
   auth_github_id:
     file: ./secrets/auth_github_id.txt
+  auth_google_secret:
+    file: ./secrets/auth_google_secret.txt
+  auth_google_id:
+    file: ./secrets/auth_google_id.txt
+  auth_discord_secret:
+    file: ./secrets/auth_discord_secret.txt
+  auth_discord_id:
+    file: ./secrets/auth_discord_id.txt
 
 volumes:
   mysql-data:
