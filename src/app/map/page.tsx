@@ -1,10 +1,11 @@
 import React from "react";
 import GameMap from "@/components/map/GameMap";
-import { getStations } from "./queries";
+import { getOtherStations, getMyStations } from "./queries";
 import { createStation } from "./actions";
 
 async function Page() {
-  const stations = await getStations();
+  const stations = await getMyStations();
+  const allStations = await getOtherStations();
   const handleCreateStation = createStation.bind(null);
 
   return (
@@ -12,6 +13,7 @@ async function Page() {
       <GameMap
         posix={[0, 0]}
         stations={stations}
+        allStations={allStations}
         onDeployStation={handleCreateStation}
       />
     </div>

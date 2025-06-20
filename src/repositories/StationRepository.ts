@@ -3,6 +3,10 @@ import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCa
 import { prisma } from "@/prisma";
 
 export default class StationRepository {
+  async getAllStations() {
+    return prisma.station.findMany();
+  }
+
   async updateStation(id: string, data: Partial<StationData>) {
     const station = await this.get(id);
     const updatedData = { ...(station.data as object), ...data };

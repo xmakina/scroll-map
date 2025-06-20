@@ -38,6 +38,7 @@
     "schema": "./prisma/schema"
   },
   "dependencies": {
+    "@adamscybot/react-leaflet-component-marker": "^2.0.3",
     "@auth/prisma-adapter": "^2.7.4",
     "@prisma/client": "^6.10.1",
     "bcrypt": "^5.1.1",

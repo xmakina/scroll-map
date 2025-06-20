@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { MapContainer } from "react-leaflet";
+import React, { ReactNode, useEffect, useState } from "react";
+import { MapContainer, Popup } from "react-leaflet";
 import MapStar from "./MapStar";
 import Waypoint from "@/models/waypoint/Waypoint";
 import { getWaypoints } from "@/utils/getWaypoints";
 import { CRS, LatLngExpression, LatLngTuple, Map } from "leaflet";
 import MapFilters, { MapFilter } from "./MapFilters";
 import StarDetails from "./StarDetails";
+import { Station } from "@prisma/client";
+import { Marker } from "@adamscybot/react-leaflet-component-marker";
+import StationIcon from "./StationIcon";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
@@ -15,12 +19,14 @@ type Props = {
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
   selected?: Waypoint;
   onReady?: (map: Map) => void;
+  stations: Station[];
 };
 
 const StarMap = ({
   posix,
   zoom,
   selected,
+  stations,
   onSelected = () => {},
   onReady = () => {},
 }: Props) => {
@@ -28,6 +34,8 @@ const StarMap = ({
   const [allWaypoints, setAllWaypoints] = useState<Waypoint[]>([]);
   const [filteredWaypoints, setFilteredWaypoints] = useState<Waypoint[]>([]);
   const [map, setMap] = useState<Map | null>(null);
+  const [stationMarkers, setStationMarkers] = useState<ReactNode[]>([]);
+  const playerId = usePlayerContext().playerId;
 
   const updateRequest = async () => {
     if (!map) {
@@ -61,6 +69,20 @@ const StarMap = ({
   };
 
   useEffect(() => {
+    const markers = stations.map((s) => (
+      <Marker
+        key={s.id}
+        position={[s.positionY, s.positionX]}
+        title={s.label}
+        icon={<StationIcon playerOwned={s.playerId === playerId} />}
+      >
+        <Popup>{s.label}</Popup>
+      </Marker>
+    ));
+    setStationMarkers(markers);
+  }, [stations]);
+
+  useEffect(() => {
     const filteredWaypoints = allWaypoints.filter((w) =>
       filters.planets
         ? w.stars.filter((s) => s.planets.length > 0).length > 0
@@ -91,6 +113,7 @@ const StarMap = ({
               selected={selected?.id === w.id}
             />
           ))}
+          {stationMarkers}
         </MapContainer>
       </div>
       <div>

@@ -11,12 +11,14 @@ import StarMap from "./StarMap";
 import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
 import TutorialStation from "@/app/map/TutorialStation";
 import StationList from "../station/StationList";
+import { Station } from "@prisma/client";
 
 type Props = {
   posix: LatLngExpression | LatLngTuple;
   zoom?: number;
   onSelected?: (waypoint: Waypoint) => Promise<void> | void;
   stations: StationWithComponentsAndWorker[];
+  allStations: Station[];
   onDeployStation: (waypointId: string) => Promise<void> | void;
 };
 
@@ -28,6 +30,7 @@ const GameMap = ({
   zoom: defaultZoom = defaults.zoom,
   posix: defaultPosix,
   stations,
+  allStations,
   onDeployStation,
 }: Props) => {
   const [posix, setPosix] = useState(defaultPosix);
@@ -95,6 +98,7 @@ const GameMap = ({
           onSelected={handleMapSelection}
           selected={details}
           onReady={setMap}
+          stations={allStations}
         />
       </div>
     </div>

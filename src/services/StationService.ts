@@ -9,6 +9,10 @@ import { adjectives, colors } from "unique-names-generator";
 
 const cargoHoldService = await CargoHoldService.get();
 export default class StationService {
+  async getAllStations() {
+    return await this.repository.getAllStations();
+  }
+
   async getOrders(id: string) {
     const station = await this.repository.get(id);
     const orders = ConstructStationOrders(station);

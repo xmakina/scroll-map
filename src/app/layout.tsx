@@ -6,6 +6,8 @@ import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { WithAuth } from "./WithAuth";
+import PlayerContext from "@/context/PlayerContext";
+import { tryGetPlayer } from "./queries";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,7 +34,11 @@ export default async function RootLayout({
               <main className="flex flex-row justify-start items-start pb-48">
                 <div className="flex flex-col items-center justify-start grow">
                   <SessionProvider>
-                    <WithAuth>{children}</WithAuth>
+                    <WithAuth>
+                      <PlayerContext playerId={(await tryGetPlayer())?.id}>
+                        {children}
+                      </PlayerContext>
+                    </WithAuth>
                   </SessionProvider>
                 </div>
               </main>
