@@ -15,7 +15,7 @@ const Travel = ({ locationId }: Props) => {
   const t = useTranslations("OrderButton");
 
   const { ship, issueOrder } = useShipContext();
-  if (ship === undefined) {
+  if (ship === undefined || ship.ActivityWorker.Activity || ship.locationId === locationId) {
     return <div></div>;
   }
 

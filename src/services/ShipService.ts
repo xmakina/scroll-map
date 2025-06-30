@@ -4,6 +4,10 @@ import generateUniqueName from "@/utils/generateUniqueName";
 import { adjectives, animals } from "unique-names-generator";
 
 export default class ShipService {
+  async updateLocation(id: string, locationId: string) {
+    return await this.repository.updateLocation(id, locationId);
+  }
+
   async getActivityWorker(shipId: string) {
     const ship = await this.get(shipId);
     return ship.ActivityWorker;

@@ -1,6 +1,8 @@
 "use client";
 
 import { MiningData } from "@/models/MiningData";
+import TravelData from "@/models/TravelData";
+import getCargoTypeTranslation from "@/utils/getCargoTypeTranslation";
 import { Activity } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -14,20 +16,18 @@ const ActivityLabel = ({ activity }: Props) => {
 
   switch (activity.type) {
     case "MINE": {
-      const tr = useTranslations("CargoType");
       const { type } = activity.data as MiningData;
-      return <div>{t(activity.type, { type: tr(type) })}</div>;
+      return (
+        <div>{t(activity.type, { type: getCargoTypeTranslation(type) })}</div>
+      );
     }
-    case "DELIVER":
-    case "BUILD":
-    case "BuildShip":
-    case "SCUTTLE":
-    case "SCAVENGE":
-    case "SMELT":
+    case "TRAVEL": {
+      const { locationId } = activity.data as TravelData;
+      return <div>{t(activity.type, { locationId })}</div>;
+    }
+    default:
       return <div>{t(activity.type)}</div>;
   }
-
-  return <div>ActivityLabel</div>;
 };
 
 export default ActivityLabel;

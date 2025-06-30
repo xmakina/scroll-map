@@ -30,7 +30,9 @@
     "BUILD": "Building 🧑‍🏭",
     "SMELT": "Smelting 🔥",
     "BuildShip": "Building ship 🧑‍🔧",
-    "DELIVER": "Delivering 📦"
+    "DELIVER": "Delivering 📦",
+    "TRAVEL": "Travelling to {locationId}",
+    "Unknown Activity": "Unknown Activity"
   },
   "OrderButton": {
     "MINE": "Mine ⛏️",

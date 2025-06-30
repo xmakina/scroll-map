@@ -5,6 +5,10 @@ import { InputJsonValue } from "@prisma/client/runtime/library";
 import { ShipWithActivityAndCargoHold } from "../models/ShipWithActivity";
 
 export default class ShipRepository {
+  async updateLocation(id: string, locationId: string) {
+    return prisma.ship.update({ where: { id }, data: { locationId } });
+  }
+
   async delete(id: string) {
     return prisma.ship.delete({ where: { id } });
   }
