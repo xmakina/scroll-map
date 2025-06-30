@@ -1,7 +1,7 @@
-import { UnknownData } from "@/models/BerthData";
+import JsonData from "@/models/JsonData/IActivityData";
 import { ActivityType } from "@prisma/client";
 
-export default function <T extends UnknownData>(
+export default function <T extends JsonData>(
   bindFunc: (activityType: ActivityType, data: T) => void | Promise<void>,
   activityType: ActivityType,
   data: T

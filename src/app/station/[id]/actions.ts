@@ -1,6 +1,6 @@
 "use server";
 
-import { UnknownData } from "@/models/UnknownData";
+import IActivityData from "@/models/JsonData/IActivityData";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
 import StationService from "@/services/StationService";
@@ -11,28 +11,28 @@ const shipService = await ShipService.get();
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
 
-export const issueMultipleShipsOrder = async <T>(
+export const issueMultipleShipsOrder = async (
   activityType: ActivityType,
   shipId: string,
-  data?: T & UnknownData
+  data?: IActivityData
 ) => {
   return await issueShipOrder(shipId, activityType, data);
 };
 
-export const issueShipOrder = async <T>(
+export const issueShipOrder = async (
   shipId: string,
   activityType: ActivityType,
-  data?: T & UnknownData
+  data?: IActivityData
 ) => {
   const ship = await shipService.get(shipId);
   await activityService.begin(ship.ActivityWorker, activityType, data);
   revalidatePath("/station/[id]", "page");
 };
 
-export const issueStationOrder = async <T>(
+export const issueStationOrder = async (
   stationId: string,
   activityType: ActivityType,
-  data?: T & UnknownData
+  data?: IActivityData
 ) => {
   const station = await stationService.get(stationId);
   await activityService.begin(station.ActivityWorker, activityType, data);

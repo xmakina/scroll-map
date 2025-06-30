@@ -1,6 +1,6 @@
 "use server";
 
-import { UnknownData } from "@/models/UnknownData";
+import IActivityData from "@/models/JsonData/IActivityData";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
 import { ActivityType } from "@prisma/client";
@@ -9,10 +9,10 @@ import { revalidatePath } from "next/cache";
 const shipService = await ShipService.get();
 const activityService = await ActivityService.get();
 
-export const issueShipOrder = async <T>(
+export const issueShipOrder = async (
   shipId: string,
   activityType: ActivityType,
-  data?: T & UnknownData
+  data?: IActivityData
 ) => {
   const ship = await shipService.get(shipId);
   await activityService.begin(ship.ActivityWorker, activityType, data);

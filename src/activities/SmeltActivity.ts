@@ -3,10 +3,11 @@ import { IActivityHandler } from "./IActivityHandler";
 import { ActivityType, CargoType, StationComponentType } from "@prisma/client";
 import ActivityService from "@/services/ActivityService";
 import CargoHoldService from "@/services/CargoHoldService";
-import SmeltData from "@/models/SmeltData";
+import SmeltData from "@/models/JsonData/SmeltData";
 import StationService from "@/services/StationService";
-import StationComponentData from "@/models/StationComponentsData";
 import { Cost } from "@/models/CostAndRequirements/CostAndRequirements";
+import { getComponentLevel } from "@/utils/getComponentLevel";
+import getJsonData from "@/utils/getJsonData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -32,7 +33,7 @@ export default class implements IActivityHandler {
       throw Error("No cargo hold found while claiming scavenge");
     }
 
-    const smeltData = activity.data as SmeltData;
+    const smeltData: SmeltData = getJsonData(activity.data);
     const cargoTypes = Object.keys(smeltData.output).map((k) => k as CargoType);
 
     const addPromises = cargoTypes.map(
@@ -60,10 +61,10 @@ export default class implements IActivityHandler {
 
     const station = await this.stationService.get(stationId);
 
-    const smelterLevel = (
-      station.Components.find((c) => c.type === StationComponentType.SMELTER)
-        ?.data as StationComponentData
-    ).level;
+    const smelterLevel = getComponentLevel(
+      station.Components,
+      StationComponentType.SMELTER
+    );
 
     if (!smelterLevel) {
       throw new Error(`No smelter was found for station ${stationId}`);

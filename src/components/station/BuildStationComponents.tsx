@@ -3,9 +3,10 @@
 import { StationComponentType } from "@prisma/client";
 import React from "react";
 import BuildComponent from "./BuildComponent";
-import StationComponentData from "@/models/StationComponentsData";
+import StationComponentData from "@/models/JsonData/StationComponentData";
 import { useStationContext } from "@/context/StationContext";
 import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
+import getJsonData from "@/utils/getJsonData";
 
 type Props = {
   onBuildComponent: (
@@ -19,7 +20,7 @@ const BuildStationComponents = ({ onBuildComponent, isBusy }: Props) => {
   const { Components: stationComponents } = useStationContext().station;
   const currentLevel: { [key in StationComponentType]?: number } =
     stationComponents.reduce((acc, s) => {
-      const data = s.data as StationComponentData;
+      const data: StationComponentData = getJsonData(s.data);
       return { ...acc, [s.type]: data.level };
     }, {});
 

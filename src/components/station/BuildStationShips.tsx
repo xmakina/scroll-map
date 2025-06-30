@@ -6,9 +6,10 @@ import {
 } from "@/models/CostAndRequirements/StationShips";
 import React from "react";
 import BuildShip from "./BuildShip";
-import StationComponentData from "@/models/StationComponentsData";
+import StationComponentData from "@/models/JsonData/StationComponentData";
 import { StationComponentType } from "@prisma/client";
 import { useStationContext } from "@/context/StationContext";
+import getJsonData from "@/utils/getJsonData";
 
 type Props = {
   onBuildShip: (shipData: ShipDataWithCost) => Promise<void> | void;
@@ -20,7 +21,7 @@ const BuildStationShips = ({ onBuildShip, isBusy }: Props) => {
     useStationContext().station;
   const currentLevel: { [key in StationComponentType]?: number } =
     stationComponents.reduce((acc, s) => {
-      const data = s.data as StationComponentData;
+      const data: StationComponentData = getJsonData(s.data);
       return { ...acc, [s.type]: data.level };
     }, {});
 

@@ -1,4 +1,4 @@
-import { StationData } from "@/models/StationData";
+import StationData from "@/models/JsonData/StationData";
 import { StationWithComponentsAndWorker } from "@/models/StationWithComponentsCargoHoldWorker";
 import { prisma } from "@/prisma";
 

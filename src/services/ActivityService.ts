@@ -11,7 +11,6 @@ import BuildActivity from "@/activities/BuildActivity";
 import MiningActivity from "@/activities/MiningActivity";
 import ScavengeActivity from "@/activities/ScavengeActivity";
 import CargoHoldService from "./CargoHoldService";
-import { UnknownData } from "@/models/UnknownData";
 import StationComponentService from "./StationComponentService";
 import SmeltActivity from "@/activities/SmeltActivity";
 import BuildShipActivity from "@/activities/BuildShipActivity";
@@ -19,8 +18,24 @@ import DeliverCargoActivity from "@/activities/DeliverCargoActivity";
 import EstablishOutpostActivity from "@/activities/EstablishOutpostActivity";
 import TravelActivity from "@/activities/TravelActivity";
 import BerthActivity from "@/activities/BerthActivity";
+import IActivityData from "@/models/JsonData/IActivityData";
 
 export default class ActivityService {
+  async getShipFromActivityWorker(activityWorker: ActivityWorkerWithActivity) {
+    const { Activity: activity } = activityWorker;
+    if (!activity) {
+      throw "Activity not present";
+    }
+
+    const parent = await this.getWorker(activityWorker.id);
+    if (!parent.Ship) {
+      throw new Error(`Worker ${activityWorker.id} is not owned by a ship`);
+    }
+
+    const shipId = parent.Ship.id;
+    return shipId;
+  }
+
   async getWorker(activityWorkerId: string) {
     return await this.repository.getWorker(activityWorkerId);
   }
@@ -45,24 +60,24 @@ export default class ActivityService {
     return await this.repository.get(id);
   }
 
-  async create<T extends object>(
+  async create(
     activityWorkerId: string,
     activityType: ActivityType,
     duration: number,
-    data?: T & UnknownData
+    data?: IActivityData
   ) {
     return await this.repository.create(
       activityWorkerId,
       activityType,
       duration,
-      data ?? { dataType: "None" }
+      data
     );
   }
 
-  async begin<T extends object>(
+  async begin(
     activityWorker: ActivityWorker,
     type: ActivityType,
-    data?: T & UnknownData
+    data?: IActivityData
   ) {
     return await this.activities[type].begin(activityWorker.id, data);
   }

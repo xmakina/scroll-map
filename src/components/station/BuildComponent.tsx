@@ -53,9 +53,7 @@ const BuildComponent = ({
 
   const costBreakdowns = getCostBreakdowns(target.cost, CargoHold);
   const canAfford = costBreakdowns.every((b) => b.available >= b.required);
-  const hasRequired = requirementBreakdowns.every(
-    (b) => b.available >= b.required
-  );
+  const hasRequired = requirementBreakdowns.every((b) => b.level >= b.required);
 
   return (
     <div className="flex flex-col border border-white p-2 rounded-md items-center">

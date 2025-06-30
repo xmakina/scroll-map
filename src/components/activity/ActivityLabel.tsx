@@ -1,14 +1,15 @@
 "use client";
 
-import BerthData from "@/models/BerthData";
-import { MiningData } from "@/models/MiningData";
-import TravelData from "@/models/TravelData";
+import BerthData from "@/models/JsonData/BerthData";
+import TravelData from "@/models/JsonData/TravelData";
 import WaypointService from "@/services/WaypointService";
 import getActivityData from "@/utils/getJsonData";
 import getCargoTypeTranslation from "@/utils/getCargoTypeTranslation";
 import { Activity } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
+import getJsonData from "@/utils/getJsonData";
+import MiningData from "@/models/JsonData/MiningData";
 
 type Props = {
   activity: Activity;
@@ -19,13 +20,13 @@ const ActivityLabel = ({ activity }: Props) => {
 
   switch (activity.type) {
     case "MINE": {
-      const { type } = activity.data as MiningData;
+      const { type } = getJsonData<MiningData>(activity.data);
       return (
         <div>{t(activity.type, { type: getCargoTypeTranslation(type) })}</div>
       );
     }
     case "TRAVEL": {
-      const { locationId } = activity.data as TravelData;
+      const { locationId } = getJsonData<TravelData>(activity.data);
       return <div>{t(activity.type, { locationId })}</div>;
     }
     case "BERTH": {

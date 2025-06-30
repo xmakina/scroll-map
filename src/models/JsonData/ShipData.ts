@@ -1,7 +1,7 @@
 import { Hull } from "@prisma/client";
-import { UnknownData } from "./BerthData";
+import JsonData from "./IActivityData";
 
-export default class extends UnknownData {
+export default class implements JsonData {
   dataType = "ShipData";
 
   berthed?: boolean;
@@ -10,9 +10,7 @@ export default class extends UnknownData {
   tractorBeam?: boolean;
   mining?: MiningData;
 
-  constructor(public readonly hullType: Hull) {
-    super();
-  }
+  constructor(public readonly hullType: Hull) {}
 }
 
 type EngineData = {

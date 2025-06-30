@@ -4,10 +4,10 @@ import { ActivityType } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
 import Button from "../ui/Button";
-import TravelData from "@/models/TravelData";
+import TravelData from "@/models/JsonData/TravelData";
 import { useShipContext } from "@/context/ShipContext";
 import getJsonData from "@/utils/getJsonData";
-import ShipData from "@/models/ShipData";
+import ShipData from "@/models/JsonData/ShipData";
 
 type Props = {
   locationId: string;

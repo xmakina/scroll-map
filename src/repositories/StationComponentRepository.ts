@@ -1,4 +1,4 @@
-import StationComponentData from "@/models/StationComponentsData";
+import StationComponentData from "@/models/JsonData/StationComponentData";
 import { prisma } from "@/prisma";
 
 export default class {

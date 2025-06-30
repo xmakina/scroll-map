@@ -2,8 +2,9 @@ import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
 import ShipService from "@/services/ShipService";
-import TravelData from "@/models/TravelData";
+import TravelData from "@/models/JsonData/TravelData";
 import { ActivityType } from "@prisma/client";
+import getJsonData from "@/utils/getJsonData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -17,13 +18,10 @@ export default class implements IActivityHandler {
       throw "Activity not present";
     }
 
-    const parent = await this.activityService.getWorker(activityWorker.id);
-    if (!parent.Ship) {
-      throw new Error("Only ships can travel");
-    }
-    const shipId = parent.Ship?.id;
-    const newLocationId = (parent.Activity?.data as TravelData).locationId;
-
+    const shipId = await this.activityService.getShipFromActivityWorker(
+      activityWorker
+    );
+    const newLocationId = getJsonData<TravelData>(activity.data).locationId;
     await this.shipService.updateLocation(shipId, newLocationId);
   }
 

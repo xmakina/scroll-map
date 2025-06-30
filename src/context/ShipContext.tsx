@@ -1,7 +1,7 @@
 "use client";
 
+import IActivityData from "@/models/JsonData/IActivityData";
 import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
-import { UnknownData } from "@/models/UnknownData";
 import { ActivityType } from "@prisma/client";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
@@ -11,10 +11,7 @@ export type ShipContextProps = {
 
 export interface ShipContextInterface {
   ship?: ShipWithActivityAndCargoHold;
-  issueOrder: <T>(
-    activity: ActivityType,
-    data?: T & UnknownData
-  ) => Promise<void>;
+  issueOrder: (activity: ActivityType, data?: IActivityData) => Promise<void>;
 }
 
 const ShipContext = createContext<ShipContextInterface | undefined>(undefined);

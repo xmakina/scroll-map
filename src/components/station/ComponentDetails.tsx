@@ -1,4 +1,5 @@
-import StationComponentData from "@/models/StationComponentsData";
+import StationComponentData from "@/models/JsonData/StationComponentData";
+import getJsonData from "@/utils/getJsonData";
 import { StationComponent } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -9,7 +10,7 @@ type Props = {
 
 const ComponentDetails = ({ component }: Props) => {
   const t = useTranslations("ComponentDetails");
-  const data = component.data as StationComponentData;
+  const data: StationComponentData = getJsonData(component.data);
 
   return (
     <div>

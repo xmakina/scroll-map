@@ -3,11 +3,10 @@ import React from "react";
 import LabeledText from "../ui/LabeledText";
 import Button from "../ui/Button";
 import { CargoType } from "@prisma/client";
-import { MiningData } from "@/models/MiningData";
 import { useShipContext } from "@/context/ShipContext";
-import { UnknownData } from "@/models/UnknownData";
 import Travel from "../orders/Travel";
 import BerthButton from "../orders/BerthButton";
+import MiningData from "@/models/JsonData/MiningData";
 
 type Props = {
   planet: Planet;
@@ -58,7 +57,7 @@ const MiningButton = ({
   handleMine,
 }: {
   planet: Planet;
-  handleMine: (data: UnknownData) => Promise<void>;
+  handleMine: (data: MiningData) => Promise<void>;
 }) => {
   const { ship: s } = useShipContext();
   if (s === undefined) {

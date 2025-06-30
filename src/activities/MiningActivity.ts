@@ -1,9 +1,10 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
-import { MiningData } from "@/models/MiningData";
 import findCargoHoldId from "@/utils/findCargoHoldId";
 import CargoHoldService from "@/services/CargoHoldService";
+import getJsonData from "@/utils/getJsonData";
+import MiningData from "@/models/JsonData/MiningData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -20,7 +21,7 @@ export default class implements IActivityHandler {
     const parent = await this.activityService.getWorker(activityWorker.id);
     const cargoHoldId = findCargoHoldId(parent);
 
-    const type = (parent.Activity?.data as MiningData).type;
+    const type = getJsonData<MiningData>(activity.data).type;
     await this.cargoHoldService.provide(cargoHoldId, [{ type, amount: 500 }]);
   }
 

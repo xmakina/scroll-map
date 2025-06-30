@@ -1,4 +1,4 @@
-import { UnknownData } from "@/models/UnknownData";
+import IActivityData from "@/models/JsonData/IActivityData";
 import { ActivityWorkerWithParent } from "@/models/WorkerWithActivity";
 import { prisma } from "@/prisma";
 import { NowAddSeconds } from "@/utils/NowAddSeconds";
@@ -16,11 +16,11 @@ export default class ActivityRepository {
     });
   }
 
-  async create<T extends object>(
+  async create(
     activityWorkerId: string,
     type: ActivityType,
     duration: number,
-    data: T & UnknownData
+    data?: IActivityData
   ) {
     const durationMultiplierConfig = await prisma.config.findUnique({
       where: { key: ConfigKey.DurationMultiplier },
@@ -31,7 +31,7 @@ export default class ActivityRepository {
     const fullDuration = duration * durationMultiplier;
     const endTime = NowAddSeconds(fullDuration);
     return await prisma.activity.create({
-      data: { activityWorkerId, type, data, endTime },
+      data: { activityWorkerId, type, data: { ...data }, endTime },
     });
   }
 

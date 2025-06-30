@@ -4,7 +4,7 @@ import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
 import { ActivityType, StationComponentType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import StationComponentData from "@/models/StationComponentsData";
+import StationComponentData from "@/models/JsonData/StationComponentData";
 import { ShipDataWithCost } from "@/models/CostAndRequirements/StationShips";
 
 const stationService = await StationService.get();

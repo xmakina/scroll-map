@@ -5,7 +5,6 @@ import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
 import CargoHoldService from "@/services/CargoHoldService";
 import { findLowestCargo } from "../utils/findLowestCargo";
-import { UnknownData } from "@/models/UnknownData";
 import findStation from "@/utils/findStation";
 import findCargoHoldId from "@/utils/findCargoHoldId";
 
@@ -53,15 +52,11 @@ export default class implements IActivityHandler {
     ]);
   }
 
-  async begin<T extends object>(
-    activityWorkerId: string,
-    data?: T & UnknownData
-  ): Promise<void> {
+  async begin(activityWorkerId: string): Promise<void> {
     await this.activityService.create(
       activityWorkerId,
       ActivityType.SCAVENGE,
-      1,
-      data
+      1
     );
   }
 }

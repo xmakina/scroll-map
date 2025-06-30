@@ -4,7 +4,7 @@ import ActivityService from "@/services/ActivityService";
 import CargoHoldService from "@/services/CargoHoldService";
 import { ActivityType } from "@prisma/client";
 import StationService from "@/services/StationService";
-import DeliveryData from "@/models/DeliveryData";
+import DeliveryData from "@/models/JsonData/DeliveryData";
 
 export default class implements IActivityHandler {
   constructor(

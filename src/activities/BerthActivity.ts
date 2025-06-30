@@ -2,7 +2,7 @@ import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ShipService from "@/services/ShipService";
 import ActivityService from "@/services/ActivityService";
-import BerthData from "@/models/BerthData";
+import BerthData from "@/models/JsonData/BerthData";
 import { ActivityType } from "@prisma/client";
 
 export default class implements IActivityHandler {

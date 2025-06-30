@@ -3,7 +3,7 @@ import { ActivityType } from "@prisma/client";
 import { InputJsonValue } from "@prisma/client/runtime/library";
 import { ShipWithActivityAndCargoHold } from "../models/ShipWithActivity";
 import getActivityData from "@/utils/getJsonData";
-import ShipData from "@/models/ShipData";
+import ShipData from "@/models/JsonData/ShipData";
 
 export default class ShipRepository {
   async updateBerthed(id: string, berthed: boolean) {

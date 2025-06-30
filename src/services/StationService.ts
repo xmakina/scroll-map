@@ -1,4 +1,3 @@
-import { StationData } from "@/models/StationData";
 import StationRepository from "@/repositories/StationRepository";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
 import CargoHoldService from "./CargoHoldService";
@@ -6,6 +5,7 @@ import ConstructStationOrders from "./ConstructStationOrders";
 import generateUniqueName from "@/utils/generateUniqueName";
 import { adjectives, colors } from "unique-names-generator";
 import { Cost } from "@/models/CostAndRequirements/CostAndRequirements";
+import StationData from "@/models/JsonData/StationData";
 
 const cargoHoldService = await CargoHoldService.get();
 export default class StationService {

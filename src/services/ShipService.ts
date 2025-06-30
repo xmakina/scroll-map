@@ -1,4 +1,4 @@
-import ShipData from "@/models/ShipData";
+import ShipData from "@/models/JsonData/ShipData";
 import ShipRepository from "@/repositories/ShipRepository";
 import generateUniqueName from "@/utils/generateUniqueName";
 import { adjectives, animals } from "unique-names-generator";

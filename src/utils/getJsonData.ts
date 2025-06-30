@@ -1,7 +1,7 @@
-import { UnknownData } from "@/models/BerthData";
+import JsonData from "@/models/JsonData/IActivityData";
 import { Prisma } from "@prisma/client";
 
-export default function <T extends UnknownData>(data: Prisma.JsonValue) {
+export default function <T extends JsonData>(data: Prisma.JsonValue) {
   if (typeof data !== "object") {
     throw new Error("Data not in expected format");
   }
