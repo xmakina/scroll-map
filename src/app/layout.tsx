@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { auth } from "@/auth";
-import Login from "@/components/auth-components";
-import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { WithAuth } from "./WithAuth";
-import PlayerContext from "@/context/PlayerContext";
-import { tryGetPlayer } from "./queries";
-import { NavigationLink } from "@/components/ui/Navigation";
+import TranslatedLayout from "./TranslatedLayout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,47 +14,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
   const locale = await getLocale();
   const messages = await getMessages();
 
-  const login = <Login user={session?.user} />;
   return (
     <html lang={locale} className="bg-primary text-secondary">
       <body className="flex flex-col min-h-screen m-0 box-border">
-        <div className="flex flex-col mt-2 px-8">
-          <NextIntlClientProvider messages={messages}>
-            <SessionProvider>
-              <WithAuth>
-                <PlayerContext playerId={(await tryGetPlayer())?.id}>
-                  <div className="flex flex-col gap-2">
-                    {session?.user && (
-                      <div className="flex flex-row gap-2 justify-between items-center">
-                        <NavigationLink href="/dashboard">
-                          Dashboard
-                        </NavigationLink>
-                        <NavigationLink href="/ship">Ships</NavigationLink>
-                      </div>
-                    )}
-                    <div id="content" className="mb-24 grow">
-                      <main className="flex flex-row justify-start items-start pb-48">
-                        <div className="flex flex-col items-center justify-start grow">
-                          {children}
-                        </div>
-                      </main>
-                    </div>
-                  </div>
-                </PlayerContext>
-              </WithAuth>
-            </SessionProvider>
-            <footer>
-              <div className="h-16 mt-auto touch-none flex border-t flex-row items-center justify-evenly fixed bottom-0 left-0 w-screen bg-primary">
-                {login}
-              </div>
-            </footer>
-          </NextIntlClientProvider>
-        </div>
+        <NextIntlClientProvider messages={messages}>
+          <TranslatedLayout>{children}</TranslatedLayout>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

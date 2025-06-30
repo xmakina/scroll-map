@@ -81,5 +81,10 @@
   },
   "ShipSummary": {
     "Location": "Location"
+  },
+  "Layout": {
+    "Dashboard": "Dashboard",
+    "Ships": "Ships",
+    "Planets": "Planets"
   }
 }
