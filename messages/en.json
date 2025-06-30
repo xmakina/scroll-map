@@ -77,10 +77,12 @@
     "Ship Details": "Ship Details",
     "System Map": "System Map",
     "Current Task": "Current Task",
-    "Cargo Hold": "Cargo Hold"
+    "Cargo Hold": "Cargo Hold",
+    "Berthed": "{locationType, select, planet {Landed} station {Docked} other {Berthed}}"
   },
   "ShipSummary": {
-    "Location": "Location"
+    "Location": "Location",
+    "Berthed": "{locationType, select, planet {Landed} station {Docked} other {Berthed}}"
   },
   "Layout": {
     "Dashboard": "Dashboard",
