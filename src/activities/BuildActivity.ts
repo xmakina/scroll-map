@@ -6,7 +6,7 @@ import { UnknownData } from "@/models/UnknownData";
 import StationComponentService from "@/services/StationComponentService";
 import StationComponentData from "@/models/StationComponentsData";
 import StationService from "@/services/StationService";
-import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
+import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 
 export default class implements IActivityHandler {
   constructor(
@@ -64,7 +64,7 @@ async function beginStationComponent(
   activityService: ActivityService,
   stationService: StationService,
   activityWorkerId: string,
-  data: StationComponentData & UnknownData
+  data: StationComponentData
 ) {
   const activityWorker = await activityService.getWorker(activityWorkerId);
   const stationId = activityWorker.Station?.id;
@@ -74,7 +74,7 @@ async function beginStationComponent(
 
   const { type: componentType, level } = data;
 
-  const target = StationComponentCostAndRequirements[componentType][level];
+  const target = StationComponentCostsAndRequirements[componentType][level];
 
   if (!target) {
     throw new Error(
@@ -84,10 +84,5 @@ async function beginStationComponent(
 
   await stationService.consumeFromCargoHold(stationId, target.cost);
 
-  await activityService.create(
-    activityWorkerId,
-    "BUILD",
-    3,
-    data
-  );
+  await activityService.create(activityWorkerId, "BUILD", 3, data);
 }

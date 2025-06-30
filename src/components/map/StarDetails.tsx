@@ -1,7 +1,10 @@
+"use client";
+
 import Star from "@/models/waypoint/Star";
 import React, { ReactNode } from "react";
 import LabeledText from "../ui/LabeledText";
 import PlanetDetails from "./PlanetDetails";
+import Travel from "../orders/Travel";
 
 type Props = {
   star: Star;
@@ -20,6 +23,9 @@ const StarDetails = ({ star }: Props) => {
         <LabeledText label="Temperature" column>
           {star.temperature}K
         </LabeledText>
+      </div>
+      <div>
+        <Travel locationId={star.id} />
       </div>
       <div className="flex flex-col items-center">
         <div>Planets:</div>

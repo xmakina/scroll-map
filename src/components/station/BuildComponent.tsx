@@ -3,12 +3,11 @@
 import { StationComponentType } from "@prisma/client";
 import React from "react";
 import Button from "../ui/Button";
-import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 import NeededAvailable from "../ui/NeededAvailable";
 import getRequirementsBreakdown from "@/utils/getRequirementsBreakdown";
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
 import { useStationContext } from "@/context/StationContext";
-
+import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 
 type Props = {
   level: number;
@@ -32,7 +31,7 @@ const BuildComponent = ({
     level
   );
 
-  const target = StationComponentCostAndRequirements[componentType][level];
+  const target = StationComponentCostsAndRequirements[componentType][level];
 
   if (!target) {
     return (

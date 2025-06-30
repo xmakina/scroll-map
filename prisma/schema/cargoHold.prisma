@@ -1,8 +1,20 @@
 enum CargoType {
+  ENERGY_CELL
   ALLOY
   ICE
   ORE
   GAS
+  HYDROGEN
+  HELIUM
+  MICROCHIP
+  HULL_PART
+  ANTIMATTER
+  ENGINE_PART
+  WATER
+  FOOD
+  MEDICAL_SUPPLY
+  BIOWASTE
+  BIOMASS
 }
 
 model CargoContainer {
@@ -20,5 +32,6 @@ model CargoHold {
   data            Json?
   Station         Station?
   Ship            Ship?
+  Outpost         Outpost?
   CargoContainers CargoContainer[]
 }

@@ -1,6 +1,6 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
-import { ShipDataWithCost } from "@/models/CostAndRequirements/Ships";
+import { ShipDataWithCost } from "@/models/CostAndRequirements/StationShips";
 import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
 import ShipService from "@/services/ShipService";

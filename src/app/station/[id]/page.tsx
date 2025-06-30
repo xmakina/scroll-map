@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  getShipOrders,
-  getShips,
-  getStation,
-  getStationOrders,
-} from "./queries";
+import { getShips, getStation, getStationOrders } from "./queries";
 import {
   claimActivityForShip,
   claimActivityForStation,
@@ -81,7 +76,6 @@ const Page = async ({ params }: Props) => {
             <div className="flex flex-col justify-center gap-2">
               {ships.length === 0 && <div className="italic">Empty</div>}
               {ships.map(async (ship) => {
-                const availableOrders = await getShipOrders(ship.id);
                 const onIssueOrder = handleOrder.bind(null, ship.id);
                 const handleClaimActivity = claimActivityForShip.bind(
                   null,

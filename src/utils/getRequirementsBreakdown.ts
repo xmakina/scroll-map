@@ -3,7 +3,7 @@ import StationComponentData from "@/models/StationComponentsData";
 import { StationComponent, StationComponentType } from "@prisma/client";
 
 export default function (
-  requirements: Requirements,
+  requirements: Requirements<StationComponentType>,
   stationComponents: StationComponent[]
 ) {
   const requiredComponents = Object.keys(requirements).map(

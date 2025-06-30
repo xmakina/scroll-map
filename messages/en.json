@@ -1,4 +1,15 @@
 {
+  "LocationIdentifier": {
+    "waypoint": "📍",
+    "star": "☀️",
+    "planet": "🪐",
+    "Location": "Location"
+  },
+  "CargoType": {
+    "ORE": "Ore",
+    "GAS": "Gas",
+    "ICE": "Ice"
+  },
   "Greeting": {
     "Unknown": "Hello, world!",
     "Greetings, {name}": "Greetings, {name}"
@@ -12,8 +23,8 @@
   "Surroundings": {
     "Plain": "You are in a flat area"
   },
-  "ActivityDetails": {
-    "MINE": "Mining ⛏️",
+  "ActivityLabel": {
+    "MINE": "Mining {type} ⛏️",
     "SCUTTLE": "Scuttling 💥",
     "SCAVENGE": "Scavenging 🔎",
     "BUILD": "Building 🧑‍🏭",
@@ -28,7 +39,8 @@
     "SCAVENGE": "Scavenge 🔎",
     "BUILD": "Build 🧑‍🏭",
     "SMELT": "Smelt 🔥",
-    "DELIVER": "Deliver 📦"
+    "DELIVER": "Deliver 📦",
+    "TRAVEL": "Travel"
   },
   "StationComponentBuilding": {
     "Build Requirements for": "Build Requirements for",
@@ -47,5 +59,23 @@
     "Miner": "Mining ship",
     "Scout": "Scout vessel",
     "Build {shipName}": "Build {shipName}"
+  },
+  "Dashboard": {
+    "Dashboard": "Dashboard",
+    "Ships": "Ships"
+  },
+  "ShipList": {
+    "Location": "Location",
+    "Current Job": "Current Task",
+    "Ships": "Ships"
+  },
+  "ShipDetails": {
+    "Ship Details": "Ship Details",
+    "System Map": "System Map",
+    "Current Task": "Current Task",
+    "Cargo Hold": "Cargo Hold"
+  },
+  "ShipSummary": {
+    "Location": "Location"
   }
 }

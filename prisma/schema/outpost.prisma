@@ -1,0 +1,21 @@
+model Outpost {
+  id          String    @id @default(cuid())
+  planetId    String
+  cargoHoldId String    @unique
+  cargoHold   CargoHold @relation(fields: [cargoHoldId], references: [id])
+
+  Components OutpostComponent[]
+}
+
+enum OutpostComponentType {
+  SMELTER
+  SOLAR_FARM
+  LAUNCH_PAD
+}
+
+model OutpostComponent {
+  id              String   @id @default(cuid())
+  outpostPlanetId String
+  outpostId       String?
+  Outpost         Outpost? @relation(fields: [outpostId], references: [id])
+}

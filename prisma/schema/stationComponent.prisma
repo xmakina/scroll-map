@@ -2,6 +2,7 @@ enum StationComponentType {
   HANGAR
   SMELTER
   COMMUNICATOR
+  SOLAR_FARM
 }
 
 model StationComponent {

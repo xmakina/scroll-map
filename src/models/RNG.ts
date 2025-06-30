@@ -11,7 +11,7 @@ export default class RNG {
     this.seed = seed;
   }
 
-  maybe = (chance: number) => this.randomNumber(0, 100) < chance;
+  maybe = (chance = 50) => this.randomNumber(0, 100) < chance;
 
   randomNumber = (min: number, max: number) =>
     Math.floor(this.rand.next() * (max - min + 1) + min);

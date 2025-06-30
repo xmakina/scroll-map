@@ -3,7 +3,6 @@ import Scuttle from "./Scuttle";
 import { ActivityType } from "@prisma/client";
 import Scavenge from "./Scavenge";
 import Smelt from "./Smelt";
-import Deliver from "./Deliver";
 
 type Props = {
   order: ActivityType;
@@ -16,12 +15,14 @@ const orderButtons: {
   ) => ReactNode | ReactNode[];
 } = {
   MINE: () => <></>,
-  DELIVER: (onIssueOrder) => <Deliver onClick={onIssueOrder} />, // Deliver is issued on the target station,
+  DELIVER: () => <></>,
   BUILD: () => <></>,
   BuildShip: () => <></>,
   SCUTTLE: (onIssueOrder) => <Scuttle onClick={onIssueOrder} />,
   SCAVENGE: (onIssueOrder) => <Scavenge onClick={onIssueOrder} />,
   SMELT: (onIssueOrder) => <Smelt onClick={onIssueOrder} />,
+  ESTABLISH_OUTPOST: () => <></>,
+  TRAVEL: () => <></>,
 };
 
 const OrderButton = ({ order, onIssueOrder }: Props) => {

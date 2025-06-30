@@ -1,3 +1,11 @@
+enum Hull {
+  PROBE
+  SCOUT
+  MINER
+  FREIGHTER
+  BUILDER
+}
+
 model Ship {
   id               String         @id @default(cuid())
   playerId         String

@@ -3,7 +3,7 @@
 import {
   ShipBlueprints,
   ShipDataWithCost,
-} from "@/models/CostAndRequirements/Ships";
+} from "@/models/CostAndRequirements/StationShips";
 import React from "react";
 import BuildShip from "./BuildShip";
 import StationComponentData from "@/models/StationComponentsData";
@@ -47,7 +47,7 @@ const BuildStationShips = ({ onBuildShip, isBusy }: Props) => {
             );
             return (
               <BuildShip
-                key={shipCostAndRequirements.data.shipClassName}
+                key={shipCostAndRequirements.data.hullType}
                 cargoHold={cargoHold}
                 onBuildShip={handleBuildShip}
                 shipData={shipCostAndRequirements}

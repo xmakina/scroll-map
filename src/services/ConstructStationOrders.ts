@@ -39,6 +39,12 @@ const PossibilityList: PossibleOrders = {
 
     return hasSmelter && hasMinimum;
   },
+  ESTABLISH_OUTPOST: function (): boolean {
+    return false;
+  },
+  TRAVEL: function (): boolean {
+    return false;
+  },
 };
 
 export default function (data: StationWithComponentsAndWorker): ActivityType[] {

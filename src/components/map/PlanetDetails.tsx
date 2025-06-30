@@ -2,9 +2,11 @@ import Planet from "@/models/waypoint/Planet";
 import React from "react";
 import LabeledText from "../ui/LabeledText";
 import Button from "../ui/Button";
-import { usePlayerShipsContext } from "@/context/PlayerShipsContext";
 import { CargoType } from "@prisma/client";
 import { MiningData } from "@/models/MiningData";
+import { useShipContext } from "@/context/ShipContext";
+import { UnknownData } from "@/models/UnknownData";
+import Travel from "../orders/Travel";
 
 type Props = {
   planet: Planet;
@@ -24,8 +26,8 @@ function getMiningTypeFromPlanet(planet: Planet) {
 }
 
 const PlanetDetails = ({ planet }: Props) => {
-  const { ships, issueOrder } = usePlayerShipsContext();
-  const availableShips = ships.filter((s) => !s.ActivityWorker.Activity);
+  const { ship, issueOrder } = useShipContext();
+  const availableShip = !ship?.ActivityWorker.Activity;
 
   const handleMine = issueOrder.bind(null, "MINE");
 
@@ -37,18 +39,35 @@ const PlanetDetails = ({ planet }: Props) => {
       </div>
       <div className="flex justify-end flex-col">
         {planet.type !== "Habitable" &&
-          availableShips.map((s) => {
-            const type = getMiningTypeFromPlanet(planet);
-            const data: MiningData = { type };
-            return (
-              <Button key={s.id} onClick={handleMine.bind(null, s.id, data)}>
-                Mine with {s.label}
-              </Button>
-            );
-          })}
+          availableShip &&
+          ship?.locationId === planet.id && (
+            <MiningButton planet={planet} handleMine={handleMine} />
+          )}
+        {planet.type === "Habitable" && <Travel locationId={planet.id} />}
       </div>
     </div>
   );
 };
 
 export default PlanetDetails;
+
+const MiningButton = ({
+  planet,
+  handleMine,
+}: {
+  planet: Planet;
+  handleMine: (data: UnknownData) => Promise<void>;
+}) => {
+  const { ship: s } = useShipContext();
+  if (s === undefined) {
+    return <></>;
+  }
+
+  const type = getMiningTypeFromPlanet(planet);
+  const data: MiningData = { type, dataType: "MiningData" };
+  return (
+    <Button key={s.id} onClick={handleMine.bind(null, data)}>
+      Mine
+    </Button>
+  );
+};

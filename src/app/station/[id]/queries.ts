@@ -12,6 +12,3 @@ export const getStationOrders = async (id: string) =>
   await stationService.getOrders(id);
 
 export const getShips = async (id: string) => await shipService.getAt(id);
-
-export const getShipOrders = async (id: string) =>
-  await shipService.getOrders(id);

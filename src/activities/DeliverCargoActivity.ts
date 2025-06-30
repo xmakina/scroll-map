@@ -4,6 +4,7 @@ import ActivityService from "@/services/ActivityService";
 import CargoHoldService from "@/services/CargoHoldService";
 import { ActivityType } from "@prisma/client";
 import StationService from "@/services/StationService";
+import DeliveryData from "@/models/DeliveryData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -47,11 +48,16 @@ export default class implements IActivityHandler {
     await Promise.all([provide, consume]);
   }
 
-  async begin(activityWorkerId: string): Promise<void> {
+  async begin(activityWorkerId: string, data: DeliveryData): Promise<void> {
+    if (!data) {
+      throw new Error("DeliveryData must be supplied");
+    }
+
     await this.activityService.create(
       activityWorkerId,
       ActivityType.DELIVER,
-      1
+      1,
+      data
     );
   }
 }

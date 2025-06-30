@@ -1,6 +1,5 @@
 import ShipRepository from "@/repositories/ShipRepository";
 import { ShipData } from "@/models/ShipData";
-import ConstructShipOrders from "./ConstructShipOrders";
 import generateUniqueName from "@/utils/generateUniqueName";
 import { adjectives, animals } from "unique-names-generator";
 
@@ -16,13 +15,6 @@ export default class ShipService {
 
   async get(id: string) {
     return await this.repository.get(id);
-  }
-
-  async getOrders(id: string) {
-    const ship = await this.repository.get(id);
-    const orders = ConstructShipOrders(ship);
-
-    return orders;
   }
 
   async getAt(locationId: string) {

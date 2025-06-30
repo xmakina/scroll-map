@@ -8,10 +8,14 @@ export default class PlayerService {
   }
 
   async createPlayer(userId: string) {
-    return await this.repository.createAgent(userId);
+    return await this.repository.createPlayer(userId);
   }
 
   async findPlayer(userId: string) {
     return await this.repository.getPlayer(userId);
+  }
+
+  async totalPlayers() {
+    return await this.repository.totalPlayers();
   }
 }

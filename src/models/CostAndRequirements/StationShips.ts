@@ -1,8 +1,9 @@
-import CostAndRequirements from "./CostAndRequirements";
+import { StationComponentType } from "@prisma/client";
 import { ShipData } from "../ShipData";
+import { CostAndRequirements } from "./CostAndRequirements";
 
 export type ShipDataWithCost = {
-  costAndRequirements: CostAndRequirements;
+  costAndRequirements: CostAndRequirements<StationComponentType>;
   data: ShipData;
 };
 
@@ -15,8 +16,7 @@ export const ShipBlueprints: ShipDataWithCost[] = [
       requirements: { HANGAR: 1 },
     },
     data: {
-      shipClassName: "Miner",
-      size: 1,
+      hullType: "MINER",
       dataType: "ShipData",
       engine: {
         speed: 1,
@@ -39,8 +39,7 @@ export const ShipBlueprints: ShipDataWithCost[] = [
       },
     },
     data: {
-      shipClassName: "Scout",
-      size: 1,
+      hullType: "SCOUT",
       dataType: "ShipData",
       engine: {
         speed: 10,

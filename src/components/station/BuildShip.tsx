@@ -1,5 +1,5 @@
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
-import { ShipDataWithCost } from "@/models/CostAndRequirements/Ships";
+import { ShipDataWithCost } from "@/models/CostAndRequirements/StationShips";
 import getCostBreakdowns, { CostBreakdown } from "@/utils/getCostBreakdowns";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -24,7 +24,7 @@ const BuildShip = ({ shipData, cargoHold, onBuildShip, isBusy }: Props) => {
 
   return (
     <div className="flex flex-col gap-2 items-center">
-      <div>{t(shipData.data.shipClassName)}</div>
+      <div>{t(shipData.data.hullType)}</div>
       <div>
         {costBreakdowns.map((cb) => (
           <NeededAvailable
@@ -38,7 +38,7 @@ const BuildShip = ({ shipData, cargoHold, onBuildShip, isBusy }: Props) => {
       </div>
       {canAfford && !isBusy && (
         <Button onClick={onBuildShip}>
-          {t("Build {shipName}", { shipName: t(shipData.data.shipClassName) })}
+          {t("Build {shipName}", { shipName: t(shipData.data.hullType) })}
         </Button>
       )}
     </div>

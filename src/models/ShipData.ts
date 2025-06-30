@@ -1,12 +1,14 @@
+import { Hull } from "@prisma/client";
 import { UnknownData } from "./UnknownData";
 
 export type ShipData = {
-  shipClassName: string;
-  size: number;
+  poweredDown?: boolean;
+  hullType: Hull;
   engine?: EngineData;
   cargoHold?: boolean;
   tractorBeam?: boolean;
   mining?: MiningData;
+  dataType: "ShipData";
 } & UnknownData;
 
 type EngineData = {

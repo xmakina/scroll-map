@@ -1,8 +1,7 @@
 import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
 import React, { ReactElement } from "react";
 import ActivityDetails from "../activity/ActivityDetails";
-import CargoHoldSummary from "../cargoHold/CargoHoldSummary";
-import { ShipData } from "@/models/ShipData";
+import BorderedBox from "../ui/BorderedBox";
 
 type Props = {
   ship: ShipWithActivityAndCargoHold;
@@ -12,20 +11,22 @@ type Props = {
 
 const ShipRow = ({ ship, orders, onClaimActivity }: Props) => {
   return (
-    <div className="flex-col items-center gap-2 justify-center p-4 border border-white rounded-md">
-      <div className="flex flex-row gap-4">
-        <div>{(ship.data as ShipData).shipClassName}</div>
-        <div>{ship.label}</div>
+    <BorderedBox title={ship.label}>
+      <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-col items-center">
+          {ship.ActivityWorker.Activity && (
+            <ActivityDetails
+              activity={ship.ActivityWorker.Activity}
+              onClaim={onClaimActivity.bind(
+                null,
+                ship.ActivityWorker.Activity.id
+              )}
+            />
+          )}
+          {!ship.ActivityWorker.Activity && orders}
+        </div>
       </div>
-      {ship.ActivityWorker.Activity && (
-        <ActivityDetails
-          activity={ship.ActivityWorker.Activity}
-          onClaim={onClaimActivity.bind(null, ship.ActivityWorker.Activity.id)}
-        />
-      )}
-      {!ship.ActivityWorker.Activity && orders}
-      {ship.CargoHold && <CargoHoldSummary cargoHold={ship.CargoHold} />}
-    </div>
+    </BorderedBox>
   );
 };
 

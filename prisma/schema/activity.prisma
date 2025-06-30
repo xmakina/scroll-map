@@ -6,6 +6,8 @@ enum ActivityType {
   SCUTTLE
   SCAVENGE
   SMELT
+  ESTABLISH_OUTPOST
+  TRAVEL
 }
 
 model Activity {

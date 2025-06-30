@@ -1,11 +1,11 @@
 "use client";
 
-import { StationComponentCostAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 import { StationComponentType } from "@prisma/client";
 import React from "react";
 import BuildComponent from "./BuildComponent";
 import StationComponentData from "@/models/StationComponentsData";
 import { useStationContext } from "@/context/StationContext";
+import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 
 type Props = {
   onBuildComponent: (
@@ -27,7 +27,7 @@ const BuildStationComponents = ({ onBuildComponent, isBusy }: Props) => {
     <div className="flex flex-col items-center">
       <div>Components</div>
       <div className="flex flex-col md:flex-row gap-4">
-        {Object.keys(StationComponentCostAndRequirements)
+        {Object.keys(StationComponentCostsAndRequirements)
           .map((k) => k as StationComponentType)
           .map((b) => (
             <BuildComponent
