@@ -45,6 +45,9 @@ const PossibilityList: PossibleOrders = {
   TRAVEL: function (): boolean {
     return false;
   },
+  BERTH: function (): boolean {
+    return false;
+  },
 };
 
 export default function (data: StationWithComponentsAndWorker): ActivityType[] {

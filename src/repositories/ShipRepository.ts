@@ -1,10 +1,21 @@
-import { ShipData } from "@/models/ShipData";
 import { prisma } from "@/prisma";
 import { ActivityType } from "@prisma/client";
 import { InputJsonValue } from "@prisma/client/runtime/library";
 import { ShipWithActivityAndCargoHold } from "../models/ShipWithActivity";
+import getActivityData from "@/utils/getJsonData";
+import ShipData from "@/models/ShipData";
 
 export default class ShipRepository {
+  async updateBerthed(id: string, berthed: boolean) {
+    const ship = await prisma.ship.findFirstOrThrow({ where: { id } });
+    const shipData: ShipData = getActivityData(ship.data);
+
+    return await prisma.ship.update({
+      where: { id },
+      data: { data: { ...shipData, berthed } },
+    });
+  }
+
   async updateLocation(id: string, locationId: string) {
     return prisma.ship.update({ where: { id }, data: { locationId } });
   }
@@ -74,21 +85,21 @@ export default class ShipRepository {
   async createShip(
     playerId: string,
     locationId: string,
-    data: ShipData,
+    shipData: ShipData,
     label: string
   ) {
     const { id: activityWorkerId } = await prisma.activityWorker.create({
       data: {},
     });
 
-    const cargoHoldId = await this.createCargoHold(data);
+    const cargoHoldId = await this.createCargoHold(shipData);
     return prisma.ship.create({
       data: {
         playerId,
         locationId,
         activityWorkerId,
         cargoHoldId,
-        data,
+        data: { ...shipData },
         label,
       },
     });

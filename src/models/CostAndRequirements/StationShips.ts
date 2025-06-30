@@ -1,6 +1,6 @@
 import { StationComponentType } from "@prisma/client";
-import { ShipData } from "../ShipData";
 import { CostAndRequirements } from "./CostAndRequirements";
+import ShipData from "../ShipData";
 
 export type ShipDataWithCost = {
   costAndRequirements: CostAndRequirements<StationComponentType>;

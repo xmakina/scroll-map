@@ -18,6 +18,7 @@ import BuildShipActivity from "@/activities/BuildShipActivity";
 import DeliverCargoActivity from "@/activities/DeliverCargoActivity";
 import EstablishOutpostActivity from "@/activities/EstablishOutpostActivity";
 import TravelActivity from "@/activities/TravelActivity";
+import BerthActivity from "@/activities/BerthActivity";
 
 export default class ActivityService {
   async getWorker(activityWorkerId: string) {
@@ -85,6 +86,7 @@ export default class ActivityService {
       SMELT: new SmeltActivity(cargoHoldService, stationService, this),
       ESTABLISH_OUTPOST: new EstablishOutpostActivity(this),
       TRAVEL: new TravelActivity(shipService, this),
+      BERTH: new BerthActivity(shipService, this),
     };
   }
 

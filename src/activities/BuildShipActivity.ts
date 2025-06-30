@@ -4,8 +4,8 @@ import { ShipDataWithCost } from "@/models/CostAndRequirements/StationShips";
 import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
 import ShipService from "@/services/ShipService";
-import { ShipData } from "@/models/ShipData";
 import { ActivityType } from "@prisma/client";
+import getJsonData from "@/utils/getJsonData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -28,7 +28,7 @@ export default class implements IActivityHandler {
     await this.shipService.createShip(
       parent.Station.playerId,
       parent.Station.id,
-      activityWorker.Activity?.data as ShipData
+      getJsonData(activityWorker.Activity?.data)
     );
   }
 

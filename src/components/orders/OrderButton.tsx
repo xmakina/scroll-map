@@ -23,6 +23,7 @@ const orderButtons: {
   SMELT: (onIssueOrder) => <Smelt onClick={onIssueOrder} />,
   ESTABLISH_OUTPOST: () => <></>,
   TRAVEL: () => <></>,
+  BERTH: () => <></>,
 };
 
 const OrderButton = ({ order, onIssueOrder }: Props) => {

@@ -1,12 +1,12 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
-import { ShipData } from "@/models/ShipData";
 import { UnknownData } from "@/models/UnknownData";
 import StationComponentService from "@/services/StationComponentService";
 import StationComponentData from "@/models/StationComponentsData";
 import StationService from "@/services/StationService";
 import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
+import ShipData from "@/models/ShipData";
 
 export default class implements IActivityHandler {
   constructor(

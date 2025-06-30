@@ -7,6 +7,7 @@ import { MiningData } from "@/models/MiningData";
 import { useShipContext } from "@/context/ShipContext";
 import { UnknownData } from "@/models/UnknownData";
 import Travel from "../orders/Travel";
+import BerthButton from "../orders/BerthButton";
 
 type Props = {
   planet: Planet;
@@ -44,6 +45,7 @@ const PlanetDetails = ({ planet }: Props) => {
             <MiningButton planet={planet} handleMine={handleMine} />
           )}
         {planet.type === "Habitable" && <Travel locationId={planet.id} />}
+        <BerthButton locationId={planet.id} />
       </div>
     </div>
   );

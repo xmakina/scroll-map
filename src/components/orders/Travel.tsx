@@ -6,6 +6,8 @@ import React from "react";
 import Button from "../ui/Button";
 import TravelData from "@/models/TravelData";
 import { useShipContext } from "@/context/ShipContext";
+import getJsonData from "@/utils/getJsonData";
+import ShipData from "@/models/ShipData";
 
 type Props = {
   locationId: string;
@@ -15,7 +17,12 @@ const Travel = ({ locationId }: Props) => {
   const t = useTranslations("OrderButton");
 
   const { ship, issueOrder } = useShipContext();
-  if (ship === undefined || ship.ActivityWorker.Activity || ship.locationId === locationId) {
+  if (
+    ship === undefined ||
+    ship.ActivityWorker.Activity ||
+    ship.locationId === locationId ||
+    getJsonData<ShipData>(ship.data).berthed
+  ) {
     return <div></div>;
   }
 

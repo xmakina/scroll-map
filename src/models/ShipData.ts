@@ -1,15 +1,19 @@
 import { Hull } from "@prisma/client";
-import { UnknownData } from "./UnknownData";
+import { UnknownData } from "./BerthData";
 
-export type ShipData = {
-  poweredDown?: boolean;
-  hullType: Hull;
+export default class extends UnknownData {
+  dataType = "ShipData";
+
+  berthed?: boolean;
   engine?: EngineData;
   cargoHold?: boolean;
   tractorBeam?: boolean;
   mining?: MiningData;
-  dataType: "ShipData";
-} & UnknownData;
+
+  constructor(public readonly hullType: Hull) {
+    super();
+  }
+}
 
 type EngineData = {
   speed: number;

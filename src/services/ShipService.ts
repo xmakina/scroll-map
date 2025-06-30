@@ -1,9 +1,13 @@
+import ShipData from "@/models/ShipData";
 import ShipRepository from "@/repositories/ShipRepository";
-import { ShipData } from "@/models/ShipData";
 import generateUniqueName from "@/utils/generateUniqueName";
 import { adjectives, animals } from "unique-names-generator";
 
 export default class ShipService {
+  async updateBerthed(id: string, berthed: boolean) {
+    return await this.repository.updateBerthed(id, berthed);
+  }
+
   async updateLocation(id: string, locationId: string) {
     return await this.repository.updateLocation(id, locationId);
   }

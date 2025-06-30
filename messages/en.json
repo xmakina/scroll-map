@@ -32,6 +32,7 @@
     "BuildShip": "Building ship 🧑‍🔧",
     "DELIVER": "Delivering 📦",
     "TRAVEL": "Travelling to {locationId}",
+    "BERTH": "{locationType, select, planet {Landing} station {Docking} other {Unknown}} at {locationId}",
     "Unknown Activity": "Unknown Activity"
   },
   "OrderButton": {
@@ -42,7 +43,8 @@
     "BUILD": "Build 🧑‍🏭",
     "SMELT": "Smelt 🔥",
     "DELIVER": "Deliver 📦",
-    "TRAVEL": "Travel"
+    "TRAVEL": "Travel",
+    "BERTH": "{locationType, select, planet {Land} station {Dock} other {Unknown}}"
   },
   "StationComponentBuilding": {
     "Build Requirements for": "Build Requirements for",
