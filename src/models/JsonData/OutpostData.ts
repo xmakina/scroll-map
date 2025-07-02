@@ -1,7 +1,7 @@
 import JsonData from "./IActivityData";
 
 export default class implements JsonData {
-  dataType = "OutpostData";
+  public readonly dataType = "OutpostData";
 
   constructor(public readonly planetId: string) {}
 }

@@ -13,6 +13,7 @@ import LocationIdentifier from "@/components/LocationIdentifier";
 import getJsonData from "@/utils/getJsonData";
 import ShipData from "@/models/JsonData/ShipData";
 import WaypointService from "@/services/WaypointService";
+import BerthLink from "./BerthLink";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -50,6 +51,15 @@ const ShipDetailsPage = async ({ params }: Props) => {
             </BorderedBox>
           )}
         </div>
+
+        {berthed && (
+          <div className="flex flex-col items-center">
+            <BerthLink
+              locationType={locationType}
+              locationId={ship.locationId}
+            />
+          </div>
+        )}
         {ship.ActivityWorker.Activity && (
           <BorderedBox title={t("Current Task")}>
             <ActivityDetails

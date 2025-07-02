@@ -1,6 +1,7 @@
 import JsonData from "./IActivityData";
 
 export default class implements JsonData {
-  dataType = "TravelData";
+  public readonly dataType = "TravelData";
+
   constructor(public readonly locationId: string) {}
 }

@@ -4,8 +4,8 @@ import ActivityService from "@/services/ActivityService";
 import StationService from "@/services/StationService";
 import { ActivityType, StationComponentType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import StationComponentData from "@/models/JsonData/StationComponentData";
 import { ShipDataWithCost } from "@/models/CostAndRequirements/StationShips";
+import BuildActivityData from "@/models/JsonData/BuildActivityData";
 
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
@@ -17,10 +17,10 @@ export const startBuilding = async (
 ) => {
   const station = await stationService.get(stationId);
 
-  const data: StationComponentData = {
-    dataType: "StationComponentData",
+  const data: BuildActivityData<StationComponentType> = {
     type: componentType,
     level,
+    dataType: "BuildActivityData",
   };
 
   await activityService.begin(station.ActivityWorker, ActivityType.BUILD, {

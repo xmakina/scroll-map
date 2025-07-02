@@ -31,6 +31,7 @@ const LabeledInput = ({
       <div className="flex flex-row items-center justify-end gap-1">
         <Label htmlFor={id}>{children}</Label>
         <Input
+          id={id}
           name={id}
           onChange={onChange}
           value={value}

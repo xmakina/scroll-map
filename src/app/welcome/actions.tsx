@@ -46,7 +46,6 @@ async function deployShipToRandom() {
 }
 
 async function deployShip(playerId: string, waypoint: Waypoint) {
-  console.log("deploying", { playerId, waypoint });
   return await shipService.createShip(playerId, waypoint.id, {
     hullType: "SCOUT",
     engine: {

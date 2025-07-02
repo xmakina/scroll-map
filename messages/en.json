@@ -57,7 +57,11 @@
     "SMELTER": "Smelter",
     "level {level}": "lvl {level}",
     "HANGAR": "Hangar",
-    "VAULT": "Vault"
+    "VAULT": "Vault",
+    "MAKESHIFT_LAUNCH_PAD": "Makeshift Launch Pad",
+    "LAUNCH_PAD": "Launch Pad",
+    "Show All": "Show All",
+    "SOLAR_FARM": "Solar Farm"
   },
   "BuildShip": {
     "Miner": "Mining ship",
@@ -88,5 +92,22 @@
     "Dashboard": "Dashboard",
     "Ships": "Ships",
     "Planets": "Planets"
+  },
+  "PlanetDetails": {
+    "Planet {id}": "Planet {id}",
+    "Found outpost": "New Outpost"
+  },
+  "general": {
+    "View": "View"
+  },
+  "OutpostList": {
+    "Outposts": "Outposts"
+  },
+  "OutpostDetails": {
+    "Outpost {id}": "Outpost {id}"
+  },
+  "OutpostLink": {
+    "Manage": "Manage",
+    "View": "View"
   }
 }

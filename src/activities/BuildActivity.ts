@@ -2,10 +2,11 @@ import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
 import StationComponentService from "@/services/StationComponentService";
-import StationComponentData from "@/models/JsonData/StationComponentData";
 import StationService from "@/services/StationService";
 import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 import getJsonData from "@/utils/getJsonData";
+import BuildActivityData from "@/models/JsonData/BuildActivityData";
+import { StationComponentType } from "@prisma/client";
 
 export default class implements IActivityHandler {
   constructor(
@@ -24,7 +25,9 @@ export default class implements IActivityHandler {
     if (parent.Station) {
       await this.stationComponentService.buildComponent(
         parent.Station.id,
-        getJsonData<StationComponentData>(activityWorker.Activity?.data)
+        getJsonData<BuildActivityData<StationComponentType>>(
+          activityWorker.Activity?.data
+        )
       );
     }
 
@@ -33,7 +36,7 @@ export default class implements IActivityHandler {
 
   async begin(
     activityWorkerId: string,
-    data: StationComponentData
+    data: BuildActivityData<StationComponentType>
   ): Promise<void> {
     const activityWorker = await this.activityService.getWorker(
       activityWorkerId

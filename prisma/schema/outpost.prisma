@@ -1,21 +1,34 @@
 model Outpost {
   id          String    @id @default(cuid())
   planetId    String
+  playerId    String
+  Player      Player    @relation(fields: [playerId], references: [id])
   cargoHoldId String    @unique
-  cargoHold   CargoHold @relation(fields: [cargoHoldId], references: [id])
+  CargoHold   CargoHold @relation(fields: [cargoHoldId], references: [id])
 
+  activityWorkerId String         @unique
+  ActivityWorker   ActivityWorker @relation(fields: [activityWorkerId], references: [id], onDelete: Cascade)
+
+  label      String
   Components OutpostComponent[]
 }
 
 enum OutpostComponentType {
   SMELTER
   SOLAR_FARM
+  MAKESHIFT_LAUNCH_PAD
   LAUNCH_PAD
+  COPPER_MINE
+  IRON_MINE
+  COAL_MINE
+  SILICON_MINE
+  BASIC_CHIP_FAB
 }
 
 model OutpostComponent {
-  id              String   @id @default(cuid())
-  outpostPlanetId String
-  outpostId       String?
-  Outpost         Outpost? @relation(fields: [outpostId], references: [id])
+  id        String               @id @default(cuid())
+  type      OutpostComponentType
+  data      Json?
+  outpostId String
+  Outpost   Outpost              @relation(fields: [outpostId], references: [id])
 }

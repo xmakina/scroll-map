@@ -1,5 +1,6 @@
 import RNG from "@/models/RNG";
 import Waypoint from "@/models/waypoint/Waypoint";
+import { LocationType } from "../models/LocationType";
 
 function findWaypoint(
   rng: RNG,
@@ -30,7 +31,7 @@ function findWaypoint(
 }
 
 export default class {
-  static GetType(locationId: string) {
+  static GetType(locationId: string): LocationType {
     const [, isWaypoint, isStar, isPlanet] = locationId.match(/-?\d+/gm)!;
 
     if (isPlanet) {

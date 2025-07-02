@@ -23,9 +23,10 @@ const StarDetails = ({ star }: Props) => {
         <LabeledText label="Temperature" column>
           {star.temperature}K
         </LabeledText>
+
+        <Travel locationId={star.id} />
       </div>
       <div>
-        <Travel locationId={star.id} />
       </div>
       <div className="flex flex-col items-center">
         <div>Planets:</div>

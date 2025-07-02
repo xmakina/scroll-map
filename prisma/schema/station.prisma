@@ -14,3 +14,18 @@ model Station {
   data      Json
   label     String
 }
+
+enum StationComponentType {
+  HANGAR
+  SMELTER
+  COMMUNICATOR
+  SOLAR_FARM
+}
+
+model StationComponent {
+  id        String               @id @default(cuid())
+  type      StationComponentType
+  data      Json?
+  stationId String
+  Station   Station              @relation(fields: [stationId], references: [id])
+}

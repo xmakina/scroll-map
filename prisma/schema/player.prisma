@@ -1,7 +1,8 @@
 model Player {
-  id      String    @id @default(cuid())
-  userId  String    @unique
-  User    User      @relation(fields: [userId], references: [id])
-  ships   Ship[]
-  Station Station[]
+  id       String    @id @default(cuid())
+  userId   String    @unique
+  User     User      @relation(fields: [userId], references: [id])
+  Ships    Ship[]
+  Stations Station[]
+  Outposts Outpost[]
 }

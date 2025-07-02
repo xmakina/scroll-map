@@ -21,7 +21,6 @@ export default function (
   cost: Cost,
   cargoHold: CargoHoldWithContainers
 ): CostBreakdown[] {
-  console.log({ cost });
   const requiredCargoTypes = Object.keys(cost).map((c) => c as CargoType);
 
   return requiredCargoTypes.map((ct) => ({

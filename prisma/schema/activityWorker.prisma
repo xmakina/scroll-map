@@ -3,4 +3,5 @@ model ActivityWorker {
   Activity Activity?
   Ship     Ship?
   Station  Station?
+  Outpost  Outpost?
 }

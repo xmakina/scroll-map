@@ -8,6 +8,7 @@ import StationService from "@/services/StationService";
 import { Cost } from "@/models/CostAndRequirements/CostAndRequirements";
 import { getComponentLevel } from "@/utils/getComponentLevel";
 import getJsonData from "@/utils/getJsonData";
+import StationComponentData from "@/models/JsonData/StationComponentData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -62,7 +63,10 @@ export default class implements IActivityHandler {
     const station = await this.stationService.get(stationId);
 
     const smelterLevel = getComponentLevel(
-      station.Components,
+      station.Components.map((c) => ({
+        type: c.type,
+        data: getJsonData<StationComponentData>(c.data),
+      })).map((c) => ({ type: c.type, level: c.data.level })),
       StationComponentType.SMELTER
     );
 

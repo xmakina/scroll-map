@@ -63,7 +63,6 @@ export default class ShipRepository {
   }
 
   async getShips(playerId: string): Promise<ShipWithActivityAndCargoHold[]> {
-    console.log("finding ships");
     return await prisma.ship.findMany({
       where: { playerId },
       include: {

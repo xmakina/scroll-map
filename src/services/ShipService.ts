@@ -1,7 +1,6 @@
 import ShipData from "@/models/JsonData/ShipData";
 import ShipRepository from "@/repositories/ShipRepository";
-import generateUniqueName from "@/utils/generateUniqueName";
-import { adjectives, animals } from "unique-names-generator";
+import NameGenerator from "@/utils/NameGenerator";
 
 export default class ShipService {
   async updateBerthed(id: string, berthed: boolean) {
@@ -30,7 +29,7 @@ export default class ShipService {
   }
 
   async createShip(playerId: string, locationId: string, data: ShipData) {
-    const label = generateUniqueName(adjectives, animals);
+    const label = NameGenerator.ForShips()
     return await this.repository.createShip(playerId, locationId, data, label);
   }
 

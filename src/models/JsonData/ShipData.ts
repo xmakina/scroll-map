@@ -2,7 +2,7 @@ import { Hull } from "@prisma/client";
 import JsonData from "./IActivityData";
 
 export default class implements JsonData {
-  dataType = "ShipData";
+  public readonly dataType = "ShipData";
 
   berthed?: boolean;
   engine?: EngineData;

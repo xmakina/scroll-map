@@ -15,6 +15,7 @@ enum CargoType {
   MEDICAL_SUPPLY
   BIOWASTE
   BIOMASS
+  SILICON
 }
 
 model CargoContainer {

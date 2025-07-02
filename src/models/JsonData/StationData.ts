@@ -1,6 +1,7 @@
 import JsonData from "./IActivityData";
 
 export default class implements JsonData {
-  dataType = "StationData";
+  public readonly dataType = "StationData";
+  
   constructor(public readonly vaultSize: number) {}
 }

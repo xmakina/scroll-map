@@ -2,7 +2,7 @@ import { prisma } from "@/prisma";
 
 export default class PlayerRepository {
   async totalPlayers() {
-    return await prisma.player.count({ where: { ships: { some: {} } } });
+    return await prisma.player.count({ where: { Ships: { some: {} } } });
   }
   private constructor() {}
 
@@ -12,7 +12,6 @@ export default class PlayerRepository {
   }
 
   async createPlayer(userId: string) {
-    console.log("creating player for", userId);
     return await prisma.player.upsert({
       where: {
         id: userId,

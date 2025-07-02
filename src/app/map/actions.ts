@@ -8,7 +8,6 @@ import WaypointFromId from "@/utils/WaypointFromId";
 const stationService = await StationService.get();
 
 export const createStation = async (waypointId: string) => {
-  console.log("creating station", waypointId);
   const waypoint = WaypointFromId(waypointId);
 
   if (!waypoint) {
