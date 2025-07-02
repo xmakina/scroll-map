@@ -6,6 +6,7 @@ import { ActivityType, StationComponentType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { ShipDataWithCost } from "@/models/CostAndRequirements/StationShips";
 import BuildActivityData from "@/models/JsonData/BuildActivityData";
+import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
 
 const stationService = await StationService.get();
 const activityService = await ActivityService.get();
@@ -17,9 +18,17 @@ export const startBuilding = async (
 ) => {
   const station = await stationService.get(stationId);
 
+  const costAndRequirements =
+    StationComponentCostsAndRequirements[componentType][level];
+
+  if (!costAndRequirements) {
+    throw new Error("No cost and requirements found");
+  }
+
   const data: BuildActivityData<StationComponentType> = {
     type: componentType,
     level,
+    cost: costAndRequirements.cost,
     dataType: "BuildActivityData",
   };
 

@@ -1,19 +1,19 @@
 import StationComponentData from "@/models/JsonData/StationComponentData";
 import { prisma } from "@/prisma";
 import { StationComponentType } from "@prisma/client";
-import { getJsonDataObject } from "./getJsonDataObject";
+import getJsonData from "@/utils/getJsonData";
 
 export default class {
-  async upgrade(id: string, level: number) {
+  async upgrade(id: string) {
     const existing = await prisma.stationComponent.findUniqueOrThrow({
       where: { id },
     });
 
-    const existingData = getJsonDataObject(existing);
+    const data: StationComponentData = getJsonData(existing.data);
 
     await prisma.stationComponent.update({
       where: { id },
-      data: { data: { ...existingData, level } },
+      data: { data: { ...data, level: data.level + 1 } },
     });
   }
 

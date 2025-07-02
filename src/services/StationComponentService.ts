@@ -1,25 +1,19 @@
 import StationComponentRepository from "@/repositories/StationComponentRepository";
 import StationService from "./StationService";
-import BuildActivityData from "@/models/JsonData/BuildActivityData";
 import { StationComponentType } from "@prisma/client";
 
 export default class {
-  async buildComponent(
-    stationId: string,
-    data: BuildActivityData<StationComponentType>
-  ) {
+  async buildComponent(stationId: string, type: StationComponentType) {
     const station = await this.stationService.get(stationId);
-    const existingComponent = station.Components.find(
-      (c) => c.type === data.type
-    );
+    const existingComponent = station.Components.find((c) => c.type === type);
 
     if (existingComponent) {
-      return await this.repository.upgrade(existingComponent.id, data.level);
+      return await this.repository.upgrade(existingComponent.id);
     }
 
-    return await this.repository.create(stationId, data.type, {
-      level: data.level,
-      dataType: "StationComponentData"
+    return await this.repository.create(stationId, type, {
+      level: 1,
+      dataType: "StationComponentData",
     });
   }
 

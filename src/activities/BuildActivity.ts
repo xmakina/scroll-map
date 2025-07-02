@@ -3,9 +3,8 @@ import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
 import StationComponentService from "@/services/StationComponentService";
 import StationService from "@/services/StationService";
-import { StationComponentCostsAndRequirements } from "@/models/CostAndRequirements/StationComponents";
-import getJsonData from "@/utils/getJsonData";
 import BuildActivityData from "@/models/JsonData/BuildActivityData";
+import getJsonData from "@/utils/getJsonData";
 import { StationComponentType } from "@prisma/client";
 
 export default class implements IActivityHandler {
@@ -21,22 +20,23 @@ export default class implements IActivityHandler {
     }
 
     const parent = await this.activityService.getWorker(activityWorker.id);
+    const data: BuildActivityData<string> = getJsonData(
+      activityWorker.Activity.data
+    );
 
     if (parent.Station) {
       await this.stationComponentService.buildComponent(
         parent.Station.id,
-        getJsonData<BuildActivityData<StationComponentType>>(
-          activityWorker.Activity?.data
-        )
+        data.type as StationComponentType
       );
     }
 
     throw Error("Only stations can build");
   }
 
-  async begin(
+  async begin<T extends string>(
     activityWorkerId: string,
-    data: BuildActivityData<StationComponentType>
+    data: BuildActivityData<T>
   ): Promise<void> {
     const activityWorker = await this.activityService.getWorker(
       activityWorkerId
@@ -46,17 +46,8 @@ export default class implements IActivityHandler {
       throw new Error("Only Stations can build");
     }
 
-    const { type: componentType, level } = data;
-
-    const target = StationComponentCostsAndRequirements[componentType][level];
-
-    if (!target) {
-      throw new Error(
-        `Station Component ${componentType} at level ${level} does not exist`
-      );
-    }
-
-    await this.stationService.consumeFromCargoHold(stationId, target.cost);
+    const { cost } = data;
+    await this.stationService.consumeFromCargoHold(stationId, cost);
     await this.activityService.create(activityWorkerId, "BUILD", 3, data);
   }
 }
