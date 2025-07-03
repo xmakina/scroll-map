@@ -12,13 +12,15 @@ import { NavigationLink } from "@/components/ui/Navigation";
 import Orders from "@/components/orders/Orders";
 import ActivityDetails from "@/components/activity/ActivityDetails";
 import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
-import StationComponents from "@/components/station/StationComponents";
+import ComponentList from "@/components/component/ComponentList";
 import { StationContextProvider } from "@/context/StationContext";
 import LocalVolume from "@/components/station/LocalVolume";
+import { getTranslations } from "next-intl/server";
 
 type Props = { params: Promise<{ id: string }> };
 const Page = async ({ params }: Props) => {
   const { id } = await params;
+  const t = await getTranslations("Station Details");
   const station = await getStation(id);
   const ships = await getShips(id);
 
@@ -42,11 +44,14 @@ const Page = async ({ params }: Props) => {
             <div className="w-full text-center">Station {station.label}</div>
             <div>
               <NavigationLink href={`./${station.id}/build`}>
-                Build
+                {t("Build")}
               </NavigationLink>
             </div>
             <div>
-              <StationComponents components={station.Components} />
+              <ComponentList
+                title={t("Station Components")}
+                components={station.Components}
+              />
             </div>
             <div>
               <CargoHoldSummary cargoHold={station.CargoHold} />

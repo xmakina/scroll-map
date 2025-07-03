@@ -11,6 +11,7 @@ model Outpost {
 
   label      String
   Components OutpostComponent[]
+  Ships      Ship[]
 }
 
 enum OutpostComponentType {

@@ -18,7 +18,8 @@ const PlanetDetailsPage = async ({ params }: Props) => {
   return (
     <div className="flex flex-row gap-4">
       <div className="flex flex-col gap-4">
-        <OutpostList outposts={outposts} playerId={playerId} />
+        <div className="italic">{t("Planet {id}", { id })}</div>
+        <OutpostList outposts={outposts} />
         {ownedOutposts.length === 0 && (
           <Button onClick={handleNewOutpost}>{t("Found outpost")}</Button>
         )}

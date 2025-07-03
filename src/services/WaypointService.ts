@@ -32,6 +32,10 @@ function findWaypoint(
 
 export default class {
   static GetType(locationId: string): LocationType {
+    if (locationId.indexOf("-") === -1) {
+      return "unknown";
+    }
+
     const [, isWaypoint, isStar, isPlanet] = locationId.match(/-?\d+/gm)!;
 
     if (isPlanet) {

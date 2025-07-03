@@ -25,17 +25,15 @@ export const startBuilding = async (
     throw new Error("No cost and requirements found");
   }
 
-  const data: BuildActivityData<StationComponentType> = {
-    type: componentType,
-    level,
-    cost: costAndRequirements.cost,
-    dataType: "BuildActivityData",
-  };
-
-  await activityService.begin(station.ActivityWorker, ActivityType.BUILD, {
-    ...data,
-    dataType: "StationComponentData",
-  });
+  await activityService.begin(
+    station.ActivityWorker,
+    ActivityType.BUILD,
+    new BuildActivityData<StationComponentType>(
+      componentType,
+      level,
+      costAndRequirements.cost
+    )
+  );
 
   revalidatePath("/station/[id]/build", "page");
 };

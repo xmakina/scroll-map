@@ -6,6 +6,7 @@ import Button from "../ui/Button";
 import Countdown from "react-countdown";
 import clsx from "clsx";
 import ActivityLabel from "./ActivityLabel";
+import { useTranslations } from "next-intl";
 
 type Props = {
   activity: Activity;
@@ -39,6 +40,7 @@ const renderer = (time: TimeDeltaObject) => {
 };
 
 const ActivityDetails = ({ activity, onClaim }: Props) => {
+  const t = useTranslations("ActivityDetails");
   const [done, setDone] = useState(activity.endTime < new Date(Date.now()));
   const updateDone = () => setDone(true);
 
@@ -52,7 +54,7 @@ const ActivityDetails = ({ activity, onClaim }: Props) => {
       <ActivityLabel activity={activity} />
       {done && (
         <div>
-          <Button onClick={onClaim}>Claim</Button>
+          <Button onClick={onClaim}>{t("Complete")}</Button>
         </div>
       )}
       {!done && (

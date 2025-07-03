@@ -40,10 +40,7 @@ export default class implements IActivityHandler {
       station.CargoHold.id,
       shipCargoHold.CargoContainers
     );
-    const consume = this.cargoHoldService.consume(
-      shipCargoHold.id,
-      shipCargoHold.CargoContainers
-    );
+    const consume = this.cargoHoldService.empty(shipCargoHold.id);
 
     await Promise.all([provide, consume]);
   }

@@ -27,12 +27,12 @@
     "MINE": "Mining {type} ⛏️",
     "SCUTTLE": "Scuttling 💥",
     "SCAVENGE": "Scavenging 🔎",
-    "BUILD": "Building 🧑‍🏭",
+    "BUILD": "Building {type} 🧑‍🏭",
     "SMELT": "Smelting 🔥",
     "BuildShip": "Building ship 🧑‍🔧",
     "DELIVER": "Delivering 📦",
     "TRAVEL": "Travelling to {locationId}",
-    "BERTH": "{locationType, select, planet {Landing} station {Docking} other {Unknown}} at {locationId}",
+    "BERTH": "{locationType, select, outpost {Landing} station {Docking} other {Unknown}} at {locationId}",
     "Unknown Activity": "Unknown Activity"
   },
   "OrderButton": {
@@ -44,24 +44,23 @@
     "SMELT": "Smelt 🔥",
     "DELIVER": "Deliver 📦",
     "TRAVEL": "Travel",
-    "BERTH": "{locationType, select, planet {Land} station {Dock} other {Unknown}}"
+    "BERTH": "{locationType, select, outpost {Land} station {Dock} other {Unknown}}"
+  },
+  "Component Type": {
+    "SMELTER": "Smelter",
+    "VAULT": "Vault",
+    "HANGAR": "Hangar",
+    "MAKESHIFT_LAUNCH_PAD": "Makeshift Launch Pad",
+    "LAUNCH_PAD": "Launch Pad",
+    "SOLAR_FARM": "Solar Farm"
   },
   "StationComponentBuilding": {
     "Build Requirements for": "Build Requirements for",
-    "lvl {level}": "(lvl {level})",
-    "SMELTER": "Smelter",
-    "VAULT": "Vault",
-    "HANGAR": "Hangar"
+    "lvl {level}": "(lvl {level})"
   },
   "ComponentDetails": {
-    "SMELTER": "Smelter",
     "level {level}": "lvl {level}",
-    "HANGAR": "Hangar",
-    "VAULT": "Vault",
-    "MAKESHIFT_LAUNCH_PAD": "Makeshift Launch Pad",
-    "LAUNCH_PAD": "Launch Pad",
-    "Show All": "Show All",
-    "SOLAR_FARM": "Solar Farm"
+    "Show All": "Show All"
   },
   "BuildShip": {
     "Miner": "Mining ship",
@@ -82,7 +81,9 @@
     "System Map": "System Map",
     "Current Task": "Current Task",
     "Cargo Hold": "Cargo Hold",
-    "Berthed": "{locationType, select, planet {Landed} station {Docked} other {Berthed}}"
+    "Berthed": "{locationType, select, planet {Landed} station {Docked} other {Berthed}}",
+    "Planet Summary": "Planet Summary",
+    "Home Base": "Home Base"
   },
   "ShipSummary": {
     "Location": "Location",
@@ -104,10 +105,37 @@
     "Outposts": "Outposts"
   },
   "OutpostDetails": {
-    "Outpost {id}": "Outpost {id}"
+    "Outpost {id}": "Outpost {id}",
+    "Outpost Structures": "Outpost Structures"
   },
   "OutpostLink": {
     "Manage": "Manage",
     "View": "View"
+  },
+  "Station Details": {
+    "Station Components": "Station Components",
+    "Build": "Build"
+  },
+  "ActivityDetails": {
+    "Complete": "Complete"
+  },
+  "BerthLink": {
+    "View planet": "View Planet"
+  },
+  "Build Components": {
+    "Components": "Components"
+  },
+  "Build Component": {
+    "{component} lvl {level}": "{component} lvl {level}"
+  },
+  "Planet Details": {
+    "Outposts": "Outposts",
+    "Name": "Name"
+  },
+  "DockedHere": {
+    "Docked": "Docked"
+  },
+  "Berth Details": {
+    "None": "None"
   }
 }

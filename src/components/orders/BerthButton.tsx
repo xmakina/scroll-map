@@ -7,23 +7,22 @@ import Button from "../ui/Button";
 import { useShipContext } from "@/context/ShipContext";
 import ShipData from "@/models/JsonData/ShipData";
 import { ShipWithActivityAndCargoHold } from "@/models/ShipWithActivity";
-import BerthData from "@/models/JsonData/BerthData";
-import WaypointService from "@/services/WaypointService";
+import BerthData, { BerthLocation } from "@/models/JsonData/BerthData";
 import bindData from "@/utils/bindActivityData";
 import getJsonData from "@/utils/getJsonData";
 
 type Props = {
-  locationId: string;
+  location: BerthLocation;
 };
 
 const checkCanBerth = (
-  locationId: string,
-  ship?: ShipWithActivityAndCargoHold
+  ship?: ShipWithActivityAndCargoHold,
+  locationId?: string
 ) => {
   if (
     ship === undefined ||
     ship.ActivityWorker.Activity ||
-    ship.locationId !== locationId
+    ship.locationId === locationId
   ) {
     return false;
   }
@@ -32,19 +31,24 @@ const checkCanBerth = (
   return !berthed;
 };
 
-const BerthButton = ({ locationId }: Props) => {
+const BerthButton = ({ location }: Props) => {
   const t = useTranslations("OrderButton");
 
   const { ship, issueOrder } = useShipContext();
-  const canBerth = checkCanBerth(locationId, ship);
+  const locationId = location.outpostId ?? location.stationId;
+  if (!locationId) {
+    throw new Error("No valid berth provided");
+  }
 
+  const canBerth = checkCanBerth(ship, locationId);
+  console.log({ canBerth });
   if (!canBerth) {
     return <div></div>;
   }
 
-  const locationType = WaypointService.GetType(locationId);
+  const locationType = location.outpostId ? "outpost" : "station";
 
-  const data: BerthData = new BerthData(locationId);
+  const data: BerthData = new BerthData(location);
   const handleClick = bindData(issueOrder, ActivityType.BERTH, data);
   return (
     <div>

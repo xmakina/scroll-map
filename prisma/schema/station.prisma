@@ -13,6 +13,7 @@ model Station {
   positionY Int
   data      Json
   label     String
+  Ships     Ship[]
 }
 
 enum StationComponentType {

@@ -3,7 +3,7 @@ import React from "react";
 import { getStation } from "../queries";
 import CargoHoldSummary from "@/components/cargoHold/CargoHoldSummary";
 import { startBuilding, startBuildingShip } from "./actions";
-import BuildComponents from "@/components/build/BuildComponents";
+import BuildComponentList from "@/components/build/BuildComponentList";
 import BuildStationShips from "@/components/station/BuildStationShips";
 import { StationContextProvider } from "@/context/StationContext";
 import getJsonData from "@/utils/getJsonData";
@@ -34,7 +34,7 @@ const Page = async ({ params }: Props) => {
       <div>Building at {id}</div>
       <CargoHoldSummary cargoHold={station.CargoHold} />
       <StationContextProvider station={station}>
-        <BuildComponents
+        <BuildComponentList
           onBuildComponent={handleBuildComponent}
           isBusy={!!station.ActivityWorker.Activity}
           existing={existingComponents}

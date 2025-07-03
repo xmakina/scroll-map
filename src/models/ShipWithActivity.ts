@@ -4,5 +4,7 @@ export type ShipWithActivityAndCargoHold = Prisma.ShipGetPayload<{
   include: {
     ActivityWorker: { include: { Activity: true } };
     CargoHold: { include: { CargoContainers: true } };
+    Station: true;
+    Outpost: true;
   };
 }>;

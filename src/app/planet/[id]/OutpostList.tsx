@@ -6,7 +6,6 @@ import OutpostSummary from "./OutpostSummary";
 
 type Props = {
   outposts: OutpostWithComponents[];
-  playerId: string;
 };
 
 const OutpostList = async ({ outposts }: Props) => {
@@ -17,7 +16,10 @@ const OutpostList = async ({ outposts }: Props) => {
       <div className="flex flex-col items-center gap-2">
         {outposts.length === 0 && <div className="italic">None</div>}
         {outposts.map((o) => (
-          <OutpostSummary outpost={o} key={o.id} />
+          <OutpostSummary
+            outpost={o}
+            key={o.id}
+          />
         ))}
       </div>
     </BorderedBox>

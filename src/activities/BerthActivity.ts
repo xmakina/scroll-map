@@ -4,6 +4,7 @@ import ShipService from "@/services/ShipService";
 import ActivityService from "@/services/ActivityService";
 import BerthData from "@/models/JsonData/BerthData";
 import { ActivityType } from "@prisma/client";
+import getJsonData from "@/utils/getJsonData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -22,9 +23,11 @@ export default class implements IActivityHandler {
       throw new Error("Only ships can berth");
     }
 
-    const shipId = parent.Ship?.id;
+    const shipId = parent.Ship.id;
 
-    await this.shipService.updateBerthed(shipId, true);
+    const data = getJsonData<BerthData>(activity.data);
+
+    await this.shipService.updateBerthed(shipId, true, data.location);
   }
 
   async begin(activityWorkerId: string, data?: BerthData): Promise<void> {

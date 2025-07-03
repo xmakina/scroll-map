@@ -1,10 +1,11 @@
+import { BerthLocation } from "@/models/JsonData/BerthData";
 import ShipData from "@/models/JsonData/ShipData";
 import ShipRepository from "@/repositories/ShipRepository";
 import NameGenerator from "@/utils/NameGenerator";
 
 export default class ShipService {
-  async updateBerthed(id: string, berthed: boolean) {
-    return await this.repository.updateBerthed(id, berthed);
+  async updateBerthed(id: string, berthed: boolean, location: BerthLocation) {
+    return await this.repository.updateBerthed(id, berthed, location);
   }
 
   async updateLocation(id: string, locationId: string) {

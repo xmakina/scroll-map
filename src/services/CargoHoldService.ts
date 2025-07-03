@@ -1,32 +1,49 @@
 import CargoHoldRepository from "@/repositories/CargoHoldRepository";
 import { CargoType } from "@prisma/client";
 import CargoContainerService from "./CargoContainerService";
+import getCostBreakdowns from "@/utils/getCostBreakdowns";
+import { Cost } from "@/models/CostAndRequirements/CostAndRequirements";
 
 export default class {
-  async consume(
-    id: string,
-    consumptionList: { type: CargoType; amount: number }[]
-  ) {
+  async consumeCost(id: string, cost: Cost) {
+    const cargoHold = await this.get(id);
+    const costBreakdowns = getCostBreakdowns(cost, cargoHold);
+    const canAfford = costBreakdowns.every((b) => b.available >= b.required);
+    if (!canAfford) {
+      throw Error("You cannot afford this component");
+    }
+
+    const consumptionUpdates = Object.keys(cost)
+      .map((c) => c as CargoType)
+      .map(async (type) => {
+        const amount = cost[type] ?? 0;
+        return await this.consume(id, type, amount);
+      });
+
+    return await Promise.all(consumptionUpdates);
+  }
+
+  async consume(id: string, type: CargoType, amount: number) {
     const cargoHold = await this.get(id);
 
-    const consumptionUpdates = consumptionList.map((consumption) => {
-      const cargoContainer = cargoHold.CargoContainers.find(
-        (c) => c.type == consumption.type
-      );
+    const cargoContainer = cargoHold.CargoContainers.find(
+      (c) => c.type == type
+    );
 
-      if (!cargoContainer) {
-        throw Error(
-          `Cargo container not found in Cargo Hold ${id}, ${consumption.type}`
-        );
-      }
+    if (!cargoContainer) {
+      throw Error(`Cargo container not found in Cargo Hold ${id}, ${type}`);
+    }
 
-      return this.cargoContainerService.removeFrom(
-        cargoContainer,
-        consumption.amount
-      );
-    });
+    return this.cargoContainerService.removeFrom(cargoContainer, amount);
+  }
 
-    await Promise.all(consumptionUpdates);
+  async empty(id: string) {
+    const cargoHold = await this.get(id);
+    const emptyPromises = cargoHold.CargoContainers.map((c) =>
+      this.consume(id, c.type, c.amount)
+    );
+
+    await Promise.all(emptyPromises);
   }
 
   async provide(

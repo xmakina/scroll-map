@@ -18,4 +18,8 @@ model Ship {
   cargoHoldId      String?        @unique
   CargoHold        CargoHold?     @relation(fields: [cargoHoldId], references: [id], onDelete: Cascade)
   label            String
+  stationId        String?
+  Station          Station?       @relation(fields: [stationId], references: [id])
+  outpostId        String?
+  Outpost          Outpost?       @relation(fields: [outpostId], references: [id])
 }

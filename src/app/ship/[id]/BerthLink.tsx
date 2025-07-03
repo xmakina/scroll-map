@@ -1,5 +1,6 @@
 import { NavigationLink } from "@/components/ui/Navigation";
 import { LocationType } from "@/models/LocationType";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 type Props = {
@@ -8,11 +9,12 @@ type Props = {
 };
 
 const BerthLink = ({ locationId, locationType }: Props) => {
+  const t = useTranslations("BerthLink");
   switch (locationType) {
     case "planet":
       return (
         <NavigationLink href={`/planet/${locationId}`}>
-          Planet Details
+          {t("View planet")}
         </NavigationLink>
       );
     case "star":

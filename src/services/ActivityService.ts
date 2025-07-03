@@ -11,7 +11,6 @@ import BuildActivity from "@/activities/BuildActivity";
 import MiningActivity from "@/activities/MiningActivity";
 import ScavengeActivity from "@/activities/ScavengeActivity";
 import CargoHoldService from "./CargoHoldService";
-import StationComponentService from "./StationComponentService";
 import SmeltActivity from "@/activities/SmeltActivity";
 import BuildShipActivity from "@/activities/BuildShipActivity";
 import DeliverCargoActivity from "@/activities/DeliverCargoActivity";
@@ -19,6 +18,8 @@ import EstablishOutpostActivity from "@/activities/EstablishOutpostActivity";
 import TravelActivity from "@/activities/TravelActivity";
 import BerthActivity from "@/activities/BerthActivity";
 import IActivityData from "@/models/JsonData/IActivityData";
+import OutpostComponentService from "./OutpostComponentService";
+import StationComponentService from "./StationComponentService";
 
 export default class ActivityService {
   async getShipFromActivityWorker(activityWorker: ActivityWorkerWithActivity) {
@@ -89,11 +90,17 @@ export default class ActivityService {
     shipService: ShipService,
     stationService: StationService,
     cargoHoldService: CargoHoldService,
-    stationComponentService: StationComponentService
+    stationComponentService: StationComponentService,
+    outpostComponentService: OutpostComponentService
   ) {
     this.activities = {
       SCUTTLE: new ScuttleActivity(shipService, stationService, this),
-      BUILD: new BuildActivity(stationComponentService, stationService, this),
+      BUILD: new BuildActivity(
+        stationComponentService,
+        outpostComponentService,
+        cargoHoldService,
+        this
+      ),
       BuildShip: new BuildShipActivity(this, stationService, shipService),
       DELIVER: new DeliverCargoActivity(stationService, cargoHoldService, this),
       MINE: new MiningActivity(cargoHoldService, this),
@@ -111,7 +118,8 @@ export default class ActivityService {
       await ShipService.get(),
       await StationService.get(),
       await CargoHoldService.get(),
-      await StationComponentService.get()
+      await StationComponentService.get(),
+      await OutpostComponentService.get()
     );
   }
 }

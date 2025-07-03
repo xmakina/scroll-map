@@ -7,7 +7,7 @@ type Props = {
 
 const BorderedBox = ({ title, children }: Props) => {
   return (
-    <div className="flex flex-col border border-white rounded-md p-2 gap-2">
+    <div className="flex flex-col border border-gray-600 rounded-md p-2 gap-2">
       <div className="text-md text-center italic">{title}</div>
       <div>{children}</div>
     </div>

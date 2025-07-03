@@ -7,8 +7,9 @@ import getRequirementsBreakdown, {
 } from "@/utils/getRequirementsBreakdown";
 import React from "react";
 import SelectComponent from "./SelectComponent";
+import ComponentType from "@/models/ComponentType";
 
-type Props<T extends string> = {
+type Props<T extends ComponentType> = {
   components: T[];
   catalogue: CostAndRequirementsList<T>;
   existing: LevelledComponent[];
@@ -20,7 +21,7 @@ type Props<T extends string> = {
   showAll?: boolean;
 };
 
-const BuildComponentList = <T extends string>({
+const BuildComponentList = <T extends ComponentType>({
   components,
   catalogue,
   existing,

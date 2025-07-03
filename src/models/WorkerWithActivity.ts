@@ -5,5 +5,5 @@ export type ActivityWorkerWithActivity = Prisma.ActivityWorkerGetPayload<{
 }>;
 
 export type ActivityWorkerWithParent = Prisma.ActivityWorkerGetPayload<{
-  include: { Activity: true; Ship: true; Station: true };
+  include: { Activity: true; Ship: true; Station: true; Outpost: true };
 }>;

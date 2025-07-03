@@ -9,24 +9,36 @@ import getRequirementsBreakdown, {
 import getCostBreakdowns from "@/utils/getCostBreakdowns";
 import { CostAndRequirements } from "@/models/CostAndRequirements/CostAndRequirements";
 import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
+import ComponentType from "@/models/ComponentType";
+import { getComponentTypeTranslation } from "@/utils/getTranslation";
+import { useTranslations } from "next-intl";
 
-type Props<T extends string> = {
+type Props = {
   onBuildComponent: () => Promise<void> | void;
   isBusy: boolean;
-  target?: CostAndRequirements<T>;
-  title: string;
+  target?: CostAndRequirements<ComponentType>;
   currentComponents: LevelledComponent[];
   availableResources: CargoHoldWithContainers;
+  component: ComponentType;
+  level: number;
 };
 
-const BuildComponent = <T extends string>({
+const BuildComponent = ({
   onBuildComponent,
   isBusy,
   target,
-  title,
   currentComponents,
   availableResources,
-}: Props<T>) => {
+  component,
+  level,
+}: Props) => {
+  const componentTranslation = getComponentTypeTranslation(component);
+  const t = useTranslations("Build Component");
+  const title = t("{component} lvl {level}", {
+    component: componentTranslation,
+    level,
+  });
+
   if (!target) {
     return (
       <div className="flex flex-col border border-white p-2 rounded-md items-center justify-between">

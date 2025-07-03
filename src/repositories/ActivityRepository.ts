@@ -12,7 +12,7 @@ export default class ActivityRepository {
   async getWorker(id: string): Promise<ActivityWorkerWithParent> {
     return prisma.activityWorker.findUniqueOrThrow({
       where: { id },
-      include: { Ship: true, Station: true, Activity: true },
+      include: { Ship: true, Station: true, Outpost: true, Activity: true },
     });
   }
 

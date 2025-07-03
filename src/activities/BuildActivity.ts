@@ -1,16 +1,18 @@
 import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ActivityService from "@/services/ActivityService";
-import StationComponentService from "@/services/StationComponentService";
-import StationService from "@/services/StationService";
 import BuildActivityData from "@/models/JsonData/BuildActivityData";
 import getJsonData from "@/utils/getJsonData";
-import { StationComponentType } from "@prisma/client";
+import { OutpostComponentType, StationComponentType } from "@prisma/client";
+import CargoHoldService from "@/services/CargoHoldService";
+import StationComponentService from "@/services/StationComponentService";
+import OutpostComponentService from "@/services/OutpostComponentService";
 
 export default class implements IActivityHandler {
   constructor(
     private readonly stationComponentService: StationComponentService,
-    private readonly stationService: StationService,
+    private readonly outpostComponentService: OutpostComponentService,
+    private readonly cargoHoldService: CargoHoldService,
     private readonly activityService: ActivityService
   ) {}
 
@@ -20,14 +22,24 @@ export default class implements IActivityHandler {
     }
 
     const parent = await this.activityService.getWorker(activityWorker.id);
-    const data: BuildActivityData<string> = getJsonData(
-      activityWorker.Activity.data
-    );
 
     if (parent.Station) {
-      await this.stationComponentService.buildComponent(
+      const data: BuildActivityData<StationComponentType> = getJsonData(
+        activityWorker.Activity.data
+      );
+      return await this.stationComponentService.buildComponent(
         parent.Station.id,
-        data.type as StationComponentType
+        data.type
+      );
+    }
+
+    if (parent.Outpost) {
+      const data: BuildActivityData<OutpostComponentType> = getJsonData(
+        activityWorker.Activity.data
+      );
+      return await this.outpostComponentService.buildComponent(
+        parent.Outpost.id,
+        data.type
       );
     }
 
@@ -41,13 +53,19 @@ export default class implements IActivityHandler {
     const activityWorker = await this.activityService.getWorker(
       activityWorkerId
     );
-    const stationId = activityWorker.Station?.id;
-    if (!stationId) {
-      throw new Error("Only Stations can build");
+
+    const cargoHoldId =
+      activityWorker.Station?.cargoHoldId ??
+      activityWorker.Outpost?.cargoHoldId;
+
+    if (!cargoHoldId) {
+      throw new Error("This entity does not have a cargo hold");
     }
 
     const { cost } = data;
-    await this.stationService.consumeFromCargoHold(stationId, cost);
+
+    await this.cargoHoldService.consumeCost(cargoHoldId, cost);
+
     await this.activityService.create(activityWorkerId, "BUILD", 3, data);
   }
 }

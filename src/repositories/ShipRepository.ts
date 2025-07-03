@@ -4,15 +4,20 @@ import { InputJsonValue } from "@prisma/client/runtime/library";
 import { ShipWithActivityAndCargoHold } from "../models/ShipWithActivity";
 import getActivityData from "@/utils/getJsonData";
 import ShipData from "@/models/JsonData/ShipData";
+import { BerthLocation } from "@/models/JsonData/BerthData";
 
 export default class ShipRepository {
-  async updateBerthed(id: string, berthed: boolean) {
+  async updateBerthed(id: string, berthed: boolean, location: BerthLocation) {
     const ship = await prisma.ship.findFirstOrThrow({ where: { id } });
     const shipData: ShipData = getActivityData(ship.data);
 
+    const data = { ...shipData, berthed };
+    const outpostId = location.outpostId;
+    const stationId = location.stationId;
+
     return await prisma.ship.update({
       where: { id },
-      data: { data: { ...shipData, berthed } },
+      data: { data, outpostId, stationId },
     });
   }
 
@@ -30,6 +35,8 @@ export default class ShipRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         CargoHold: { include: { CargoContainers: true } },
+        Outpost: true,
+        Station: true,
       },
     });
   }
@@ -58,6 +65,8 @@ export default class ShipRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         CargoHold: { include: { CargoContainers: true } },
+        Outpost: true,
+        Station: true,
       },
     });
   }
@@ -68,6 +77,8 @@ export default class ShipRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         CargoHold: { include: { CargoContainers: true } },
+        Outpost: true,
+        Station: true,
       },
     });
   }

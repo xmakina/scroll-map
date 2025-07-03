@@ -12,21 +12,26 @@ import { CargoHoldWithContainers } from "@/models/CargoHoldWithContainers";
 import { useTranslations } from "next-intl";
 import SelectComponentList from "./SelectComponentList";
 import LabeledInput from "../ui/LabeledInput";
+import ComponentType from "@/models/ComponentType";
 
-type Props<T extends string> = {
+type Props<T extends ComponentType> = {
   catalogue: CostAndRequirementsList<T>;
   existing: LevelledComponent[];
   availableResources: CargoHoldWithContainers;
+  onBuildComponent: (type: T, level: number) => Promise<void> | void;
+  isBusy: boolean;
 };
 
-function BuildMenu<T extends string>({
+function BuildMenu<T extends ComponentType>({
   catalogue,
   existing,
   availableResources,
+  onBuildComponent,
+  isBusy,
 }: Props<T>) {
   const t = useTranslations("ComponentDetails");
   const components = Object.keys(catalogue).map((k) => k as T);
-  const [activeComponentType, setActiveComponentType] = useState<string>();
+  const [activeComponentType, setActiveComponentType] = useState<T>();
   const [activeLevel, setActiveLevel] = useState<number>();
   const [activeCostAndRequirements, setActiveCostAndRequirements] =
     useState<CostAndRequirements<T>>();
@@ -40,6 +45,12 @@ function BuildMenu<T extends string>({
     setActiveComponentType(component);
     setActiveLevel(level);
     setActiveCostAndRequirements(costAndRequirements);
+  };
+
+  const handleBuildComponent = () => {
+    if (activeComponentType && activeLevel) {
+      onBuildComponent(activeComponentType, activeLevel);
+    }
   };
 
   return (
@@ -66,20 +77,21 @@ function BuildMenu<T extends string>({
             />
           </div>
           <div className="flex flex-col items-center flex-1">
-            {activeCostAndRequirements && (
-              <BorderedBox title="Cost">
-                <BuildComponent
-                  title={`${t(activeComponentType)} lvl${activeLevel}`}
-                  target={activeCostAndRequirements}
-                  onBuildComponent={function (): Promise<void> | void {
-                    throw new Error("Function not implemented.");
-                  }}
-                  currentComponents={existing}
-                  availableResources={availableResources}
-                  isBusy={false}
-                />
-              </BorderedBox>
-            )}
+            {activeCostAndRequirements &&
+              activeComponentType &&
+              activeLevel && (
+                <BorderedBox title="Cost">
+                  <BuildComponent
+                    component={activeComponentType}
+                    level={activeLevel}
+                    target={activeCostAndRequirements}
+                    onBuildComponent={handleBuildComponent}
+                    currentComponents={existing}
+                    availableResources={availableResources}
+                    isBusy={isBusy}
+                  />
+                </BorderedBox>
+              )}
           </div>
         </div>
       </BorderedBox>

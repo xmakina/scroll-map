@@ -4,24 +4,24 @@ import {
 } from "@/models/CostAndRequirements/CostAndRequirements";
 import React from "react";
 import BorderedBox from "../ui/BorderedBox";
-import { useTranslations } from "next-intl";
 import ViewButton from "./ViewButton";
 import { LevelledComponent } from "@/utils/getRequirementsBreakdown";
+import { getComponentTypeTranslation } from "@/utils/getTranslation";
+import ComponentType from "@/models/ComponentType";
 
-type Props<T extends string> = {
+type Props<T extends ComponentType> = {
   component: T;
   levels: CostAndRequirementsList<T>[T];
   existing: LevelledComponent[];
   onSelectComponent: (level: number, component: CostAndRequirements<T>) => void;
 };
 
-const SelectComponent = <T extends string>({
+const SelectComponent = <T extends ComponentType>({
   component,
   levels,
   existing,
   onSelectComponent,
 }: Props<T>) => {
-  const componentTranslations = useTranslations("ComponentDetails");
   const maxLevel = Object.keys(levels).length;
   if (maxLevel === 0) {
     return <></>;
@@ -31,7 +31,7 @@ const SelectComponent = <T extends string>({
   const nextLevel = levels[currentLevel + 1];
 
   return (
-    <BorderedBox title={componentTranslations(`${component}`)}>
+    <BorderedBox title={getComponentTypeTranslation(component)}>
       <div className="flex flex-col items-center">
         {nextLevel && (
           <ViewButton

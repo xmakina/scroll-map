@@ -27,10 +27,7 @@ export default class StationService {
       throw Error("You cannot afford this component");
     }
 
-    await cargoHoldService.consume(
-      station.cargoHoldId,
-      costBreakdowns.map((c) => ({ type: c.cargoType, amount: c.required }))
-    );
+    await cargoHoldService.consumeCost(station.cargoHoldId, cost);
   }
 
   async get(id: string) {

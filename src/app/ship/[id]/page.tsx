@@ -13,7 +13,8 @@ import LocationIdentifier from "@/components/LocationIdentifier";
 import getJsonData from "@/utils/getJsonData";
 import ShipData from "@/models/JsonData/ShipData";
 import WaypointService from "@/services/WaypointService";
-import BerthLink from "./BerthLink";
+import PlanetSummary from "./PlanetSummary";
+import BerthDetails from "./BerthDetails";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -26,6 +27,7 @@ const ShipDetailsPage = async ({ params }: Props) => {
 
   const location = WaypointFromId(ship.locationId);
   const locationType = WaypointService.GetType(ship.locationId);
+
   const handleIssueOrder = issueShipOrder.bind(null, id);
   const handleClaim = claimActivity.bind(null, id);
 
@@ -39,27 +41,19 @@ const ShipDetailsPage = async ({ params }: Props) => {
           <LocationIdentifier locationId={ship.locationId} />
           {berthed && `(${t("Berthed", { locationType })})`}
         </div>
-        <div className="flex flex-col md:flex-row md:gap-8 gap-4">
-          {!berthed && (
-            <BorderedBox title={t("System Map")}>
-              <WaypointSummary x={location.xPos} y={location.yPos} />
-            </BorderedBox>
-          )}
-          {ship.CargoHold && (
-            <BorderedBox title={t("Cargo Hold")}>
-              <CargoHoldSummary cargoHold={ship.CargoHold} />
-            </BorderedBox>
-          )}
-        </div>
-
-        {berthed && (
+        {ship.CargoHold && (
+          <BorderedBox title={t("Cargo Hold")}>
+            <CargoHoldSummary cargoHold={ship.CargoHold} />
+          </BorderedBox>
+        )}
+        <BorderedBox title={t("Home Base")}>
           <div className="flex flex-col items-center">
-            <BerthLink
-              locationType={locationType}
-              locationId={ship.locationId}
+            <BerthDetails
+              station={ship.Station ?? undefined}
+              outpost={ship.Outpost ?? undefined}
             />
           </div>
-        )}
+        </BorderedBox>
         {ship.ActivityWorker.Activity && (
           <BorderedBox title={t("Current Task")}>
             <ActivityDetails
@@ -68,6 +62,19 @@ const ShipDetailsPage = async ({ params }: Props) => {
             />
           </BorderedBox>
         )}
+        <div className="flex flex-col md:flex-row md:gap-8 gap-4">
+          {locationType === "star" ||
+            (locationType === "unknown" && (
+              <BorderedBox title={t("System Map")}>
+                <WaypointSummary x={location.xPos} y={location.yPos} />
+              </BorderedBox>
+            ))}
+          {locationType === "planet" && (
+            <BorderedBox title={t("Planet Summary")}>
+              <PlanetSummary ship={ship} />
+            </BorderedBox>
+          )}
+        </div>
       </div>
     </ShipContextProvider>
   );

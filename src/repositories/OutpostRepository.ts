@@ -11,7 +11,9 @@ export default class {
     planetId: string;
     label: string;
   }) {
-    const { id: activityWorkerId } = await prisma.activityWorker.create({});
+    const { id: activityWorkerId } = await prisma.activityWorker.create({
+      data: {},
+    });
     const { id: cargoHoldId } = await prisma.cargoHold.create({ data: {} });
     return await prisma.outpost.create({
       data: {
@@ -30,6 +32,7 @@ export default class {
         Player: true,
         Components: true,
         CargoHold: { include: { CargoContainers: true } },
+        ActivityWorker: { include: { Activity: true } },
       },
     });
   }
@@ -41,6 +44,7 @@ export default class {
         Player: true,
         Components: true,
         CargoHold: { include: { CargoContainers: true } },
+        ActivityWorker: { include: { Activity: true } },
       },
     });
   }

@@ -3,6 +3,7 @@ import { getComponentLevel } from "./getComponentLevel";
 import { JsonValue } from "@prisma/client/runtime/library";
 import getJsonData from "./getJsonData";
 import LevelledComponentData from "@/models/JsonData/LevelledComponentData";
+import ComponentType from "@/models/ComponentType";
 
 export type LevelledComponent = {
   type: string;
@@ -21,7 +22,7 @@ export function ToLevelledComponent({
   return { type, level: componentData.level };
 }
 
-export default function <T extends string>(
+export default function <T extends ComponentType>(
   requirements: Requirements<T>,
   components: LevelledComponent[]
 ) {

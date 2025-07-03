@@ -5,5 +5,6 @@ export type OutpostWithComponents = Prisma.OutpostGetPayload<{
     Player: true;
     Components: true;
     CargoHold: { include: { CargoContainers: true } };
+    ActivityWorker: { include: { Activity: true } };
   };
 }>;
