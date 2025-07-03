@@ -2,6 +2,17 @@ import { OutpostWithComponents } from "@/models/OutpostWithComponents";
 import { prisma } from "@/prisma";
 
 export default class {
+  async getAllForPlayer(playerId: string) {
+    return await prisma.outpost.findMany({
+      where: { playerId },
+      include: {
+        Player: true,
+        Components: true,
+        CargoHold: { include: { CargoContainers: true } },
+        ActivityWorker: { include: { Activity: true } },
+      },
+    });
+  }
   async create({
     planetId,
     playerId,
@@ -25,7 +36,7 @@ export default class {
       },
     });
   }
-  async getAll(planetId: string): Promise<OutpostWithComponents[]> {
+  async getAllForPlanet(planetId: string): Promise<OutpostWithComponents[]> {
     return await prisma.outpost.findMany({
       where: { planetId },
       include: {

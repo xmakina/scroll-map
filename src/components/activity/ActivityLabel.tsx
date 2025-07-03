@@ -14,6 +14,7 @@ import {
   getComponentTypeTranslation,
 } from "@/utils/getTranslation";
 import ComponentType from "@/models/ComponentType";
+import LaunchActivityData from "@/models/JsonData/LaunchActivityData";
 
 type Props = {
   activity: Activity;
@@ -35,11 +36,16 @@ const ActivityLabel = ({ activity }: Props) => {
     }
     case "BERTH": {
       const berthData: BerthData = getActivityData(activity.data);
-      const locationId = berthData.location.outpostId ?? berthData.location.stationId
-
       const locationType = berthData.location.outpostId ? "outpost" : "station";
 
-      return <div>{t(activity.type, { locationType, locationId })}</div>;
+      return (
+        <div>{t(activity.type, { locationType, label: berthData.label })}</div>
+      );
+    }
+    case "LAUNCH": {
+      const launchData: LaunchActivityData = getActivityData(activity.data);
+
+      return <div>{t(activity.type, { label: launchData.label })}</div>;
     }
     case "BUILD": {
       const { type } = getJsonData<BuildActivityData<ComponentType>>(

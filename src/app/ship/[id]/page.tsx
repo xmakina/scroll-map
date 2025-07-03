@@ -15,6 +15,7 @@ import ShipData from "@/models/JsonData/ShipData";
 import WaypointService from "@/services/WaypointService";
 import PlanetSummary from "./PlanetSummary";
 import BerthDetails from "./BerthDetails";
+import LaunchButton from "./LaunchButton";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -41,19 +42,24 @@ const ShipDetailsPage = async ({ params }: Props) => {
           <LocationIdentifier locationId={ship.locationId} />
           {berthed && `(${t("Berthed", { locationType })})`}
         </div>
+        {berthed && (
+          <BorderedBox title={t("Landed at")}>
+            <div className="flex flex-col items-center gap-2">
+              <BerthDetails
+                station={ship.Station ?? undefined}
+                outpost={ship.Outpost ?? undefined}
+              />
+              <LaunchButton
+                label={ship.Station?.label ?? ship.Outpost?.label}
+              />
+            </div>
+          </BorderedBox>
+        )}
         {ship.CargoHold && (
           <BorderedBox title={t("Cargo Hold")}>
             <CargoHoldSummary cargoHold={ship.CargoHold} />
           </BorderedBox>
         )}
-        <BorderedBox title={t("Home Base")}>
-          <div className="flex flex-col items-center">
-            <BerthDetails
-              station={ship.Station ?? undefined}
-              outpost={ship.Outpost ?? undefined}
-            />
-          </div>
-        </BorderedBox>
         {ship.ActivityWorker.Activity && (
           <BorderedBox title={t("Current Task")}>
             <ActivityDetails
@@ -63,12 +69,11 @@ const ShipDetailsPage = async ({ params }: Props) => {
           </BorderedBox>
         )}
         <div className="flex flex-col md:flex-row md:gap-8 gap-4">
-          {locationType === "star" ||
-            (locationType === "unknown" && (
-              <BorderedBox title={t("System Map")}>
-                <WaypointSummary x={location.xPos} y={location.yPos} />
-              </BorderedBox>
-            ))}
+          {!berthed && (
+            <BorderedBox title={t("System Map")}>
+              <WaypointSummary x={location.xPos} y={location.yPos} />
+            </BorderedBox>
+          )}
           {locationType === "planet" && (
             <BorderedBox title={t("Planet Summary")}>
               <PlanetSummary ship={ship} />

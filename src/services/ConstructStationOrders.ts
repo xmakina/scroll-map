@@ -48,6 +48,9 @@ const PossibilityList: PossibleOrders = {
   BERTH: function (): boolean {
     return false;
   },
+  LAUNCH: function (): boolean {
+    return false;
+  },
 };
 
 export default function (data: StationWithComponentsAndWorker): ActivityType[] {

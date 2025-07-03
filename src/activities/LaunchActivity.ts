@@ -2,9 +2,8 @@ import { ActivityWorkerWithActivity } from "@/models/WorkerWithActivity";
 import { IActivityHandler } from "./IActivityHandler";
 import ShipService from "@/services/ShipService";
 import ActivityService from "@/services/ActivityService";
-import BerthData from "@/models/JsonData/BerthData";
 import { ActivityType } from "@prisma/client";
-import getJsonData from "@/utils/getJsonData";
+import LaunchActivityData from "@/models/JsonData/LaunchActivityData";
 
 export default class implements IActivityHandler {
   constructor(
@@ -25,15 +24,16 @@ export default class implements IActivityHandler {
 
     const shipId = parent.Ship.id;
 
-    const data = getJsonData<BerthData>(activity.data);
-
-    await this.shipService.berth(shipId, data.location);
+    await this.shipService.launch(shipId);
   }
 
-  async begin(activityWorkerId: string, data?: BerthData): Promise<void> {
+  async begin(
+    activityWorkerId: string,
+    data?: LaunchActivityData
+  ): Promise<void> {
     await this.activityService.create(
       activityWorkerId,
-      ActivityType.BERTH,
+      ActivityType.LAUNCH,
       1,
       data
     );

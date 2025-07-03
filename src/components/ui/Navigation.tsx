@@ -4,7 +4,7 @@ import { LinkButtonProps } from "./LinkButtonProps";
 
 export const NavigationLink = ({ children, href }: LinkButtonProps) => (
   <Link
-    className="border max-h-12 p-4 m-2 flex justify-center items-center rounded-xl hover:bg-alternate"
+    className="border border-blue-900 text-blue-400 max-h-12 p-4 m-2 flex justify-center items-center rounded-xl hover:bg-alternate"
     href={href}
   >
     {children}

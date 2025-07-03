@@ -7,11 +7,22 @@ import ShipData from "@/models/JsonData/ShipData";
 import { BerthLocation } from "@/models/JsonData/BerthData";
 
 export default class ShipRepository {
-  async updateBerthed(id: string, berthed: boolean, location: BerthLocation) {
+  async launch(id: string) {
     const ship = await prisma.ship.findFirstOrThrow({ where: { id } });
     const shipData: ShipData = getActivityData(ship.data);
 
-    const data = { ...shipData, berthed };
+    const data = { ...shipData, berthed: false };
+    return await prisma.ship.update({
+      where: { id },
+      data: { data, outpostId: null, stationId: null },
+    });
+  }
+
+  async berth(id: string, location: BerthLocation) {
+    const ship = await prisma.ship.findFirstOrThrow({ where: { id } });
+    const shipData: ShipData = getActivityData(ship.data);
+
+    const data = { ...shipData, berthed: true };
     const outpostId = location.outpostId;
     const stationId = location.stationId;
 

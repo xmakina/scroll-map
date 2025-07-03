@@ -32,7 +32,8 @@
     "BuildShip": "Building ship 🧑‍🔧",
     "DELIVER": "Delivering 📦",
     "TRAVEL": "Travelling to {locationId}",
-    "BERTH": "{locationType, select, outpost {Landing} station {Docking} other {Unknown}} at {locationId}",
+    "BERTH": "{locationType, select, outpost {Landing} station {Docking} other {Unknown}} at {label}",
+    "LAUNCH": "Launching from {label}",
     "Unknown Activity": "Unknown Activity"
   },
   "OrderButton": {
@@ -83,7 +84,9 @@
     "Cargo Hold": "Cargo Hold",
     "Berthed": "{locationType, select, planet {Landed} station {Docked} other {Berthed}}",
     "Planet Summary": "Planet Summary",
-    "Home Base": "Home Base"
+    "Landed at": "Landed at",
+    "Launch": "Launch",
+    "unnamed location": "unnamed location"
   },
   "ShipSummary": {
     "Location": "Location",
@@ -92,11 +95,13 @@
   "Layout": {
     "Dashboard": "Dashboard",
     "Ships": "Ships",
-    "Planets": "Planets"
+    "Planets": "Planets",
+    "Outposts": "Outposts"
   },
   "PlanetDetails": {
     "Planet {id}": "Planet {id}",
-    "Found outpost": "New Outpost"
+    "Found outpost": "New Outpost",
+    "Life is not supported here": "Life cannot survive here"
   },
   "general": {
     "View": "View"

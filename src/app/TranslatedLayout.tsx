@@ -30,6 +30,7 @@ const TranslatedLayout = async ({ children }: Props) => {
                   </NavigationLink>
                   <NavigationLink href="/ship">{t("Ships")}</NavigationLink>
                   <NavigationLink href="/planet">{t("Planets")}</NavigationLink>
+                  <NavigationLink href="/outpost">{t("Outposts")}</NavigationLink>
                 </div>
               )}
               <div id="content" className="mb-24 grow">

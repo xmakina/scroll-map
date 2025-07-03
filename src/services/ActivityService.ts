@@ -20,6 +20,7 @@ import BerthActivity from "@/activities/BerthActivity";
 import IActivityData from "@/models/JsonData/IActivityData";
 import OutpostComponentService from "./OutpostComponentService";
 import StationComponentService from "./StationComponentService";
+import LaunchActivity from "@/activities/LaunchActivity";
 
 export default class ActivityService {
   async getShipFromActivityWorker(activityWorker: ActivityWorkerWithActivity) {
@@ -109,6 +110,7 @@ export default class ActivityService {
       ESTABLISH_OUTPOST: new EstablishOutpostActivity(this),
       TRAVEL: new TravelActivity(shipService, this),
       BERTH: new BerthActivity(shipService, this),
+      LAUNCH: new LaunchActivity(shipService, this),
     };
   }
 

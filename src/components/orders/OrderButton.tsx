@@ -3,6 +3,7 @@ import Scuttle from "./Scuttle";
 import { ActivityType } from "@prisma/client";
 import Scavenge from "./Scavenge";
 import Smelt from "./Smelt";
+import Launch from "./Launch";
 
 type Props = {
   order: ActivityType;
@@ -24,6 +25,7 @@ const orderButtons: {
   ESTABLISH_OUTPOST: () => <></>,
   TRAVEL: () => <></>,
   BERTH: () => <></>,
+  LAUNCH: (onIssueOrder) => <Launch onClick={onIssueOrder} />,
 };
 
 const OrderButton = ({ order, onIssueOrder }: Props) => {

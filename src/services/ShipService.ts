@@ -4,8 +4,12 @@ import ShipRepository from "@/repositories/ShipRepository";
 import NameGenerator from "@/utils/NameGenerator";
 
 export default class ShipService {
-  async updateBerthed(id: string, berthed: boolean, location: BerthLocation) {
-    return await this.repository.updateBerthed(id, berthed, location);
+  async launch(id: string) {
+    return await this.repository.launch(id);
+  }
+
+  async berth(id: string, location: BerthLocation) {
+    return await this.repository.berth(id, location);
   }
 
   async updateLocation(id: string, locationId: string) {
@@ -30,7 +34,7 @@ export default class ShipService {
   }
 
   async createShip(playerId: string, locationId: string, data: ShipData) {
-    const label = NameGenerator.ForShips()
+    const label = NameGenerator.ForShips();
     return await this.repository.createShip(playerId, locationId, data, label);
   }
 

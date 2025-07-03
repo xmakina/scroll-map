@@ -4,8 +4,8 @@ import OutpostComponentRepository from "@/repositories/OutpostComponentRepositor
 import OutpostComponentData from "@/models/JsonData/OutpostComponentData";
 
 export default class {
-  async buildComponent(stationId: string, type: OutpostComponentType) {
-    const outpost = await this.outpostService.get(stationId);
+  async buildComponent(outpostId: string, type: OutpostComponentType) {
+    const outpost = await this.outpostService.get(outpostId);
     const existingComponent = outpost.Components.find((c) => c.type === type);
 
     if (existingComponent) {
@@ -13,7 +13,7 @@ export default class {
     }
 
     return await this.repository.create(
-      stationId,
+      outpostId,
       type,
       new OutpostComponentData(1)
     );

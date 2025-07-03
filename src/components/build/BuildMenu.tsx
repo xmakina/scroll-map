@@ -50,6 +50,9 @@ function BuildMenu<T extends ComponentType>({
   const handleBuildComponent = () => {
     if (activeComponentType && activeLevel) {
       onBuildComponent(activeComponentType, activeLevel);
+      setActiveComponentType(undefined);
+      setActiveLevel(undefined);
+      setActiveCostAndRequirements(undefined);
     }
   };
 

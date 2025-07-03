@@ -16,5 +16,8 @@ export type BerthLocation = RequireAtLeastOne<BerthLocations>;
 export default class implements JsonData {
   public readonly dataType = "BerthData";
 
-  constructor(public readonly location: BerthLocation) {}
+  constructor(
+    public readonly location: BerthLocation,
+    public readonly label: string
+  ) {}
 }

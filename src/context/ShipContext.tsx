@@ -10,13 +10,15 @@ export type ShipContextProps = {
 } & ShipContextInterface;
 
 export interface ShipContextInterface {
-  ship: ShipWithActivityAndCargoHold;
-  issueOrder: (activity: ActivityType, data?: IActivityData) => Promise<void>;
+  ship?: ShipWithActivityAndCargoHold;
+  issueOrder?: (activity: ActivityType, data?: IActivityData) => Promise<void>;
 }
 
 const ShipContext = createContext<ShipContextInterface | undefined>(undefined);
 
 export default ShipContext;
+
+const emptyShipContext: ShipContextInterface = {};
 
 export const ShipContextProvider: React.FC<ShipContextProps> = ({
   ship,
@@ -31,7 +33,7 @@ export const ShipContextProvider: React.FC<ShipContextProps> = ({
 export const useShipContext = (): ShipContextInterface => {
   const context = useContext(ShipContext);
   if (context === undefined) {
-    throw new Error("useShipContext must be used within a ShipContextProvider");
+    return emptyShipContext;
   }
 
   return context;

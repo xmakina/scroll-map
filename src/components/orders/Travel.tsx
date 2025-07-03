@@ -19,11 +19,15 @@ const Travel = ({ locationId }: Props) => {
   const { ship, issueOrder } = useShipContext();
   if (
     ship === undefined ||
+    issueOrder === undefined ||
     ship.ActivityWorker.Activity ||
-    ship.locationId === locationId ||
     getJsonData<ShipData>(ship.data).berthed
   ) {
     return <div></div>;
+  }
+
+  if (ship.locationId === locationId) {
+    return <div className="italic"></div>;
   }
 
   const data: TravelData = { locationId, dataType: "TravelData" };
