@@ -6,6 +6,7 @@ import { WithAuth } from "./WithAuth";
 import Login from "@/components/auth-components";
 import { auth } from "@/auth";
 import TopNavigation from "@/components/TopNavigation";
+import { LayoutProvider } from "@/context/LayoutContext";
 
 type Props = {
   children: ReactNode;
@@ -19,18 +20,20 @@ const TranslatedLayout = async ({ children }: Props) => {
     <div className="flex flex-col mt-2 px-8">
       <SessionProvider>
         <WithAuth>
-          <PlayerContext playerId={(await tryGetPlayer())?.id}>
-            <div className="flex flex-col gap-2">
-              {session?.user && <TopNavigation />}
-              <div id="content" className="mb-24 grow">
-                <main className="flex flex-row justify-start items-start pb-48">
-                  <div className="flex flex-col items-center justify-start grow">
-                    {children}
-                  </div>
-                </main>
+          <LayoutProvider>
+            <PlayerContext playerId={(await tryGetPlayer())?.id}>
+              <div className="flex flex-col gap-2">
+                {session?.user && <TopNavigation />}
+                <div id="content" className="mb-24 grow">
+                  <main className="flex flex-row justify-start items-start pb-48">
+                    <div className="flex flex-col items-center justify-start grow">
+                      {children}
+                    </div>
+                  </main>
+                </div>
               </div>
-            </div>
-          </PlayerContext>
+            </PlayerContext>
+          </LayoutProvider>
         </WithAuth>
       </SessionProvider>
       <footer>

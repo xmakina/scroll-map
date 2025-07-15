@@ -4,9 +4,16 @@ import React from "react";
 import { NavigationLink } from "./ui/Navigation";
 import { useTranslations } from "next-intl";
 import Flyout from "./ui/Flyout";
+import { useLayout } from "@/context/LayoutContext";
 
 const TopNavigation = () => {
   const t = useTranslations("Layout");
+  const layoutSettings = useLayout();
+
+  if (layoutSettings.layout.showNavigation === false) {
+    return <div></div>;
+  }
+
   const navigationLinks = (
     <>
       <NavigationLink href="/dashboard">{t("Dashboard")}</NavigationLink>
