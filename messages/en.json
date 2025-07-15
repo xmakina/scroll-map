@@ -142,5 +142,8 @@
   },
   "Berth Details": {
     "None": "None"
+  },
+  "Flyout": {
+    "Menu": "Menu"
   }
 }
