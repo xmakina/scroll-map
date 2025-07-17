@@ -8,6 +8,8 @@ import { ToLevelledComponent } from "@/utils/getRequirementsBreakdown";
 import { claimActivityForOutpost, startBuilding } from "./actions";
 import ActivityDetails from "@/components/activity/ActivityDetails";
 import ComponentList from "@/components/component/ComponentList";
+import ShipList from "@/components/ship/ShipList";
+import BorderedBox from "@/components/ui/BorderedBox";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -24,7 +26,7 @@ const OutpostPage = async ({ params }: Props) => {
   return (
     <div className="flex flex-row w-full">
       <div className="flex flex-col items-center w-full gap-4">
-        <Title>{t("Outpost {id}", { id })}</Title>
+        <Title>{t("Outpost {id}", { id: outpost.label })}</Title>
         {outpost.ActivityWorker.Activity && (
           <ActivityDetails
             activity={outpost.ActivityWorker.Activity}
@@ -42,6 +44,9 @@ const OutpostPage = async ({ params }: Props) => {
           title={t("Outpost Structures")}
           components={outpost.Components}
         />
+        <BorderedBox title={t("Ships")}>
+          <ShipList ships={outpost.Ships} showLocation={false} />
+        </BorderedBox>
       </div>
     </div>
   );

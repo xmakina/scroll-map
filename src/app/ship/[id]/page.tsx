@@ -23,7 +23,7 @@ const shipService = await ShipService.get();
 
 const ShipDetailsPage = async ({ params }: Props) => {
   const { id } = await params;
-  const ship = await shipService.get(id);
+  const ship = await shipService.getWithBerth(id);
   const { berthed } = getJsonData<ShipData>(ship.data);
 
   const location = WaypointFromId(ship.locationId);

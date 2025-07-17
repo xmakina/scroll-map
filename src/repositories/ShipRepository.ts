@@ -5,8 +5,21 @@ import { ShipWithActivityAndCargoHold } from "../models/ShipWithActivity";
 import getActivityData from "@/utils/getJsonData";
 import ShipData from "@/models/JsonData/ShipData";
 import { BerthLocation } from "@/models/JsonData/BerthData";
+import { ShipWithActivityAndBerth } from "@/models/ShipWithActivityAndBerth";
 
 export default class ShipRepository {
+  async getWithBerth(id: string): Promise<ShipWithActivityAndBerth> {
+    return await prisma.ship.findUniqueOrThrow({
+      where: { id },
+      include: {
+        ActivityWorker: { include: { Activity: true } },
+        CargoHold: { include: { CargoContainers: true } },
+        Outpost: true,
+        Station: true,
+      },
+    });
+  }
+
   async launch(id: string) {
     const ship = await prisma.ship.findFirstOrThrow({ where: { id } });
     const shipData: ShipData = getActivityData(ship.data);
@@ -46,8 +59,6 @@ export default class ShipRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         CargoHold: { include: { CargoContainers: true } },
-        Outpost: true,
-        Station: true,
       },
     });
   }
@@ -76,8 +87,6 @@ export default class ShipRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         CargoHold: { include: { CargoContainers: true } },
-        Outpost: true,
-        Station: true,
       },
     });
   }
@@ -88,8 +97,6 @@ export default class ShipRepository {
       include: {
         ActivityWorker: { include: { Activity: true } },
         CargoHold: { include: { CargoContainers: true } },
-        Outpost: true,
-        Station: true,
       },
     });
   }

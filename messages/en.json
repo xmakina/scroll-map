@@ -53,7 +53,8 @@
     "HANGAR": "Hangar",
     "MAKESHIFT_LAUNCH_PAD": "Makeshift Launch Pad",
     "LAUNCH_PAD": "Launch Pad",
-    "SOLAR_FARM": "Solar Farm"
+    "SOLAR_FARM": "Solar Farm",
+    "SILICON_MINE": "Silicon Mine"
   },
   "StationComponentBuilding": {
     "Build Requirements for": "Build Requirements for",
@@ -111,7 +112,8 @@
   },
   "OutpostDetails": {
     "Outpost {id}": "Outpost {id}",
-    "Outpost Structures": "Outpost Structures"
+    "Outpost Structures": "Outpost Structures",
+    "Ships": "Ships"
   },
   "OutpostLink": {
     "Manage": "Manage",

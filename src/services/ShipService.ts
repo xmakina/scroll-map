@@ -4,6 +4,9 @@ import ShipRepository from "@/repositories/ShipRepository";
 import NameGenerator from "@/utils/NameGenerator";
 
 export default class ShipService {
+  async getWithBerth(id: string) {
+    return await this.repository.getWithBerth(id);
+  }
   async launch(id: string) {
     return await this.repository.launch(id);
   }

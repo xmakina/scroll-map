@@ -16,7 +16,7 @@ export const OutpostComponentCostsAndRequirements: CostAndRequirementsList<Outpo
     COPPER_MINE: {},
     IRON_MINE: {},
     COAL_MINE: {},
-    SILICON_MINE: {},
+    SILICON_MINE: {1:{requirements:{}, cost:{}}},
     BASIC_CHIP_FAB: {},
     LAUNCH_PAD: { 1: { cost: { ALLOY: 1000 }, requirements: { SMELTER: 1 } } },
   };

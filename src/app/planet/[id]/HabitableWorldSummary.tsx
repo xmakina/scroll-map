@@ -22,11 +22,14 @@ const HabitableWorldSummary = async ({ id }: Props) => {
   const { id: playerId } = await getPlayer();
   const handleNewOutpost = createOutpost.bind(null, id);
   const ownedOutposts = outposts.filter((o) => o.playerId === playerId);
+
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <OutpostList outposts={outposts} />
       {ownedOutposts.length === 0 && (
-        <Button onClick={handleNewOutpost}>{t("Found outpost")}</Button>
+        <div>
+          <Button onClick={handleNewOutpost}>{t("Found outpost")}</Button>
+        </div>
       )}
     </div>
   );
