@@ -2,7 +2,7 @@ import nextIntl from "./next-intl";
 import defaultMessages from "../messages/en.json";
 import { NextIntlClientProvider } from "next-intl";
 
-import type { Preview } from "@storybook/react";
+import type { Preview } from "@storybook/nextjs";
 import "../src/app/globals.css";
 
 const preview: Preview = {

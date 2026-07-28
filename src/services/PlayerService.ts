@@ -3,8 +3,8 @@ import PlayerRepository from "@/repositories/PlayerRepository";
 export default class PlayerService {
   constructor(private readonly repository: PlayerRepository) {}
 
-  static async get() {
-    return new PlayerService(await PlayerRepository.get());
+  static async get(repository?: PlayerRepository) {
+    return new PlayerService(repository ?? (await PlayerRepository.get()));
   }
 
   async createPlayer(userId: string) {
